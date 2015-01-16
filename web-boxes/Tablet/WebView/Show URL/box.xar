@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ChoregrapheBox xar_version="3">
+    <Box name="root" id="12" localization="8" tooltip="指定されたURLをタブレットで表示します。" x="296" y="508">
+        <bitmap>media/images/box/internet/internet.png</bitmap>
+        <script language="4">
+            <content>
+                <![CDATA[class MyClass(GeneratedClass):
+
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+    def onLoad(self):
+        pass
+
+    def onUnload(self):
+        pass
+
+    def onInput_onStart(self, url):
+        tabletService = self.session().service("ALTabletService")
+        if tabletService.getWifiStatus() == "CONNECTED":
+            if tabletService.loadUrl(url):
+                self.logger.info("Successfully show URL: %s" % url)
+                tabletService.showWebview()
+                self.onSuccess()
+            else:
+                self.logger.error("Failed to show URL: %s" % url)
+                self.onFailure()
+        else:
+            self.logger.error("WiFi on the tablet must be connected")
+            self.onFailure()]]>
+</content>
+        </script>
+        <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+        <Input name="onStart" type="3" type_size="1" nature="2" inner="0" tooltip="タブレットに表示するURLを入力します。" id="2" />
+        <Output name="onSuccess" type="1" type_size="1" nature="1" inner="0" tooltip="タブレット表示が成功したことを出力します。" id="3" />
+        <Output name="onFailure" type="1" type_size="1" nature="1" inner="0" tooltip="タブレット表示が失敗したことを出力します。" id="4" />
+    </Box>
+</ChoregrapheBox>

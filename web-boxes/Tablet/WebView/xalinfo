@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Folder expanded="yes">
-    <Node name="WiFi" />
-    <Node name="WebView" />
+    <Node name="Show URL" />
 </Folder>
