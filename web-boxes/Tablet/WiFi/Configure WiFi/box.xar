@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ChoregrapheBox xar_version="3">
+    <Box name="root" id="6" localization="8" tooltip="タブレットのWiFiの設定をおこないます。&#x0A;セキュリティタイプにWEP, WPAを指定した場合、タブレットによってパスワードの入力が求められます。" x="460" y="238">
+        <bitmap>media/images/box/interaction/play_sound.png</bitmap>
+        <script language="4">
+            <content>
+                <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+    def onLoad(self):
+        self.ssid = None
+        self.inputTextHandlerId = None
+
+    def onUnload(self):
+        self._removeHandlers()
+
+    def onInput_onStart(self, ssid):
+        security = self.getParameter("Security")
+        if security == "open":
+            self._configureWifi(security, ssid, "")
+        else:
+            # Show input box for WiFi password
+            self.ssid = ssid
+            self.logger.info("Waiting for WiFi password...")
+            tabletService = self.session().service("ALTabletService")
+            if not self.inputTextHandlerId:
+                self.inputTextHandlerId = tabletService.onInputText.connect(self.inputTextHandler)
+            tabletService.showInputDialog("password", "WiFi '%s' 用のパスワード" % ssid, "OK", "Cancel")
+
+    def inputTextHandler(self, validation, input):
+        self._removeHandlers()
+        if validation == 1:
+            self._configureWifi(self.getParameter("Security"), self.ssid, input)
+            self.ssid = None
+        else:
+            self.onCanceled()
+
+    def _configureWifi(self, security, ssid, password):
+        tabletService = self.session().service("ALTabletService")
+        tabletService.enableWifi()
+        if tabletService.configureWifi(security, ssid, password):
+            self.logger.info("Configure successfully: %s" % ssid)
+            self.onStopped()
+        else:
+            self.logger.info("Configure failed: %s" % ssid)
+            self.onFailure()
+
+    def _removeHandlers(self):
+        tabletService = self.session().service("ALTabletService")
+        if self.inputTextHandlerId:
+            try:
+                tabletService.onInputText.disconnect(self.inputTextHandlerId)
+                self.inputTextHandlerId = None
+            except Exception as e:
+                self.logger.error(e)]]>
+</content>
+        </script>
+        <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+        <Input name="onStart" type="3" type_size="1" nature="2" inner="0" tooltip="WiFiの設定を開始します。&#x0A;接続先のSSIDを入力する必要があります。" id="2" />
+        <Output name="onFinished" type="1" type_size="1" nature="1" inner="0" tooltip="WiFi設定が完了したことを示します。" id="3" />
+        <Output name="onFailure" type="1" type_size="1" nature="1" inner="0" tooltip="WiFi設定に失敗したことを示します。" id="4" />
+        <Output name="onCanceled" type="1" type_size="1" nature="1" inner="0" tooltip="WiFi設定がキャンセル(パスワード入力がキャンセル)されたことを示します。" id="5" />
+        <Parameter name="Security" inherits_from_parent="0" content_type="3" value="wpa" default_value="wep" custom_choice="0" tooltip="WiFiのセキュリティタイプを指定します。" id="6">
+            <Choice value="wep" />
+            <Choice value="wpa" />
+            <Choice value="open" />
+        </Parameter>
+    </Box>
+</ChoregrapheBox>

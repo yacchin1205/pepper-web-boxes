@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Folder expanded="yes">
+    <Node name="Configure WiFi" />
     <Node name="Get WiFi status" />
     <Node name="Enable WiFi" />
     <Node name="Disable WiFi" />
+    <Node name="Forget WiFi" />
 </Folder>

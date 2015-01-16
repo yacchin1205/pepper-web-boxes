@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ChoregrapheBox xar_version="3">
+    <Box name="root" id="10" localization="8" tooltip="タブレットのWiFi設定を消去します。" x="485" y="477">
+        <bitmap>media/images/box/interaction/play_sound.png</bitmap>
+        <script language="4">
+            <content>
+                <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+    def onLoad(self):
+        pass
+
+    def onUnload(self):
+        pass
+
+    def onInput_onStart(self, ssid):
+        tabletService = self.session().service("ALTabletService")
+        if tabletService.forgetWifi(ssid):
+            self.onStopped()
+        else:
+            self.onFailure()]]>
+</content>
+        </script>
+        <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+        <Input name="onStart" type="3" type_size="1" nature="2" inner="0" tooltip="WiFi設定を消去するSSIDを入力します。" id="2" />
+        <Output name="onFinished" type="1" type_size="1" nature="1" inner="0" tooltip="設定消去成功時に出力されます。" id="3" />
+        <Output name="onFailure" type="1" type_size="1" nature="1" inner="0" tooltip="設定消去の失敗時に出力されます。" id="4" />
+    </Box>
+</ChoregrapheBox>
