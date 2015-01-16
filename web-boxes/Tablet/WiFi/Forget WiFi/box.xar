@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <ChoregrapheBox xar_version="3">
-    <Box name="root" id="10" localization="8" tooltip="タブレットのWiFi設定を消去します。" x="485" y="477">
+    <Box name="root" id="10" localization="8" tooltip="タブレットのWiFi設定を消去します。" x="858" y="276">
         <bitmap>media/images/box/interaction/play_sound.png</bitmap>
         <script language="4">
             <content>
@@ -17,8 +17,10 @@
     def onInput_onStart(self, ssid):
         tabletService = self.session().service("ALTabletService")
         if tabletService.forgetWifi(ssid):
-            self.onStopped()
+            self.logger.info("Successfully forget WiFi settings for %s" % ssid)
+            self.onFinished()
         else:
+            self.logger.info("Failed to forget WiFi settings for %s" % ssid)
             self.onFailure()]]>
 </content>
         </script>
