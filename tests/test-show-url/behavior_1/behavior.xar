@@ -1,0 +1,787 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ChoregrapheProject xmlns="http://www.aldebaran-robotics.com/schema/choregraphe/project.xsd" xar_version="3">
+    <Box name="root" id="-1" localization="8" tooltip="Root box of Choregraphe&apos;s behavior. Highest level possible." x="0" y="0">
+        <bitmap>media/images/box/root.png</bitmap>
+        <script language="4">
+            <content>
+                <![CDATA[]]>
+</content>
+        </script>
+        <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+        <Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" />
+        <Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" />
+        <Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="ボックス動作の終了時に信号を送る。" id="4" />
+        <Timeline enable="0">
+            <BehaviorLayer name="behavior_layer1">
+                <BehaviorKeyframe name="keyframe1" index="1">
+                    <Diagram>
+                        <Box name="TestSuccess" id="3" localization="8" tooltip="成功するケースのテスト" x="375" y="60">
+                            <bitmap>media/images/box/box-diagram.png</bitmap>
+                            <script language="4">
+                                <content>
+                                    <![CDATA[]]>
+</content>
+                            </script>
+                            <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+                            <Input name="Text Edit_onStart" type="0" type_size="1" nature="2" inner="0" tooltip="This input has been automatically generated&#x0A;by converting several boxes into a single box." id="2" />
+                            <Output name="AssertBang_onOutput" type="0" type_size="1" nature="1" inner="0" tooltip="This output has been automatically generated&#x0A;by converting several boxes into a single box." id="3" />
+                            <Timeline enable="0">
+                                <BehaviorLayer name="behavior_layer1">
+                                    <BehaviorKeyframe name="keyframe1" index="1">
+                                        <Diagram>
+                                            <Box name="Show URL" id="12" localization="8" tooltip="指定されたURLをタブレットで表示します。" x="965" y="72">
+                                                <bitmap>media/images/box/internet/internet.png</bitmap>
+                                                <script language="4">
+                                                    <content>
+                                                        <![CDATA[class MyClass(GeneratedClass):
+
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+    def onLoad(self):
+        pass
+
+    def onUnload(self):
+        pass
+
+    def onInput_onStart(self, url):
+        tabletService = self.session().service("ALTabletService")
+        if tabletService.getWifiStatus() == "CONNECTED":
+            if tabletService.loadUrl(url):
+                self.logger.info("Successfully show URL: %s" % url)
+                tabletService.showWebview()
+                self.onSuccess()
+            else:
+                self.logger.error("Failed to show URL: %s" % url)
+                self.onFailure()
+        else:
+            self.logger.error("WiFi on the tablet must be connected")
+            self.onFailure()]]>
+</content>
+                                                </script>
+                                                <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+                                                <Input name="onStart" type="3" type_size="1" nature="2" inner="0" tooltip="タブレットに表示するURLを入力します。" id="2" />
+                                                <Output name="onSuccess" type="1" type_size="1" nature="1" inner="0" tooltip="タブレット表示が成功したことを出力します。" id="3" />
+                                                <Output name="onFailure" type="1" type_size="1" nature="1" inner="0" tooltip="タブレット表示が失敗したことを出力します。" id="4" />
+                                            </Box>
+                                            <Box name="Assert Bang" id="1" localization="8" tooltip="Bangされることを明言するためのボックスです。&#x0A;onTest入力がおこなわれた際に、onInputに入力がないとエラーとなります。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="1174" y="137">
+                                                <bitmap>media/images/box/movement/stiffness.png</bitmap>
+                                                <script language="4">
+                                                    <content>
+                                                        <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+    def onLoad(self):
+        self.received = False
+
+    def onUnload(self):
+        self.received = False
+
+    def onInput_onInput(self):
+        self.received = True
+
+    def onInput_onTest(self):
+        keyName = "com_github_yacchin1205_pepper_web_boxes_test/%s" % self.getName()
+        memory = ALProxy("ALMemory")
+        if not self.received:
+            memory.insertData(keyName, "Failure")
+            self.logger.info("Failure")
+            self.onFailure()
+        else:
+            memory.insertData(keyName, "Success")
+            self.logger.info("Success")
+            self.onOutput()]]>
+</content>
+                                                </script>
+                                                <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+                                                <Input name="onInput" type="1" type_size="1" nature="1" inner="0" tooltip="Bang入力を受け取ります。" id="2" />
+                                                <Input name="onTest" type="1" type_size="1" nature="1" inner="0" tooltip="Inputに入力があったかをテストします。&#x0A;Inputに入力がなければエラー、入力があればonOutputを出力します。" id="3" />
+                                                <Output name="onOutput" type="1" type_size="1" nature="2" inner="0" tooltip="テスト完了時に出力されます。" id="4" />
+                                                <Output name="onFailure" type="1" type_size="1" nature="2" inner="0" tooltip="失敗時に出力されます。" id="5" />
+                                            </Box>
+                                            <Box name="Text Edit" id="2" localization="8" tooltip="Send the text you entered when the input is stimulated." plugin="textedit_plugin" x="631" y="78">
+                                                <bitmap>media/images/box/interaction/vocabulary.png</bitmap>
+                                                <script language="4">
+                                                    <content>
+                                                        <![CDATA[# /!\ Generated content. Do not edit!
+class MyClass(GeneratedClass):
+	def __init__(self):
+		GeneratedClass.__init__(self)
+
+	def onInput_onStart(self):
+		self.onStopped("http://www.google.co.jp")]]>
+</content>
+                                                </script>
+                                                <pluginContent>
+                                                    <text>
+                                                        <![CDATA[http://www.google.co.jp]]>
+</text>
+                                                </pluginContent>
+                                                <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when Diagram is loaded." id="1" />
+                                                <Input name="onStart" type="1" type_size="1" nature="1" inner="0" tooltip="To send the text on the output." id="2" />
+                                                <Output name="onStopped" type="3" type_size="1" nature="2" inner="0" tooltip="The text you entered." id="3" />
+                                            </Box>
+                                            <Box name="Wait" id="6" localization="8" tooltip="Wait a moment before sending a signal on the output. &#x0A;Can be stopped anytime. &#x0A;Stimulating the input again before output is activated restarts the waiting period.&#x0A;" x="815" y="313">
+                                                <bitmap>media/images/box/wait.png</bitmap>
+                                                <script language="4">
+                                                    <content>
+                                                        <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self, False)
+
+    def onLoad(self):
+        self.waiting = None
+
+    def onUnload(self):
+        self.cancelWaiting()
+
+    def triggerOutput(self):
+        self.timerOutput()
+
+    def cancelWaiting(self):
+        if self.waiting:
+            self.waiting.cancel()
+        self.waiting = None
+
+    def onInput_onStart(self):
+        self.cancelWaiting()
+        import qi
+        self.waiting = qi.async(self.triggerOutput, delay=int(self.getParameter("Timeout (s)") * 1000 * 1000))
+
+    def onInput_onStop(self):
+        if self.getParameter("Trigger timerOutput if cancelled") and self.waiting and self.waiting.isRunning():
+            self.timerOutput()
+        self.onUnload()]]>
+</content>
+                                                </script>
+                                                <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+                                                <Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Start the Wait box with the configured timeout value." id="2" />
+                                                <Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Stop the wait and stimulate the output." id="3" />
+                                                <Output name="timerOutput" type="1" type_size="1" nature="1" inner="0" tooltip="Send a bang once time set in parameters is elapsed, or if the box is stopped and the appropriate parameter is set." id="4" />
+                                                <Parameter name="Timeout (s)" inherits_from_parent="0" content_type="2" value="10" default_value="1" min="0" max="5000" tooltip="Duration the box waits before stimulating the output." id="5" />
+                                                <Parameter name="Trigger timerOutput if cancelled" inherits_from_parent="0" content_type="0" value="0" default_value="1" tooltip="If the box is currently waiting and cancelled, output will be stimulated." id="6" />
+                                            </Box>
+                                            <Box name="Enable WiFi" id="3" localization="8" tooltip="Enable the WiFi on the tablet" x="102" y="179">
+                                                <bitmap>media/images/box/interaction/play_sound.png</bitmap>
+                                                <script language="4">
+                                                    <content>
+                                                        <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+    def onLoad(self):
+        pass
+
+    def onUnload(self):
+        pass
+
+    def onInput_onStart(self):
+        tabletService = self.session().service("ALTabletService")
+        tabletService.enableWifi()
+        self.onStopped()]]>
+</content>
+                                                </script>
+                                                <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+                                                <Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" />
+                                                <Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="ボックス動作の終了時に信号を送る。" id="3" />
+                                            </Box>
+                                            <Box name="Wait (1)" id="4" localization="8" tooltip="Wait a moment before sending a signal on the output. &#x0A;Can be stopped anytime. &#x0A;Stimulating the input again before output is activated restarts the waiting period.&#x0A;" x="331" y="481">
+                                                <bitmap>media/images/box/wait.png</bitmap>
+                                                <script language="4">
+                                                    <content>
+                                                        <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self, False)
+
+    def onLoad(self):
+        self.waiting = None
+
+    def onUnload(self):
+        self.cancelWaiting()
+
+    def triggerOutput(self):
+        self.timerOutput()
+
+    def cancelWaiting(self):
+        if self.waiting:
+            self.waiting.cancel()
+        self.waiting = None
+
+    def onInput_onStart(self):
+        self.cancelWaiting()
+        import qi
+        self.waiting = qi.async(self.triggerOutput, delay=int(self.getParameter("Timeout (s)") * 1000 * 1000))
+
+    def onInput_onStop(self):
+        if self.getParameter("Trigger timerOutput if cancelled") and self.waiting and self.waiting.isRunning():
+            self.timerOutput()
+        self.onUnload()]]>
+</content>
+                                                </script>
+                                                <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+                                                <Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Start the Wait box with the configured timeout value." id="2" />
+                                                <Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Stop the wait and stimulate the output." id="3" />
+                                                <Output name="timerOutput" type="1" type_size="1" nature="1" inner="0" tooltip="Send a bang once time set in parameters is elapsed, or if the box is stopped and the appropriate parameter is set." id="4" />
+                                                <Parameter name="Timeout (s)" inherits_from_parent="0" content_type="2" value="1" default_value="1" min="0" max="5000" tooltip="Duration the box waits before stimulating the output." id="5" />
+                                                <Parameter name="Trigger timerOutput if cancelled" inherits_from_parent="0" content_type="0" value="0" default_value="1" tooltip="If the box is currently waiting and cancelled, output will be stimulated." id="6" />
+                                            </Box>
+                                            <Box name="Get WiFi status" id="5" localization="8" tooltip="Get WiFi status on the tablet.&#x0A;Returns IDLE, SCANNING, DISCONNECTED, or CONNECTED" x="263" y="178">
+                                                <bitmap>media/images/box/interaction/play_sound.png</bitmap>
+                                                <script language="4">
+                                                    <content>
+                                                        <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+    def onLoad(self):
+        pass
+
+    def onUnload(self):
+        pass
+
+    def onInput_onStart(self):
+        tabletService = self.session().service("ALTabletService")
+        self.onStopped(tabletService.getWifiStatus())]]>
+</content>
+                                                </script>
+                                                <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+                                                <Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" />
+                                                <Output name="onStopped" type="3" type_size="1" nature="1" inner="0" tooltip="WiFi status" id="3" />
+                                            </Box>
+                                            <Box name="If" id="7" localization="8" tooltip="Test a condition and stimulate the then or else outputs depending on the boolean&#x0A;value of the condition.&#x0A;The condition can be set in parameters." x="403" y="179">
+                                                <bitmap>media/images/box/box-diagram.png</bitmap>
+                                                <script language="4">
+                                                    <content>
+                                                        <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self, False)
+
+    def onLoad(self):
+        #~ puts code for box initialization here
+        pass
+
+    def onUnload(self):
+        #~ puts code for box cleanup here
+        pass
+
+    def onInput_onData(self, p):
+        param = self.getParameter("Value to compare")
+        try:
+            p = float(p)
+            param = float(param)
+        except:
+            p = str(p)
+            param = str(param)
+        operator = self.getParameter("Condition operator")
+        if( operator == "<" ):
+            self.outputTrueOrFalse( p < param )
+        elif( operator == "< or =" ):
+            self.outputTrueOrFalse( p <= param )
+        elif( operator == "=" ):
+            self.outputTrueOrFalse( p == param )
+        elif( operator == "> or =" ):
+            self.outputTrueOrFalse( p >= param )
+        elif( operator == ">" ):
+            self.outputTrueOrFalse( p > param )
+        elif( operator == "≠" ):
+            self.outputTrueOrFalse( p != param )
+        else:
+            raise Exception( "Operator not known: " + str(operator) )
+
+    def outputTrueOrFalse(self, condition):
+        if( condition ):
+            self.output_then()
+        else:
+            self.output_else()]]>
+</content>
+                                                </script>
+                                                <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+                                                <Input name="onData" type="0" type_size="1" nature="1" inner="0" tooltip="The data to test." id="2" />
+                                                <Output name="output_then" type="1" type_size="1" nature="2" inner="0" tooltip="Signal sent if the condition is true." id="3" />
+                                                <Output name="output_else" type="1" type_size="1" nature="2" inner="0" tooltip="Signal sent if the condition is false." id="4" />
+                                                <Parameter name="Condition operator" inherits_from_parent="0" content_type="3" value="=" default_value="≠" custom_choice="0" tooltip='Choose the condition operator.&#x0A;&#x0A;For example:&#x0A;If you choose &quot;&gt; or =&quot;, the condition will be: is the input is higher or equal&#x0A;than the parameter?' id="5">
+                                                    <Choice value="&lt;" />
+                                                    <Choice value="&lt; or =" />
+                                                    <Choice value="=" />
+                                                    <Choice value="&gt; or =" />
+                                                    <Choice value="&gt;" />
+                                                    <Choice value="≠" />
+                                                </Parameter>
+                                                <Parameter name="Value to compare" inherits_from_parent="0" content_type="3" value="CONNECTED" default_value="0" custom_choice="0" tooltip="This is the value which is compared to the input value." id="6" />
+                                            </Box>
+                                            <Box name="Log" id="8" localization="8" tooltip="Prompt the message in the debug window. You can set a prefix and a priority&#x0A;for the message in the parameters." x="402" y="68">
+                                                <bitmap>media/images/box/print.png</bitmap>
+                                                <script language="4">
+                                                    <content>
+                                                        <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self, False)
+
+    def onLoad(self):
+        #~ puts code for box initialization here
+        pass
+
+    def onUnload(self):
+        #~ puts code for box cleanup here
+        pass
+
+    def onInput_message(self, p):
+        sPriority = self.getParameter("Priority")
+        sMessage = self.getParameter("Message prefix")
+        if( sMessage != "" and p != None ):
+            sMessage += ": "
+        if( p != None ):
+            sMessage += str(p)
+        if( sPriority == "Fatal" ):
+            self.logger.fatal( sMessage )
+        elif( sPriority == "Error" ):
+            self.logger.error( sMessage )
+        elif( sPriority == "Warning" ):
+            self.logger.warning( sMessage )
+        elif( sPriority == "Info" ):
+            self.logger.info( sMessage )
+        elif( sPriority == "Debug" ):
+            self.logger.debug( sMessage )
+        self.onDone()]]>
+</content>
+                                                </script>
+                                                <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+                                                <Input name="message" type="0" type_size="1" nature="1" inner="0" tooltip='The message to print or a &quot;Bang&quot; to only print the message set as parameter.' id="2" />
+                                                <Output name="onDone" type="1" type_size="1" nature="2" inner="0" tooltip="Signal sent when box behavior is finished." id="3" />
+                                                <Parameter name="Message prefix" inherits_from_parent="0" content_type="3" value="WiFi status" default_value="Message text" custom_choice="0" tooltip="Enter the text you want to print before the input message." id="4" />
+                                                <Parameter name="Priority" inherits_from_parent="0" content_type="3" value="Info" default_value="Info" custom_choice="0" tooltip="Enter the priority of your message. If you select error, the box will get red when it will be stimulated." id="5">
+                                                    <Choice value="Fatal" />
+                                                    <Choice value="Error" />
+                                                    <Choice value="Warning" />
+                                                    <Choice value="Info" />
+                                                    <Choice value="Debug" />
+                                                </Parameter>
+                                            </Box>
+                                            <Box name="Comment" id="9" localization="8" tooltip="To comment your behavior. Enter the text here and move the box where you like&#x0A;to add the comment.&#x0A;&#x0A;Note: This box is not functional and has no effect on the behavior." plugin="textedit_plugin" x="260" y="600">
+                                                <bitmap>media/images/box/box-script.png</bitmap>
+                                                <script language="4">
+                                                    <content>
+                                                        <![CDATA[# /!\ Generated content. Do not edit!
+class MyClass(GeneratedClass):
+	def __init__(self):
+		GeneratedClass.__init__(self)
+
+	def onInput_onStart(self):
+		self.onStopped("WiFi接続確認")]]>
+</content>
+                                                </script>
+                                                <pluginContent>
+                                                    <text>
+                                                        <![CDATA[WiFi接続確認]]>
+</text>
+                                                </pluginContent>
+                                                <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when Diagram is loaded." id="1" />
+                                            </Box>
+                                            <Box name="Failure" id="10" localization="8" tooltip="出力を受け取らないことを明言するためのボックスです。&#x0A;onInput入力がおこなわれるとエラーとなります。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="1171" y="275">
+                                                <bitmap>media/images/box/movement/stiffness.png</bitmap>
+                                                <script language="4">
+                                                    <content>
+                                                        <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+    def onLoad(self):
+        pass
+
+    def onUnload(self):
+        pass
+
+    def onInput_onInput(self):
+        keyName = "com_github_yacchin1205_pepper_web_boxes_test/%s" % self.getName()
+        memory = ALProxy("ALMemory")
+        memory.insertData(keyName, "Failure")
+        self.logger.info("Failure")
+        self.onFailure()]]>
+</content>
+                                                </script>
+                                                <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+                                                <Input name="onInput" type="1" type_size="1" nature="1" inner="0" tooltip="Bang入力を受け取ります。" id="2" />
+                                                <Output name="onFailure" type="1" type_size="1" nature="2" inner="0" tooltip="テスト失敗時に出力されます。" id="3" />
+                                            </Box>
+                                            <Link inputowner="12" indexofinput="2" outputowner="2" indexofoutput="3" />
+                                            <Link inputowner="1" indexofinput="3" outputowner="6" indexofoutput="4" />
+                                            <Link inputowner="0" indexofinput="3" outputowner="1" indexofoutput="4" />
+                                            <Link inputowner="3" indexofinput="2" outputowner="0" indexofoutput="2" />
+                                            <Link inputowner="0" indexofinput="3" outputowner="1" indexofoutput="5" />
+                                            <Link inputowner="7" indexofinput="2" outputowner="5" indexofoutput="3" />
+                                            <Link inputowner="2" indexofinput="2" outputowner="7" indexofoutput="3" />
+                                            <Link inputowner="6" indexofinput="2" outputowner="7" indexofoutput="3" />
+                                            <Link inputowner="4" indexofinput="2" outputowner="7" indexofoutput="4" />
+                                            <Link inputowner="5" indexofinput="2" outputowner="4" indexofoutput="4" />
+                                            <Link inputowner="8" indexofinput="2" outputowner="5" indexofoutput="3" />
+                                            <Link inputowner="0" indexofinput="3" outputowner="10" indexofoutput="3" />
+                                            <Link inputowner="1" indexofinput="2" outputowner="12" indexofoutput="3" />
+                                            <Link inputowner="10" indexofinput="2" outputowner="12" indexofoutput="4" />
+                                            <Link inputowner="5" indexofinput="2" outputowner="3" indexofoutput="3" />
+                                        </Diagram>
+                                    </BehaviorKeyframe>
+                                </BehaviorLayer>
+                            </Timeline>
+                        </Box>
+                        <Box name="TestFailure" id="1" localization="8" tooltip="失敗するケースのテスト" x="578" y="62">
+                            <bitmap>media/images/box/box-diagram.png</bitmap>
+                            <script language="4">
+                                <content>
+                                    <![CDATA[]]>
+</content>
+                            </script>
+                            <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+                            <Input name="Text Edit_onStart" type="0" type_size="1" nature="2" inner="0" tooltip="This input has been automatically generated&#x0A;by converting several boxes into a single box." id="2" />
+                            <Output name="AssertBang_onOutput" type="0" type_size="1" nature="1" inner="0" tooltip="This output has been automatically generated&#x0A;by converting several boxes into a single box." id="3" />
+                            <Timeline enable="0">
+                                <BehaviorLayer name="behavior_layer1">
+                                    <BehaviorKeyframe name="keyframe1" index="1">
+                                        <Diagram>
+                                            <Box name="Show URL" id="12" localization="8" tooltip="指定されたURLをタブレットで表示します。" x="583" y="55">
+                                                <bitmap>media/images/box/internet/internet.png</bitmap>
+                                                <script language="4">
+                                                    <content>
+                                                        <![CDATA[class MyClass(GeneratedClass):
+
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+    def onLoad(self):
+        pass
+
+    def onUnload(self):
+        pass
+
+    def onInput_onStart(self, url):
+        tabletService = self.session().service("ALTabletService")
+        if tabletService.getWifiStatus() == "CONNECTED":
+            if tabletService.loadUrl(url):
+                self.logger.info("Successfully show URL: %s" % url)
+                tabletService.showWebview()
+                self.onSuccess()
+            else:
+                self.logger.error("Failed to show URL: %s" % url)
+                self.onFailure()
+        else:
+            self.logger.error("WiFi on the tablet must be connected")
+            self.onFailure()]]>
+</content>
+                                                </script>
+                                                <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+                                                <Input name="onStart" type="3" type_size="1" nature="2" inner="0" tooltip="タブレットに表示するURLを入力します。" id="2" />
+                                                <Output name="onSuccess" type="1" type_size="1" nature="1" inner="0" tooltip="タブレット表示が成功したことを出力します。" id="3" />
+                                                <Output name="onFailure" type="1" type_size="1" nature="1" inner="0" tooltip="タブレット表示が失敗したことを出力します。" id="4" />
+                                            </Box>
+                                            <Box name="Assert Bang" id="1" localization="8" tooltip="Bangされることを明言するためのボックスです。&#x0A;onTest入力がおこなわれた際に、onInputに入力がないとエラーとなります。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="817" y="163">
+                                                <bitmap>media/images/box/movement/stiffness.png</bitmap>
+                                                <script language="4">
+                                                    <content>
+                                                        <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+    def onLoad(self):
+        self.received = False
+
+    def onUnload(self):
+        self.received = False
+
+    def onInput_onInput(self):
+        self.received = True
+
+    def onInput_onTest(self):
+        keyName = "com_github_yacchin1205_pepper_web_boxes_test/%s" % self.getName()
+        memory = ALProxy("ALMemory")
+        if not self.received:
+            memory.insertData(keyName, "Failure")
+            self.logger.info("Failure")
+            self.onFailure()
+        else:
+            memory.insertData(keyName, "Success")
+            self.logger.info("Success")
+            self.onOutput()]]>
+</content>
+                                                </script>
+                                                <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+                                                <Input name="onInput" type="1" type_size="1" nature="1" inner="0" tooltip="Bang入力を受け取ります。" id="2" />
+                                                <Input name="onTest" type="1" type_size="1" nature="1" inner="0" tooltip="Inputに入力があったかをテストします。&#x0A;Inputに入力がなければエラー、入力があればonOutputを出力します。" id="3" />
+                                                <Output name="onOutput" type="1" type_size="1" nature="2" inner="0" tooltip="テスト完了時に出力されます。" id="4" />
+                                                <Output name="onFailure" type="1" type_size="1" nature="2" inner="0" tooltip="失敗時に出力されます。" id="5" />
+                                            </Box>
+                                            <Box name="Text Edit" id="2" localization="8" tooltip="Send the text you entered when the input is stimulated." plugin="textedit_plugin" x="266" y="55">
+                                                <bitmap>media/images/box/interaction/vocabulary.png</bitmap>
+                                                <script language="4">
+                                                    <content>
+                                                        <![CDATA[# /!\ Generated content. Do not edit!
+class MyClass(GeneratedClass):
+	def __init__(self):
+		GeneratedClass.__init__(self)
+
+	def onInput_onStart(self):
+		self.onStopped("http://www.google.co.jp")]]>
+</content>
+                                                </script>
+                                                <pluginContent>
+                                                    <text>
+                                                        <![CDATA[http://www.google.co.jp]]>
+</text>
+                                                </pluginContent>
+                                                <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when Diagram is loaded." id="1" />
+                                                <Input name="onStart" type="1" type_size="1" nature="1" inner="0" tooltip="To send the text on the output." id="2" />
+                                                <Output name="onStopped" type="3" type_size="1" nature="2" inner="0" tooltip="The text you entered." id="3" />
+                                            </Box>
+                                            <Box name="Wait" id="6" localization="8" tooltip="Wait a moment before sending a signal on the output. &#x0A;Can be stopped anytime. &#x0A;Stimulating the input again before output is activated restarts the waiting period.&#x0A;" x="288" y="328">
+                                                <bitmap>media/images/box/wait.png</bitmap>
+                                                <script language="4">
+                                                    <content>
+                                                        <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self, False)
+
+    def onLoad(self):
+        self.waiting = None
+
+    def onUnload(self):
+        self.cancelWaiting()
+
+    def triggerOutput(self):
+        self.timerOutput()
+
+    def cancelWaiting(self):
+        if self.waiting:
+            self.waiting.cancel()
+        self.waiting = None
+
+    def onInput_onStart(self):
+        self.cancelWaiting()
+        import qi
+        self.waiting = qi.async(self.triggerOutput, delay=int(self.getParameter("Timeout (s)") * 1000 * 1000))
+
+    def onInput_onStop(self):
+        if self.getParameter("Trigger timerOutput if cancelled") and self.waiting and self.waiting.isRunning():
+            self.timerOutput()
+        self.onUnload()]]>
+</content>
+                                                </script>
+                                                <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+                                                <Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Start the Wait box with the configured timeout value." id="2" />
+                                                <Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Stop the wait and stimulate the output." id="3" />
+                                                <Output name="timerOutput" type="1" type_size="1" nature="1" inner="0" tooltip="Send a bang once time set in parameters is elapsed, or if the box is stopped and the appropriate parameter is set." id="4" />
+                                                <Parameter name="Timeout (s)" inherits_from_parent="0" content_type="2" value="10" default_value="1" min="0" max="5000" tooltip="Duration the box waits before stimulating the output." id="5" />
+                                                <Parameter name="Trigger timerOutput if cancelled" inherits_from_parent="0" content_type="0" value="0" default_value="1" tooltip="If the box is currently waiting and cancelled, output will be stimulated." id="6" />
+                                            </Box>
+                                            <Box name="Disable WiFi" id="3" localization="8" tooltip="Disable the WiFi on the tablet" x="86" y="123">
+                                                <bitmap>media/images/box/interaction/play_sound.png</bitmap>
+                                                <script language="4">
+                                                    <content>
+                                                        <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+    def onLoad(self):
+        pass
+
+    def onUnload(self):
+        pass
+
+    def onInput_onStart(self):
+        tabletService = self.session().service("ALTabletService")
+        tabletService.disableWifi()
+        self.onStopped()]]>
+</content>
+                                                </script>
+                                                <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+                                                <Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" />
+                                                <Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="ボックス動作の終了時に信号を送る。" id="3" />
+                                            </Box>
+                                            <Box name="Failure" id="10" localization="8" tooltip="出力を受け取らないことを明言するためのボックスです。&#x0A;onInput入力がおこなわれるとエラーとなります。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="818" y="38">
+                                                <bitmap>media/images/box/movement/stiffness.png</bitmap>
+                                                <script language="4">
+                                                    <content>
+                                                        <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+    def onLoad(self):
+        pass
+
+    def onUnload(self):
+        pass
+
+    def onInput_onInput(self):
+        keyName = "com_github_yacchin1205_pepper_web_boxes_test/%s" % self.getName()
+        memory = ALProxy("ALMemory")
+        memory.insertData(keyName, "Failure")
+        self.logger.info("Failure")
+        self.onFailure()]]>
+</content>
+                                                </script>
+                                                <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+                                                <Input name="onInput" type="1" type_size="1" nature="1" inner="0" tooltip="Bang入力を受け取ります。" id="2" />
+                                                <Output name="onFailure" type="1" type_size="1" nature="2" inner="0" tooltip="テスト失敗時に出力されます。" id="3" />
+                                            </Box>
+                                            <Link inputowner="12" indexofinput="2" outputowner="2" indexofoutput="3" />
+                                            <Link inputowner="1" indexofinput="3" outputowner="6" indexofoutput="4" />
+                                            <Link inputowner="0" indexofinput="3" outputowner="1" indexofoutput="4" />
+                                            <Link inputowner="3" indexofinput="2" outputowner="0" indexofoutput="2" />
+                                            <Link inputowner="6" indexofinput="2" outputowner="3" indexofoutput="3" />
+                                            <Link inputowner="2" indexofinput="2" outputowner="3" indexofoutput="3" />
+                                            <Link inputowner="0" indexofinput="3" outputowner="1" indexofoutput="5" />
+                                            <Link inputowner="1" indexofinput="2" outputowner="12" indexofoutput="4" />
+                                            <Link inputowner="10" indexofinput="2" outputowner="12" indexofoutput="3" />
+                                            <Link inputowner="0" indexofinput="3" outputowner="10" indexofoutput="3" />
+                                        </Diagram>
+                                    </BehaviorKeyframe>
+                                </BehaviorLayer>
+                            </Timeline>
+                        </Box>
+                        <Box name="Reset Test" id="2" localization="8" tooltip="テストに関する情報をリセットします。" x="119" y="57">
+                            <bitmap>media/images/box/movement/stiffness.png</bitmap>
+                            <script language="4">
+                                <content>
+                                    <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+    def onLoad(self):
+        #put initialization code here
+        pass
+
+    def onUnload(self):
+        #put clean-up code here
+        pass
+
+    def onInput_onStart(self):
+        memory = ALProxy("ALMemory")
+        keys = [key for key in memory.getDataListName() if key.startswith("com_github_yacchin1205_pepper_web_boxes_test/")]
+        for key in keys:
+            memory.removeData(key)
+        self.logger.info("Remove Keys: %s" % keys)
+        self.onStopped()]]>
+</content>
+                            </script>
+                            <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+                            <Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" />
+                            <Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="ボックス動作の終了時に信号を送る。" id="3" />
+                        </Box>
+                        <Box name="Report Test" id="4" localization="8" tooltip="テストに関する情報を報告します。" x="1030" y="117">
+                            <bitmap>media/images/box/movement/stiffness.png</bitmap>
+                            <script language="4">
+                                <content>
+                                    <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+    def onLoad(self):
+        #put initialization code here
+        pass
+
+    def onUnload(self):
+        #put clean-up code here
+        pass
+
+    def onInput_onStart(self):
+        memory = ALProxy("ALMemory")
+        keyPrefix = "com_github_yacchin1205_pepper_web_boxes_test/"
+        keys = [key for key in memory.getDataListName() if key.startswith(keyPrefix)]
+        values = {}
+        for key in keys:
+            values[key[len(keyPrefix):]] = memory.getData(key)
+        for key in keys:
+            memory.removeData(key)
+
+        failure = [key for (key, value) in values.items() if value == "Failure"]
+        success = [key for (key, value) in values.items() if value == "Success"]
+        self.logger.info("Test Result: %s" % values)
+        if len(failure) + len(success) == 0:
+            self.logger.error("No tests")
+        elif len(failure) > 0:
+            self.logger.error("Failure: %d, Success: %d" % (len(failure), len(success)))
+        else:
+            self.logger.info("Success: %d" % (len(success)))
+        self.onStopped()]]>
+</content>
+                            </script>
+                            <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+                            <Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" />
+                            <Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="ボックス動作の終了時に信号を送る。" id="3" />
+                        </Box>
+                        <Box name="Only Once" id="5" localization="8" tooltip="This box&apos;s output is stimulated only the first time the onSignal input is.&#x0A;&#x0A;Note: It is reset when the diagram containing the box is unloaded." x="851" y="112">
+                            <bitmap>media/images/box/loop.png</bitmap>
+                            <script language="4">
+                                <content>
+                                    <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self, False)
+
+    def onLoad(self):
+        self.bFirstTime = True
+
+    def onUnload(self):
+        self.bFirstTime = True
+
+    def onInput_onSignal(self):
+        if( self.bFirstTime ):
+            self.bFirstTime = False
+            self.firstTime()]]>
+</content>
+                            </script>
+                            <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+                            <Input name="onSignal" type="1" type_size="1" nature="1" inner="0" tooltip="The signal that must pass only once." id="2" />
+                            <Output name="firstTime" type="1" type_size="1" nature="2" inner="0" tooltip="Signal sent first time the onSignal input is stimulated." id="3" />
+                        </Box>
+                        <Box name="Wait" id="6" localization="8" tooltip="Wait a moment before sending a signal on the output. &#x0A;Can be stopped anytime. &#x0A;Stimulating the input again before output is activated restarts the waiting period.&#x0A;" x="510" y="426">
+                            <bitmap>media/images/box/wait.png</bitmap>
+                            <script language="4">
+                                <content>
+                                    <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self, False)
+
+    def onLoad(self):
+        self.waiting = None
+
+    def onUnload(self):
+        self.cancelWaiting()
+
+    def triggerOutput(self):
+        self.timerOutput()
+
+    def cancelWaiting(self):
+        if self.waiting:
+            self.waiting.cancel()
+        self.waiting = None
+
+    def onInput_onStart(self):
+        self.cancelWaiting()
+        import qi
+        self.waiting = qi.async(self.triggerOutput, delay=int(self.getParameter("Timeout (s)") * 1000 * 1000))
+
+    def onInput_onStop(self):
+        if self.getParameter("Trigger timerOutput if cancelled") and self.waiting and self.waiting.isRunning():
+            self.timerOutput()
+        self.onUnload()]]>
+</content>
+                            </script>
+                            <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+                            <Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Start the Wait box with the configured timeout value." id="2" />
+                            <Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Stop the wait and stimulate the output." id="3" />
+                            <Output name="timerOutput" type="1" type_size="1" nature="1" inner="0" tooltip="Send a bang once time set in parameters is elapsed, or if the box is stopped and the appropriate parameter is set." id="4" />
+                            <Parameter name="Timeout (s)" inherits_from_parent="0" content_type="2" value="60" default_value="1" min="0" max="5000" tooltip="Duration the box waits before stimulating the output." id="5" />
+                            <Parameter name="Trigger timerOutput if cancelled" inherits_from_parent="0" content_type="0" value="0" default_value="1" tooltip="If the box is currently waiting and cancelled, output will be stimulated." id="6" />
+                        </Box>
+                        <Link inputowner="1" indexofinput="2" outputowner="3" indexofoutput="3" />
+                        <Link inputowner="2" indexofinput="2" outputowner="0" indexofoutput="2" />
+                        <Link inputowner="3" indexofinput="2" outputowner="2" indexofoutput="3" />
+                        <Link inputowner="0" indexofinput="4" outputowner="4" indexofoutput="3" />
+                        <Link inputowner="5" indexofinput="2" outputowner="1" indexofoutput="3" />
+                        <Link inputowner="4" indexofinput="2" outputowner="5" indexofoutput="3" />
+                        <Link inputowner="6" indexofinput="2" outputowner="2" indexofoutput="3" />
+                        <Link inputowner="5" indexofinput="2" outputowner="6" indexofoutput="4" />
+                    </Diagram>
+                </BehaviorKeyframe>
+            </BehaviorLayer>
+        </Timeline>
+    </Box>
+</ChoregrapheProject>
