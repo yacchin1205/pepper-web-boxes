@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Folder expanded="yes">
     <Node name="Failure" />
-    <Node name="Report Test (2)" />
     <Node name="Reset Test" />
     <Node name="Assert Bang" />
+    <Node name="Report Test" />
 </Folder>

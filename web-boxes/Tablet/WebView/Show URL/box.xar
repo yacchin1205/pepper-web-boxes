@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <ChoregrapheBox xar_version="3">
-    <Box name="root" id="12" localization="8" tooltip="指定されたURLをタブレットで表示します。" x="296" y="508">
+    <Box name="root" id="12" localization="8" tooltip="指定されたURLをタブレットで表示します。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="296" y="508">
         <bitmap>media/images/box/internet/internet.png</bitmap>
         <script language="4">
             <content>

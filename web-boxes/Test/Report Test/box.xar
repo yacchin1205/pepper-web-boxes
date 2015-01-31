@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <ChoregrapheBox xar_version="3">
-    <Box name="root" id="4" localization="8" tooltip="テストに関する情報を報告します。" x="1030" y="117">
+    <Box name="root" id="4" localization="8" tooltip="テストに関する情報を報告します。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="1030" y="117">
         <bitmap>media/images/box/movement/stiffness.png</bitmap>
         <script language="4">
             <content>

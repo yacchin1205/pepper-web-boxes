@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <ChoregrapheBox xar_version="3">
-    <Box name="root" id="3" localization="8" tooltip="Disable the WiFi on the tablet" x="146" y="265">
+    <Box name="root" id="3" localization="8" tooltip="Disable the WiFi on the tablet&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="146" y="265">
         <bitmap>media/images/box/interaction/play_sound.png</bitmap>
         <script language="4">
             <content>
