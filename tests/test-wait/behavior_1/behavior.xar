@@ -162,7 +162,7 @@
         memory = ALProxy("ALMemory")
         if not self.received:
             memory.insertData(keyName, "Failure")
-            self.logger.info("Failure")
+            self.logger.error("Failure")
             self.onFailure()
         else:
             memory.insertData(keyName, "Success")
@@ -238,7 +238,7 @@
         memory = ALProxy("ALMemory")
         if self.received:
             memory.insertData(keyName, "Failure")
-            self.logger.info("Failure")
+            self.logger.error("Failure")
             self.onFailure()
         else:
             memory.insertData(keyName, "Success")
@@ -481,7 +481,7 @@ class MyClass(GeneratedClass):
         memory = ALProxy("ALMemory")
         if not self.received:
             memory.insertData(keyName, "Failure")
-            self.logger.info("Failure")
+            self.logger.error("Failure")
             self.onFailure()
         else:
             memory.insertData(keyName, "Success")
@@ -557,7 +557,7 @@ class MyClass(GeneratedClass):
         memory = ALProxy("ALMemory")
         if self.received:
             memory.insertData(keyName, "Failure")
-            self.logger.info("Failure")
+            self.logger.error("Failure")
             self.onFailure()
         else:
             memory.insertData(keyName, "Success")
@@ -883,7 +883,7 @@ class MyClass(GeneratedClass):
         memory = ALProxy("ALMemory")
         if self.received:
             memory.insertData(keyName, "Failure")
-            self.logger.info("Failure")
+            self.logger.error("Failure")
             self.onFailure()
         else:
             memory.insertData(keyName, "Success")
@@ -1067,7 +1067,7 @@ class MyClass(GeneratedClass):
         memory = ALProxy("ALMemory")
         if not self.received:
             memory.insertData(keyName, "Failure")
-            self.logger.info("Failure")
+            self.logger.error("Failure")
             self.onFailure()
         else:
             memory.insertData(keyName, "Success")
@@ -1103,7 +1103,7 @@ class MyClass(GeneratedClass):
         memory = ALProxy("ALMemory")
         if self.received:
             memory.insertData(keyName, "Failure")
-            self.logger.info("Failure")
+            self.logger.error("Failure")
             self.onFailure()
         else:
             memory.insertData(keyName, "Success")
@@ -1394,7 +1394,7 @@ class MyClass(GeneratedClass):
         memory = ALProxy("ALMemory")
         if not self.received:
             memory.insertData(keyName, "Failure")
-            self.logger.info("Failure")
+            self.logger.error("Failure")
             self.onFailure()
         else:
             memory.insertData(keyName, "Success")
@@ -1615,7 +1615,7 @@ class MyClass(GeneratedClass):
         memory = ALProxy("ALMemory")
         if self.received:
             memory.insertData(keyName, "Failure")
-            self.logger.info("Failure")
+            self.logger.error("Failure")
             self.onFailure()
         else:
             memory.insertData(keyName, "Success")
@@ -1780,7 +1780,7 @@ class MyClass(GeneratedClass):
         memory = ALProxy("ALMemory")
         if not self.received:
             memory.insertData(keyName, "Failure")
-            self.logger.info("Failure")
+            self.logger.error("Failure")
             self.onFailure()
         else:
             memory.insertData(keyName, "Success")
@@ -1852,7 +1852,7 @@ class MyClass(GeneratedClass):
         memory = ALProxy("ALMemory")
         if self.received:
             memory.insertData(keyName, "Failure")
-            self.logger.info("Failure")
+            self.logger.error("Failure")
             self.onFailure()
         else:
             memory.insertData(keyName, "Success")
@@ -1964,7 +1964,7 @@ class MyClass(GeneratedClass):
         keyName = "com_github_yacchin1205_pepper_web_boxes_test/%s" % self.getName()
         memory = ALProxy("ALMemory")
         memory.insertData(keyName, "Failure")
-        self.logger.info("Failure")
+        self.logger.error("Failure")
         self.onFailure()]]>
 </content>
                                                 </script>
@@ -2082,7 +2082,7 @@ class MyClass(GeneratedClass):
         memory = ALProxy("ALMemory")
         if self.received:
             memory.insertData(keyName, "Failure")
-            self.logger.info("Failure")
+            self.logger.error("Failure")
             self.onFailure()
         else:
             memory.insertData(keyName, "Success")
