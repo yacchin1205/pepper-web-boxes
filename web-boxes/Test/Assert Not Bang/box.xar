@@ -22,7 +22,7 @@
         memory = ALProxy("ALMemory")
         if self.received:
             memory.insertData(keyName, "Failure")
-            self.logger.info("Failure")
+            self.logger.error("Failure")
             self.onFailure()
         else:
             memory.insertData(keyName, "Success")

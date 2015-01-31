@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <ChoregrapheBox xar_version="3">
-    <Box name="root" id="1" localization="8" tooltip="Bangされることを明言するためのボックスです。&#x0A;onTest入力がおこなわれた際に、onInputに入力がないとエラーとなります。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="759" y="109">
+    <Box name="root" id="1" localization="8" tooltip="Bangされることを明言するためのボックスです。&#x0A;onTest入力がおこなわれた際に、onInputに入力がないとエラーとなります。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="686" y="356">
         <bitmap>media/images/box/movement/stiffness.png</bitmap>
         <script language="4">
             <content>
@@ -22,7 +22,7 @@
         memory = ALProxy("ALMemory")
         if not self.received:
             memory.insertData(keyName, "Failure")
-            self.logger.info("Failure")
+            self.logger.error("Failure")
             self.onFailure()
         else:
             memory.insertData(keyName, "Success")
