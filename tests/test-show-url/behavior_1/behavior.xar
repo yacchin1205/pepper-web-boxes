@@ -29,7 +29,7 @@
                                 <BehaviorLayer name="behavior_layer1">
                                     <BehaviorKeyframe name="keyframe1" index="1">
                                         <Diagram>
-                                            <Box name="Show URL" id="12" localization="8" tooltip="指定されたURLをタブレットで表示します。" x="965" y="72">
+                                            <Box name="Show URL" id="12" localization="8" tooltip="指定されたURLをタブレットで表示します。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="965" y="72">
                                                 <bitmap>media/images/box/internet/internet.png</bitmap>
                                                 <script language="4">
                                                     <content>
@@ -162,7 +162,7 @@ class MyClass(GeneratedClass):
                                                 <Parameter name="Timeout (s)" inherits_from_parent="0" content_type="2" value="10" default_value="1" min="0" max="5000" tooltip="Duration the box waits before stimulating the output." id="5" />
                                                 <Parameter name="Trigger timerOutput if cancelled" inherits_from_parent="0" content_type="0" value="0" default_value="1" tooltip="If the box is currently waiting and cancelled, output will be stimulated." id="6" />
                                             </Box>
-                                            <Box name="Enable WiFi" id="3" localization="8" tooltip="Enable the WiFi on the tablet" x="102" y="179">
+                                            <Box name="Enable WiFi" id="3" localization="8" tooltip="Enable the WiFi on the tablet&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="102" y="179">
                                                 <bitmap>media/images/box/interaction/play_sound.png</bitmap>
                                                 <script language="4">
                                                     <content>
@@ -226,7 +226,7 @@ class MyClass(GeneratedClass):
                                                 <Parameter name="Timeout (s)" inherits_from_parent="0" content_type="2" value="1" default_value="1" min="0" max="5000" tooltip="Duration the box waits before stimulating the output." id="5" />
                                                 <Parameter name="Trigger timerOutput if cancelled" inherits_from_parent="0" content_type="0" value="0" default_value="1" tooltip="If the box is currently waiting and cancelled, output will be stimulated." id="6" />
                                             </Box>
-                                            <Box name="Get WiFi status" id="5" localization="8" tooltip="Get WiFi status on the tablet.&#x0A;Returns IDLE, SCANNING, DISCONNECTED, or CONNECTED" x="263" y="178">
+                                            <Box name="Get WiFi status" id="5" localization="8" tooltip="Get WiFi status on the tablet.&#x0A;Returns IDLE, SCANNING, DISCONNECTED, or CONNECTED&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="263" y="178">
                                                 <bitmap>media/images/box/interaction/play_sound.png</bitmap>
                                                 <script language="4">
                                                     <content>
@@ -438,7 +438,7 @@ class MyClass(GeneratedClass):
                                 <BehaviorLayer name="behavior_layer1">
                                     <BehaviorKeyframe name="keyframe1" index="1">
                                         <Diagram>
-                                            <Box name="Show URL" id="12" localization="8" tooltip="指定されたURLをタブレットで表示します。" x="583" y="55">
+                                            <Box name="Show URL" id="12" localization="8" tooltip="指定されたURLをタブレットで表示します。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="583" y="55">
                                                 <bitmap>media/images/box/internet/internet.png</bitmap>
                                                 <script language="4">
                                                     <content>
@@ -571,7 +571,7 @@ class MyClass(GeneratedClass):
                                                 <Parameter name="Timeout (s)" inherits_from_parent="0" content_type="2" value="10" default_value="1" min="0" max="5000" tooltip="Duration the box waits before stimulating the output." id="5" />
                                                 <Parameter name="Trigger timerOutput if cancelled" inherits_from_parent="0" content_type="0" value="0" default_value="1" tooltip="If the box is currently waiting and cancelled, output will be stimulated." id="6" />
                                             </Box>
-                                            <Box name="Disable WiFi" id="3" localization="8" tooltip="Disable the WiFi on the tablet" x="86" y="123">
+                                            <Box name="Disable WiFi" id="3" localization="8" tooltip="Disable the WiFi on the tablet&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="86" y="123">
                                                 <bitmap>media/images/box/interaction/play_sound.png</bitmap>
                                                 <script language="4">
                                                     <content>
@@ -636,7 +636,7 @@ class MyClass(GeneratedClass):
                                 </BehaviorLayer>
                             </Timeline>
                         </Box>
-                        <Box name="Reset Test" id="2" localization="8" tooltip="テストに関する情報をリセットします。" x="119" y="57">
+                        <Box name="Reset Test" id="2" localization="8" tooltip="テストに関する情報をリセットします。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="119" y="57">
                             <bitmap>media/images/box/movement/stiffness.png</bitmap>
                             <script language="4">
                                 <content>
@@ -665,7 +665,7 @@ class MyClass(GeneratedClass):
                             <Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" />
                             <Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="ボックス動作の終了時に信号を送る。" id="3" />
                         </Box>
-                        <Box name="Report Test" id="4" localization="8" tooltip="テストに関する情報を報告します。" x="1030" y="117">
+                        <Box name="Report Test" id="4" localization="8" tooltip="テストに関する情報を報告します。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="1030" y="117">
                             <bitmap>media/images/box/movement/stiffness.png</bitmap>
                             <script language="4">
                                 <content>

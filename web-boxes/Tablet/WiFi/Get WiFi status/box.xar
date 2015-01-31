@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <ChoregrapheBox xar_version="3">
-    <Box name="root" id="1" localization="8" tooltip="Get WiFi status on the tablet.&#x0A;Returns IDLE, SCANNING, DISCONNECTED, or CONNECTED" x="130" y="67">
+    <Box name="root" id="1" localization="8" tooltip="Get WiFi status on the tablet.&#x0A;Returns IDLE, SCANNING, DISCONNECTED, or CONNECTED&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="130" y="67">
         <bitmap>media/images/box/interaction/play_sound.png</bitmap>
         <script language="4">
             <content>

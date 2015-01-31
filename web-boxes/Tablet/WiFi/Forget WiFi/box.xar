@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <ChoregrapheBox xar_version="3">
-    <Box name="root" id="10" localization="8" tooltip="タブレットのWiFi設定を消去します。" x="858" y="276">
+    <Box name="root" id="10" localization="8" tooltip="タブレットのWiFi設定を消去します。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="858" y="276">
         <bitmap>media/images/box/interaction/play_sound.png</bitmap>
         <script language="4">
             <content>
