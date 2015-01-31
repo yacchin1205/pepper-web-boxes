@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ChoregrapheBox xar_version="3">
+    <Box name="root" id="10" localization="8" tooltip="出力を受け取らないことを明言するためのボックスです。&#x0A;onInput入力がおこなわれるとエラーとなります。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="1171" y="275">
+        <bitmap>media/images/box/movement/stiffness.png</bitmap>
+        <script language="4">
+            <content>
+                <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+    def onLoad(self):
+        pass
+
+    def onUnload(self):
+        pass
+
+    def onInput_onInput(self):
+        keyName = "com_github_yacchin1205_pepper_web_boxes_test/%s" % self.getName()
+        memory = ALProxy("ALMemory")
+        memory.insertData(keyName, "Failure")
+        self.logger.info("Failure")
+        self.onFailure()]]>
+</content>
+        </script>
+        <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+        <Input name="onInput" type="1" type_size="1" nature="1" inner="0" tooltip="Bang入力を受け取ります。" id="2" />
+        <Output name="onFailure" type="1" type_size="1" nature="2" inner="0" tooltip="テスト失敗時に出力されます。" id="3" />
+    </Box>
+</ChoregrapheBox>

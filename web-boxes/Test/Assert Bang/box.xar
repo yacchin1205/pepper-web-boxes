@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ChoregrapheBox xar_version="3">
+    <Box name="root" id="1" localization="8" tooltip="Bangされることを明言するためのボックスです。&#x0A;onTest入力がおこなわれた際に、onInputに入力がないとエラーとなります。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="759" y="109">
+        <bitmap>media/images/box/movement/stiffness.png</bitmap>
+        <script language="4">
+            <content>
+                <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+    def onLoad(self):
+        self.received = False
+
+    def onUnload(self):
+        self.received = False
+
+    def onInput_onInput(self):
+        self.received = True
+
+    def onInput_onTest(self):
+        keyName = "com_github_yacchin1205_pepper_web_boxes_test/%s" % self.getName()
+        memory = ALProxy("ALMemory")
+        if not self.received:
+            memory.insertData(keyName, "Failure")
+            self.logger.info("Failure")
+            self.onFailure()
+        else:
+            memory.insertData(keyName, "Success")
+            self.logger.info("Success")
+            self.onOutput()]]>
+</content>
+        </script>
+        <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+        <Input name="onInput" type="1" type_size="1" nature="1" inner="0" tooltip="Bang入力を受け取ります。" id="2" />
+        <Input name="onTest" type="1" type_size="1" nature="1" inner="0" tooltip="Inputに入力があったかをテストします。&#x0A;Inputに入力がなければエラー、入力があればonOutputを出力します。" id="3" />
+        <Output name="onOutput" type="1" type_size="1" nature="2" inner="0" tooltip="テスト完了時に出力されます。" id="4" />
+        <Output name="onFailure" type="1" type_size="1" nature="2" inner="0" tooltip="失敗時に出力されます。" id="5" />
+    </Box>
+</ChoregrapheBox>

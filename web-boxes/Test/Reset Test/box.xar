@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ChoregrapheBox xar_version="3">
+    <Box name="root" id="2" localization="8" tooltip="テストに関する情報をリセットします。" x="119" y="57">
+        <bitmap>media/images/box/movement/stiffness.png</bitmap>
+        <script language="4">
+            <content>
+                <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+    def onLoad(self):
+        #put initialization code here
+        pass
+
+    def onUnload(self):
+        #put clean-up code here
+        pass
+
+    def onInput_onStart(self):
+        memory = ALProxy("ALMemory")
+        keys = [key for key in memory.getDataListName() if key.startswith("com_github_yacchin1205_pepper_web_boxes_test/")]
+        for key in keys:
+            memory.removeData(key)
+        self.logger.info("Remove Keys: %s" % keys)
+        self.onStopped()]]>
+</content>
+        </script>
+        <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+        <Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" />
+        <Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="ボックス動作の終了時に信号を送る。" id="3" />
+    </Box>
+</ChoregrapheBox>
