@@ -29,7 +29,7 @@
                                 <BehaviorLayer name="behavior_layer1">
                                     <BehaviorKeyframe name="keyframe1" index="1">
                                         <Diagram>
-                                            <Box name="Show URL" id="12" localization="8" tooltip="指定されたURLをタブレットで表示します。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="965" y="72">
+                                            <Box name="Show URL" id="12" localization="8" tooltip="指定されたURLをタブレットで表示します。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="1007" y="152">
                                                 <bitmap>media/images/box/internet/internet.png</bitmap>
                                                 <script language="4">
                                                     <content>
@@ -64,7 +64,7 @@
                                                 <Output name="onSuccess" type="1" type_size="1" nature="1" inner="0" tooltip="タブレット表示が成功したことを出力します。" id="3" />
                                                 <Output name="onFailure" type="1" type_size="1" nature="1" inner="0" tooltip="タブレット表示が失敗したことを出力します。" id="4" />
                                             </Box>
-                                            <Box name="Assert Bang" id="1" localization="8" tooltip="Bangされることを明言するためのボックスです。&#x0A;onTest入力がおこなわれた際に、onInputに入力がないとエラーとなります。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="1174" y="137">
+                                            <Box name="Assert Bang" id="1" localization="8" tooltip="Bangされることを明言するためのボックスです。&#x0A;onTest入力がおこなわれた際に、onInputに入力がないとエラーとなります。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="1226" y="213">
                                                 <bitmap>media/images/box/movement/stiffness.png</bitmap>
                                                 <script language="4">
                                                     <content>
@@ -100,7 +100,7 @@
                                                 <Output name="onOutput" type="1" type_size="1" nature="2" inner="0" tooltip="テスト完了時に出力されます。" id="4" />
                                                 <Output name="onFailure" type="1" type_size="1" nature="2" inner="0" tooltip="失敗時に出力されます。" id="5" />
                                             </Box>
-                                            <Box name="Text Edit" id="2" localization="8" tooltip="Send the text you entered when the input is stimulated." plugin="textedit_plugin" x="631" y="78">
+                                            <Box name="Text Edit" id="2" localization="8" tooltip="Send the text you entered when the input is stimulated." plugin="textedit_plugin" x="673" y="158">
                                                 <bitmap>media/images/box/interaction/vocabulary.png</bitmap>
                                                 <script language="4">
                                                     <content>
@@ -122,7 +122,7 @@ class MyClass(GeneratedClass):
                                                 <Input name="onStart" type="1" type_size="1" nature="1" inner="0" tooltip="To send the text on the output." id="2" />
                                                 <Output name="onStopped" type="3" type_size="1" nature="2" inner="0" tooltip="The text you entered." id="3" />
                                             </Box>
-                                            <Box name="Wait" id="6" localization="8" tooltip="Wait a moment before sending a signal on the output. &#x0A;Can be stopped anytime. &#x0A;Stimulating the input again before output is activated restarts the waiting period.&#x0A;" x="815" y="313">
+                                            <Box name="Wait" id="6" localization="8" tooltip="Wait a moment before sending a signal on the output. &#x0A;Can be stopped anytime. &#x0A;Stimulating the input again before output is activated restarts the waiting period.&#x0A;" x="840" y="403">
                                                 <bitmap>media/images/box/wait.png</bitmap>
                                                 <script language="4">
                                                     <content>
@@ -162,7 +162,7 @@ class MyClass(GeneratedClass):
                                                 <Parameter name="Timeout (s)" inherits_from_parent="0" content_type="2" value="10" default_value="1" min="0" max="5000" tooltip="Duration the box waits before stimulating the output." id="5" />
                                                 <Parameter name="Trigger timerOutput if cancelled" inherits_from_parent="0" content_type="0" value="0" default_value="1" tooltip="If the box is currently waiting and cancelled, output will be stimulated." id="6" />
                                             </Box>
-                                            <Box name="Enable WiFi" id="3" localization="8" tooltip="Enable the WiFi on the tablet&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="102" y="179">
+                                            <Box name="Enable WiFi" id="3" localization="8" tooltip="Enable the WiFi on the tablet&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="144" y="259">
                                                 <bitmap>media/images/box/interaction/play_sound.png</bitmap>
                                                 <script language="4">
                                                     <content>
@@ -186,7 +186,7 @@ class MyClass(GeneratedClass):
                                                 <Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" />
                                                 <Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="ボックス動作の終了時に信号を送る。" id="3" />
                                             </Box>
-                                            <Box name="Wait (1)" id="4" localization="8" tooltip="Wait a moment before sending a signal on the output. &#x0A;Can be stopped anytime. &#x0A;Stimulating the input again before output is activated restarts the waiting period.&#x0A;" x="331" y="481">
+                                            <Box name="Wait (1)" id="4" localization="8" tooltip="Wait a moment before sending a signal on the output. &#x0A;Can be stopped anytime. &#x0A;Stimulating the input again before output is activated restarts the waiting period.&#x0A;" x="372" y="493">
                                                 <bitmap>media/images/box/wait.png</bitmap>
                                                 <script language="4">
                                                     <content>
@@ -226,7 +226,7 @@ class MyClass(GeneratedClass):
                                                 <Parameter name="Timeout (s)" inherits_from_parent="0" content_type="2" value="1" default_value="1" min="0" max="5000" tooltip="Duration the box waits before stimulating the output." id="5" />
                                                 <Parameter name="Trigger timerOutput if cancelled" inherits_from_parent="0" content_type="0" value="0" default_value="1" tooltip="If the box is currently waiting and cancelled, output will be stimulated." id="6" />
                                             </Box>
-                                            <Box name="Get WiFi status" id="5" localization="8" tooltip="Get WiFi status on the tablet.&#x0A;Returns IDLE, SCANNING, DISCONNECTED, or CONNECTED&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="263" y="178">
+                                            <Box name="Get WiFi status" id="5" localization="8" tooltip="Get WiFi status on the tablet.&#x0A;Returns IDLE, SCANNING, DISCONNECTED, or CONNECTED&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="305" y="258">
                                                 <bitmap>media/images/box/interaction/play_sound.png</bitmap>
                                                 <script language="4">
                                                     <content>
@@ -249,7 +249,7 @@ class MyClass(GeneratedClass):
                                                 <Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" />
                                                 <Output name="onStopped" type="3" type_size="1" nature="1" inner="0" tooltip="WiFi status" id="3" />
                                             </Box>
-                                            <Box name="If" id="7" localization="8" tooltip="Test a condition and stimulate the then or else outputs depending on the boolean&#x0A;value of the condition.&#x0A;The condition can be set in parameters." x="403" y="179">
+                                            <Box name="If" id="7" localization="8" tooltip="Test a condition and stimulate the then or else outputs depending on the boolean&#x0A;value of the condition.&#x0A;The condition can be set in parameters." x="445" y="259">
                                                 <bitmap>media/images/box/box-diagram.png</bitmap>
                                                 <script language="4">
                                                     <content>
@@ -310,7 +310,7 @@ class MyClass(GeneratedClass):
                                                 </Parameter>
                                                 <Parameter name="Value to compare" inherits_from_parent="0" content_type="3" value="CONNECTED" default_value="0" custom_choice="0" tooltip="This is the value which is compared to the input value." id="6" />
                                             </Box>
-                                            <Box name="Log" id="8" localization="8" tooltip="Prompt the message in the debug window. You can set a prefix and a priority&#x0A;for the message in the parameters." x="402" y="68">
+                                            <Box name="Log" id="8" localization="8" tooltip="Prompt the message in the debug window. You can set a prefix and a priority&#x0A;for the message in the parameters." x="444" y="148">
                                                 <bitmap>media/images/box/print.png</bitmap>
                                                 <script language="4">
                                                     <content>
@@ -358,7 +358,7 @@ class MyClass(GeneratedClass):
                                                     <Choice value="Debug" />
                                                 </Parameter>
                                             </Box>
-                                            <Box name="Comment" id="9" localization="8" tooltip="To comment your behavior. Enter the text here and move the box where you like&#x0A;to add the comment.&#x0A;&#x0A;Note: This box is not functional and has no effect on the behavior." plugin="textedit_plugin" x="260" y="600">
+                                            <Box name="Comment" id="9" localization="8" tooltip="To comment your behavior. Enter the text here and move the box where you like&#x0A;to add the comment.&#x0A;&#x0A;Note: This box is not functional and has no effect on the behavior." plugin="textedit_plugin" x="84" y="398">
                                                 <bitmap>media/images/box/box-script.png</bitmap>
                                                 <script language="4">
                                                     <content>
@@ -378,7 +378,7 @@ class MyClass(GeneratedClass):
                                                 </pluginContent>
                                                 <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when Diagram is loaded." id="1" />
                                             </Box>
-                                            <Box name="Failure" id="10" localization="8" tooltip="出力を受け取らないことを明言するためのボックスです。&#x0A;onInput入力がおこなわれるとエラーとなります。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="1171" y="275">
+                                            <Box name="Failure" id="10" localization="8" tooltip="出力を受け取らないことを明言するためのボックスです。&#x0A;onInput入力がおこなわれるとエラーとなります。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="1225" y="337">
                                                 <bitmap>media/images/box/movement/stiffness.png</bitmap>
                                                 <script language="4">
                                                     <content>
@@ -403,6 +403,86 @@ class MyClass(GeneratedClass):
                                                 <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
                                                 <Input name="onInput" type="1" type_size="1" nature="1" inner="0" tooltip="Bang入力を受け取ります。" id="2" />
                                                 <Output name="onFailure" type="1" type_size="1" nature="2" inner="0" tooltip="テスト失敗時に出力されます。" id="3" />
+                                            </Box>
+                                            <Box name="Comment (1)" id="11" localization="8" tooltip="To comment your behavior. Enter the text here and move the box where you like&#x0A;to add the comment.&#x0A;&#x0A;Note: This box is not functional and has no effect on the behavior." plugin="textedit_plugin" x="787" y="514">
+                                                <bitmap>media/images/box/box-script.png</bitmap>
+                                                <script language="4">
+                                                    <content>
+                                                        <![CDATA[# /!\ Generated content. Do not edit!
+class MyClass(GeneratedClass):
+	def __init__(self):
+		GeneratedClass.__init__(self)
+
+	def onInput_onStart(self):
+		self.onStopped("10秒後にAssertの内容をチェックにいくためのWait")]]>
+</content>
+                                                </script>
+                                                <pluginContent>
+                                                    <text>
+                                                        <![CDATA[10秒後にAssertの内容をチェックにいくためのWait]]>
+</text>
+                                                </pluginContent>
+                                                <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when Diagram is loaded." id="1" />
+                                            </Box>
+                                            <Box name="Comment (2)" id="13" localization="8" tooltip="To comment your behavior. Enter the text here and move the box where you like&#x0A;to add the comment.&#x0A;&#x0A;Note: This box is not functional and has no effect on the behavior." plugin="textedit_plugin" x="773" y="22">
+                                                <bitmap>media/images/box/box-script.png</bitmap>
+                                                <script language="4">
+                                                    <content>
+                                                        <![CDATA[# /!\ Generated content. Do not edit!
+class MyClass(GeneratedClass):
+	def __init__(self):
+		GeneratedClass.__init__(self)
+
+	def onInput_onStart(self):
+		self.onStopped("テストしたい処理")]]>
+</content>
+                                                </script>
+                                                <pluginContent>
+                                                    <text>
+                                                        <![CDATA[テストしたい処理]]>
+</text>
+                                                </pluginContent>
+                                                <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when Diagram is loaded." id="1" />
+                                            </Box>
+                                            <Box name="Comment (3)" id="14" localization="8" tooltip="To comment your behavior. Enter the text here and move the box where you like&#x0A;to add the comment.&#x0A;&#x0A;Note: This box is not functional and has no effect on the behavior." plugin="textedit_plugin" x="1139" y="33">
+                                                <bitmap>media/images/box/box-script.png</bitmap>
+                                                <script language="4">
+                                                    <content>
+                                                        <![CDATA[# /!\ Generated content. Do not edit!
+class MyClass(GeneratedClass):
+	def __init__(self):
+		GeneratedClass.__init__(self)
+
+	def onInput_onStart(self):
+		self.onStopped("10秒後の段階で、onSuccessから一回以上出力されていれば成功")]]>
+</content>
+                                                </script>
+                                                <pluginContent>
+                                                    <text>
+                                                        <![CDATA[10秒後の段階で、onSuccessから一回以上出力されていれば成功]]>
+</text>
+                                                </pluginContent>
+                                                <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when Diagram is loaded." id="1" />
+                                            </Box>
+                                            <Box name="Comment (4)" id="15" localization="8" tooltip="To comment your behavior. Enter the text here and move the box where you like&#x0A;to add the comment.&#x0A;&#x0A;Note: This box is not functional and has no effect on the behavior." plugin="textedit_plugin" x="1147" y="459">
+                                                <bitmap>media/images/box/box-script.png</bitmap>
+                                                <script language="4">
+                                                    <content>
+                                                        <![CDATA[# /!\ Generated content. Do not edit!
+class MyClass(GeneratedClass):
+	def __init__(self):
+		GeneratedClass.__init__(self)
+
+	def onInput_onStart(self):
+		self.onStopped("onFailure出力があれば失敗")]]>
+</content>
+                                                </script>
+                                                <pluginContent>
+                                                    <text>
+                                                        <![CDATA[onFailure出力があれば失敗]]>
+</text>
+                                                </pluginContent>
+                                                <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when Diagram is loaded." id="1" />
                                             </Box>
                                             <Link inputowner="12" indexofinput="2" outputowner="2" indexofoutput="3" />
                                             <Link inputowner="1" indexofinput="3" outputowner="6" indexofoutput="4" />
