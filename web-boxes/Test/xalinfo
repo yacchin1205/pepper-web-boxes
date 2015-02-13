@@ -4,5 +4,6 @@
     <Node name="Report Test" />
     <Node name="Failure" />
     <Node name="Assert Bang" />
+    <Node name="Assert String" />
     <Node name="Assert Not Bang" />
 </Folder>
