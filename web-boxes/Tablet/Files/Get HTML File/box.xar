@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ChoregrapheBox xar_version="3">
+    <Box name="root" id="1" localization="8" tooltip="プロジェクト内の html ファイルのパスを取得します。&#x0A;ビヘイビアファイルのパスからの相対でhtmlフォルダを取得するため、ビヘイビアファイルがデフォルト構成となっている必要があります。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="215" y="122">
+        <bitmap>media/images/box/folder.png</bitmap>
+        <script language="4">
+            <content>
+                <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self, False)
+
+    def onLoad(self):
+        self.framemanager = ALProxy("ALFrameManager")
+
+    def onInput_onStart(self):
+        import os
+        htmlPath = os.path.join(self.framemanager.getBehaviorPath(self.behaviorId),
+                                "..", "html")
+        if os.path.exists(htmlPath):
+            self.logger.info("Directory exists: %s" % htmlPath)
+            self.onStopped(os.path.join(htmlPath, self.getParameter("File name")))
+        else:
+            self.logger.error("Directory not exists: %s" % htmlPath)
+            self.onFailure()]]>
+</content>
+        </script>
+        <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+        <Input name="onStart" type="1" type_size="1" nature="1" inner="0" tooltip="To send the filepath on the output." id="2" />
+        <Output name="onStopped" type="3" type_size="1" nature="2" inner="0" tooltip="The filepath of the selected resource file." id="3" />
+        <Output name="onFailure" type="1" type_size="1" nature="2" inner="0" tooltip="エラー発生時に出力されます。htmlフォルダがない場合などに出力されます。" id="4" />
+        <Parameter name="File name" inherits_from_parent="0" content_type="3" value="index.html" default_value="" custom_choice="0" tooltip="Name of the file which is going to be sent on the box output.&#x0A;&#x0A;Note: You can click on the folder icon to browse the project content or import&#x0A;new files to the project." id="5" />
+    </Box>
+</ChoregrapheBox>

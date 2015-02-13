@@ -5,6 +5,8 @@
         <BehaviorDescription name="behavior" src="behavior_1" xar="behavior.xar" />
     </BehaviorDescriptions>
     <Dialogs />
-    <Resources />
+    <Resources>
+        <File name="test" src="html/test.txt" />
+    </Resources>
     <Topics />
 </Package>

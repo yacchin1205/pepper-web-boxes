@@ -2,4 +2,5 @@
 <Folder expanded="yes">
     <Node name="WiFi" />
     <Node name="WebView" />
+    <Node name="Files" />
 </Folder>
