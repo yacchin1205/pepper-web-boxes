@@ -2,4 +2,6 @@
 <Folder expanded="no">
     <Node name="Test" />
     <Node name="Tablet" />
+    <Node name="IO" />
+    <Node name="System" />
 </Folder>

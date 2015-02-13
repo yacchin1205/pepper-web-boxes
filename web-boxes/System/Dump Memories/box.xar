@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ChoregrapheBox xar_version="3">
+    <Box name="root" id="15" localization="8" tooltip="メモリの内容をダンプします。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="305" y="77">
+        <bitmap>media/images/box/interaction/vocabulary.png</bitmap>
+        <script language="4">
+            <content>
+                <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+    def onLoad(self):
+        pass
+
+    def onUnload(self):
+        pass
+
+    def onInput_onStart(self):
+        memory = ALProxy("ALMemory")
+        keyNames = memory.getDataListName()
+        keyPrefix = self.getParameter("Key Prefix")
+        if len(keyPrefix) > 0:
+            keyNames = [key for key in keyNames if key.startswith(keyPrefix)]
+        result = "key,value\n"
+        for key in sorted(keyNames):
+            result += "%s,%s\n" % (key, memory.getData(key))
+        self.onStopped(result)]]>
+</content>
+        </script>
+        <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+        <Input name="onStart" type="1" type_size="1" nature="1" inner="0" tooltip="処理を開始します。" id="2" />
+        <Output name="onStopped" type="3" type_size="1" nature="2" inner="0" tooltip="ダンプ結果を出力します。" id="3" />
+        <Parameter name="Key Prefix" inherits_from_parent="0" content_type="3" value="" default_value="" custom_choice="0" tooltip="出力するキーのプレフィックスです。" id="4" />
+    </Box>
+</ChoregrapheBox>
