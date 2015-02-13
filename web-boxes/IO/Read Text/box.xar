@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ChoregrapheBox xar_version="3">
+    <Box name="root" id="4" localization="8" tooltip="ファイルからテキストを読み込みます。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="675" y="269">
+        <bitmap>media/images/box/folder.png</bitmap>
+        <script language="4">
+            <content>
+                <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+    def onLoad(self):
+        pass
+
+    def onUnload(self):
+        pass
+
+    def onInput_onStart(self):
+        import codecs
+        try:
+            with codecs.open(self.getParameter("File path"), "r", self.getParameter("Encoding")) as f:
+                text = f.read()
+            self.onStopped(text.encode("utf8"))
+        except IOError as e:
+            self.logger.error("Failed: %s" % str(e))
+            self.onFailure(str(e))]]>
+</content>
+        </script>
+        <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+        <Input name="onStart" type="1" type_size="1" nature="1" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" />
+        <Output name="onStopped" type="3" type_size="1" nature="2" inner="0" tooltip="読み込んだテキストを出力します" id="3" />
+        <Output name="onFailure" type="3" type_size="1" nature="2" inner="0" tooltip="エラーを出力します。" id="4" />
+        <Parameter name="File path" inherits_from_parent="0" content_type="3" value="" default_value="" custom_choice="0" tooltip="ファイルパスを指定します。現在の実行ディレクトリからの相対です。" id="5" />
+        <Parameter name="Encoding" inherits_from_parent="0" content_type="3" value="utf8" default_value="utf8" custom_choice="0" tooltip="文字エンコーディングを指定します。&#x0A;デフォルトは utf8 です。&#x0A;&#x0A;http://docs.python.jp/2/library/codecs.html#standard-encodings" id="6" />
+    </Box>
+</ChoregrapheBox>
