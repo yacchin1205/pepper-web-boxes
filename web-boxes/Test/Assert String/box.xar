@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <ChoregrapheBox xar_version="3">
-    <Box name="root" id="2" localization="8" tooltip="Stringが出力されることを明言するためのボックスです。&#x0A;onTest入力がおこなわれた際に、onInputに予期した入力がないとエラーとなります。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="673" y="27">
+    <Box name="root" id="3" localization="8" tooltip="Stringが出力されることを明言するためのボックスです。&#x0A;onTest入力がおこなわれた際に、onInputに予期した入力がないとエラーとなります。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="523" y="234">
         <bitmap>media/images/box/movement/stiffness.png</bitmap>
         <script language="4">
             <content>
@@ -39,6 +39,6 @@
         <Input name="onTest" type="1" type_size="1" nature="1" inner="0" tooltip="Inputに入力があったかをテストします。&#x0A;Inputに入力がなければエラー、入力があればonOutputを出力します。" id="3" />
         <Output name="onOutput" type="1" type_size="1" nature="2" inner="0" tooltip="テスト完了時に出力されます。" id="4" />
         <Output name="onFailure" type="1" type_size="1" nature="2" inner="0" tooltip="失敗時に出力されます。" id="5" />
-        <Parameter name="Expected" inherits_from_parent="0" content_type="3" value="テスト" default_value="" custom_choice="0" tooltip="出力されるべき文字列。" id="6" />
+        <Parameter name="Expected" inherits_from_parent="0" content_type="3" value="" default_value="" custom_choice="0" tooltip="出力されるべき文字列。" id="6" />
     </Box>
 </ChoregrapheBox>
