@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ChoregrapheBox xar_version="3">
+    <Box name="root" id="17" localization="8" tooltip="設定の内容をダンプします。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="952" y="705">
+        <bitmap>media/images/box/interaction/vocabulary.png</bitmap>
+        <script language="4">
+            <content>
+                <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+    def onLoad(self):
+        pass
+
+    def onUnload(self):
+        pass
+
+    def onInput_onStart(self):
+        prefs = ALProxy("ALPreferenceManager")
+        domain = self.getParameter("Domain")
+        if len(domain) > 0:
+            domains = [domain]
+        else:
+            domains = prefs.getDomainList()
+        self.logger.info("Target domains: %s" % str(domains))
+        result = "domain,key,value\n"
+        for domain in sorted(domains):
+            for kv in prefs.getValueList(domain):
+                result += "%s,%s,%s\n" % (domain, kv[0], kv[1])
+        self.onStopped(result)]]>
+</content>
+        </script>
+        <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+        <Input name="onStart" type="1" type_size="1" nature="1" inner="0" tooltip="処理を開始します。" id="2" />
+        <Output name="onStopped" type="3" type_size="1" nature="2" inner="0" tooltip="ダンプ結果を出力します。" id="3" />
+        <Parameter name="Domain" inherits_from_parent="0" content_type="3" value="" default_value="" custom_choice="0" tooltip="ダンプ対象のドメイン名を指定します。" id="4" />
+    </Box>
+</ChoregrapheBox>
