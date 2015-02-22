@@ -15,7 +15,7 @@
             <BehaviorLayer name="behavior_layer1">
                 <BehaviorKeyframe name="keyframe1" index="1">
                     <Diagram>
-                        <Box name="Get HTML File" id="1" localization="8" tooltip="プロジェクト内の html ファイルのパスを取得します。&#x0A;ビヘイビアファイルのパスからの相対でhtmlフォルダを取得するため、ビヘイビアファイルがデフォルト構成となっている必要があります。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="490" y="144">
+                        <Box name="Get HTML File" id="1" localization="8" tooltip="プロジェクト内の html ファイルのパスを取得します。&#x0A;ビヘイビアファイルのパスからの相対でhtmlフォルダを取得するため、ビヘイビアファイルがデフォルト構成となっている必要があります。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="342" y="295">
                             <bitmap>media/images/box/folder.png</bitmap>
                             <script language="4">
                                 <content>
@@ -44,7 +44,7 @@
                             <Output name="onFailure" type="1" type_size="1" nature="2" inner="0" tooltip="エラー発生時に出力されます。htmlフォルダがない場合などに出力されます。" id="4" />
                             <Parameter name="File name" inherits_from_parent="0" content_type="3" value="memory-dump.txt" default_value="" custom_choice="0" tooltip="Name of the file which is going to be sent on the box output.&#x0A;&#x0A;Note: You can click on the folder icon to browse the project content or import&#x0A;new files to the project." id="5" />
                         </Box>
-                        <Box name="Show App" id="2" localization="8" tooltip="Loads the application on the tablet, if it exists, and displays the webview.&#x0A;&#x0A;V1.0.0&#x0A;" x="479" y="46">
+                        <Box name="Show App" id="2" localization="8" tooltip="Loads the application on the tablet, if it exists, and displays the webview.&#x0A;&#x0A;V1.0.0&#x0A;" x="456" y="22">
                             <bitmap>media/images/box/root.png</bitmap>
                             <script language="4">
                                 <content>
@@ -121,7 +121,7 @@ class MyClass(GeneratedClass):
                             <Output name="onSuccess" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished successfully." id="3" />
                             <Output name="onFailure" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished unsuccessfully." id="4" />
                         </Box>
-                        <Box name="Dump Memories" id="15" localization="8" tooltip="メモリの内容をダンプします。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="635" y="338">
+                        <Box name="Dump Memories" id="15" localization="8" tooltip="メモリの内容をダンプします。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="561" y="163">
                             <bitmap>media/images/box/interaction/vocabulary.png</bitmap>
                             <script language="4">
                                 <content>
@@ -152,7 +152,7 @@ class MyClass(GeneratedClass):
                             <Output name="onStopped" type="3" type_size="1" nature="2" inner="0" tooltip="ダンプ結果を出力します。" id="3" />
                             <Parameter name="Key Prefix" inherits_from_parent="0" content_type="3" value="" default_value="" custom_choice="0" tooltip="出力するキーのプレフィックスです。" id="4" />
                         </Box>
-                        <Box name="Write Text" id="8" localization="8" tooltip="ファイルにテキストを書き出します。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="804" y="201">
+                        <Box name="Write Text" id="8" localization="8" tooltip="ファイルにテキストを書き出します。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="712" y="313">
                             <bitmap>media/images/box/folder.png</bitmap>
                             <script language="4">
                                 <content>
@@ -184,7 +184,7 @@ class MyClass(GeneratedClass):
                             <Parameter name="File path" inherits_from_parent="0" content_type="3" value="" default_value="" custom_choice="0" tooltip="ファイルパスを指定します。現在の実行ディレクトリからの相対です。" id="5" />
                             <Parameter name="Encoding" inherits_from_parent="0" content_type="3" value="utf8" default_value="utf8" custom_choice="0" tooltip="文字エンコーディングを指定します。&#x0A;デフォルトは utf8 です。&#x0A;&#x0A;http://docs.python.jp/2/library/codecs.html#standard-encodings" id="6" />
                         </Box>
-                        <Box name="Wait" id="6" localization="8" tooltip="Wait a moment before sending a signal on the output. &#x0A;Can be stopped anytime. &#x0A;Stimulating the input again before output is activated restarts the waiting period.&#x0A;" x="434" y="341">
+                        <Box name="Wait" id="6" localization="8" tooltip="Wait a moment before sending a signal on the output. &#x0A;Can be stopped anytime. &#x0A;Stimulating the input again before output is activated restarts the waiting period.&#x0A;" x="333" y="152">
                             <bitmap>media/images/box/wait.png</bitmap>
                             <script language="4">
                                 <content>
@@ -224,7 +224,7 @@ class MyClass(GeneratedClass):
                             <Parameter name="Timeout (s)" inherits_from_parent="0" content_type="2" value="0.1" default_value="1" min="0" max="5000" tooltip="Duration the box waits before stimulating the output." id="5" />
                             <Parameter name="Trigger timerOutput if cancelled" inherits_from_parent="0" content_type="0" value="0" default_value="1" tooltip="If the box is currently waiting and cancelled, output will be stimulated." id="6" />
                         </Box>
-                        <Box name="Dump Prefs" id="17" localization="8" tooltip="設定の内容をダンプします。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="636" y="457">
+                        <Box name="Dump Prefs" id="17" localization="8" tooltip="設定の内容をダンプします。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="566" y="423">
                             <bitmap>media/images/box/interaction/vocabulary.png</bitmap>
                             <script language="4">
                                 <content>
@@ -258,7 +258,7 @@ class MyClass(GeneratedClass):
                             <Output name="onStopped" type="3" type_size="1" nature="2" inner="0" tooltip="ダンプ結果を出力します。" id="3" />
                             <Parameter name="Domain" inherits_from_parent="0" content_type="3" value="" default_value="" custom_choice="0" tooltip="ダンプ対象のドメイン名を指定します。" id="4" />
                         </Box>
-                        <Box name="Get HTML File (1)" id="3" localization="8" tooltip="プロジェクト内の html ファイルのパスを取得します。&#x0A;ビヘイビアファイルのパスからの相対でhtmlフォルダを取得するため、ビヘイビアファイルがデフォルト構成となっている必要があります。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="489" y="241">
+                        <Box name="Get HTML File (1)" id="3" localization="8" tooltip="プロジェクト内の html ファイルのパスを取得します。&#x0A;ビヘイビアファイルのパスからの相対でhtmlフォルダを取得するため、ビヘイビアファイルがデフォルト構成となっている必要があります。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="362" y="500">
                             <bitmap>media/images/box/folder.png</bitmap>
                             <script language="4">
                                 <content>
@@ -287,7 +287,7 @@ class MyClass(GeneratedClass):
                             <Output name="onFailure" type="1" type_size="1" nature="2" inner="0" tooltip="エラー発生時に出力されます。htmlフォルダがない場合などに出力されます。" id="4" />
                             <Parameter name="File name" inherits_from_parent="0" content_type="3" value="pref-dump.txt" default_value="" custom_choice="0" tooltip="Name of the file which is going to be sent on the box output.&#x0A;&#x0A;Note: You can click on the folder icon to browse the project content or import&#x0A;new files to the project." id="5" />
                         </Box>
-                        <Box name="Write Text (1)" id="4" localization="8" tooltip="ファイルにテキストを書き出します。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="808" y="458">
+                        <Box name="Write Text (1)" id="4" localization="8" tooltip="ファイルにテキストを書き出します。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="716" y="570">
                             <bitmap>media/images/box/folder.png</bitmap>
                             <script language="4">
                                 <content>
@@ -319,7 +319,7 @@ class MyClass(GeneratedClass):
                             <Parameter name="File path" inherits_from_parent="0" content_type="3" value="" default_value="" custom_choice="0" tooltip="ファイルパスを指定します。現在の実行ディレクトリからの相対です。" id="5" />
                             <Parameter name="Encoding" inherits_from_parent="0" content_type="3" value="utf8" default_value="utf8" custom_choice="0" tooltip="文字エンコーディングを指定します。&#x0A;デフォルトは utf8 です。&#x0A;&#x0A;http://docs.python.jp/2/library/codecs.html#standard-encodings" id="6" />
                         </Box>
-                        <Box name="Wait For Signals" id="5" localization="8" tooltip="Wait for both inputs to be stimulated before stimulating its output." x="1199" y="254">
+                        <Box name="Wait For Signals" id="5" localization="8" tooltip="Wait for both inputs to be stimulated before stimulating its output." x="944" y="422">
                             <bitmap>media/images/box/wait.png</bitmap>
                             <script language="4">
                                 <content>
