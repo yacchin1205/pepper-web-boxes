@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ChoregrapheProject xmlns="http://www.aldebaran-robotics.com/schema/choregraphe/project.xsd" xar_version="3">
+    <Box name="root" id="-1" localization="8" tooltip="Root box of Choregraphe&apos;s behavior. Highest level possible." x="0" y="0">
+        <bitmap>media/images/box/root.png</bitmap>
+        <script language="4">
+            <content>
+                <![CDATA[]]>
+</content>
+        </script>
+        <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+        <Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" />
+        <Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" />
+        <Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="ボックス動作の終了時に信号を送る。" id="4" />
+        <Timeline enable="0">
+            <BehaviorLayer name="behavior_layer1">
+                <BehaviorKeyframe name="keyframe1" index="1">
+                    <Diagram>
+                        <Box name="Get HTML File" id="1" localization="8" tooltip="プロジェクト内の html ファイルのパスを取得します。&#x0A;ビヘイビアファイルのパスからの相対でhtmlフォルダを取得するため、ビヘイビアファイルがデフォルト構成となっている必要があります。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="490" y="144">
+                            <bitmap>media/images/box/folder.png</bitmap>
+                            <script language="4">
+                                <content>
+                                    <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self, False)
+
+    def onLoad(self):
+        self.framemanager = ALProxy("ALFrameManager")
+
+    def onInput_onStart(self):
+        import os
+        htmlPath = os.path.join(self.framemanager.getBehaviorPath(self.behaviorId),
+                                "..", "html")
+        if os.path.exists(htmlPath):
+            self.logger.info("Directory exists: %s" % htmlPath)
+            self.onStopped(os.path.join(htmlPath, self.getParameter("File name")))
+        else:
+            self.logger.error("Directory not exists: %s" % htmlPath)
+            self.onFailure()]]>
+</content>
+                            </script>
+                            <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+                            <Input name="onStart" type="1" type_size="1" nature="1" inner="0" tooltip="To send the filepath on the output." id="2" />
+                            <Output name="onStopped" type="3" type_size="1" nature="2" inner="0" tooltip="The filepath of the selected resource file." id="3" />
+                            <Output name="onFailure" type="1" type_size="1" nature="2" inner="0" tooltip="エラー発生時に出力されます。htmlフォルダがない場合などに出力されます。" id="4" />
+                            <Parameter name="File name" inherits_from_parent="0" content_type="3" value="memory-dump.txt" default_value="" custom_choice="0" tooltip="Name of the file which is going to be sent on the box output.&#x0A;&#x0A;Note: You can click on the folder icon to browse the project content or import&#x0A;new files to the project." id="5" />
+                        </Box>
+                        <Box name="Show App" id="2" localization="8" tooltip="Loads the application on the tablet, if it exists, and displays the webview.&#x0A;&#x0A;V1.0.0&#x0A;" x="479" y="46">
+                            <bitmap>media/images/box/root.png</bitmap>
+                            <script language="4">
+                                <content>
+                                    <![CDATA[
+
+class MyClass(GeneratedClass):
+
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+    def onLoad(self):
+        self.isRunning = False
+        self.frameManager = None
+        try:
+            self.frameManager = ALProxy("ALFrameManager")
+        except Exception as e:
+            self.logger.error(e)
+
+    def onUnload(self):
+        self.isRunning = False
+
+    def _getTabletService(self):
+        tabletService = None
+        try:
+            tabletService = self.session().service("ALTabletService")
+        except Exception as e:
+            self.logger.error(e)
+        return tabletService
+
+    def _getAppName(self):
+        import os
+        if self.frameManager:
+            behaviorPath = os.path.normpath(self.frameManager.getBehaviorPath(self.behaviorId))
+            if os.path.isdir(behaviorPath):
+               behaviorPath = os.path.join(behaviorPath, "")
+            appsFolderFragment = os.path.join("PackageManager", "apps")
+            if not (appsFolderFragment in behaviorPath):
+                    self.logger.error("appsFolderFragment is not in behaviorPath")
+                    return None
+            fragment = behaviorPath.split(appsFolderFragment, 1)[1]
+            fragment = fragment.split("/")[1]
+            return fragment.lstrip("\\/")
+        else:
+            self.logger.warning("No ALFrameManager")
+            return None
+
+    def onInput_onStart(self):
+        if self.isRunning:
+            return # already running, nothing to do
+        self.isRunning = True
+        # We create TabletService here in order to avoid
+        # problems with connections and disconnections of the tablet during the life of the application
+        tabletService = self._getTabletService()
+        appName = self._getAppName()
+        state = False
+        if appName:
+            if tabletService:
+                if tabletService.loadApplication(appName):
+                    self.logger.info("Successfully set application: %s" % appName)
+                    tabletService.showWebview()
+                    state = True
+                else:
+                    self.logger.warning("Got tablet service, but failed to set application: %s" % appName)
+            else:
+                self.logger.warning("Couldn't find tablet service, so can't set application: %s" % appName)
+        if state:
+            self.onSuccess()
+        else:
+            self.onFailure()]]>
+</content>
+                            </script>
+                            <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+                            <Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" />
+                            <Output name="onSuccess" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished successfully." id="3" />
+                            <Output name="onFailure" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished unsuccessfully." id="4" />
+                        </Box>
+                        <Box name="Dump Memories" id="15" localization="8" tooltip="メモリの内容をダンプします。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="635" y="338">
+                            <bitmap>media/images/box/interaction/vocabulary.png</bitmap>
+                            <script language="4">
+                                <content>
+                                    <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+    def onLoad(self):
+        pass
+
+    def onUnload(self):
+        pass
+
+    def onInput_onStart(self):
+        memory = ALProxy("ALMemory")
+        keyNames = memory.getDataListName()
+        keyPrefix = self.getParameter("Key Prefix")
+        if len(keyPrefix) > 0:
+            keyNames = [key for key in keyNames if key.startswith(keyPrefix)]
+        result = "key,value\n"
+        for key in sorted(keyNames):
+            result += "%s,%s\n" % (key, memory.getData(key))
+        self.onStopped(result)]]>
+</content>
+                            </script>
+                            <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+                            <Input name="onStart" type="1" type_size="1" nature="1" inner="0" tooltip="処理を開始します。" id="2" />
+                            <Output name="onStopped" type="3" type_size="1" nature="2" inner="0" tooltip="ダンプ結果を出力します。" id="3" />
+                            <Parameter name="Key Prefix" inherits_from_parent="0" content_type="3" value="" default_value="" custom_choice="0" tooltip="出力するキーのプレフィックスです。" id="4" />
+                        </Box>
+                        <Box name="Write Text" id="8" localization="8" tooltip="ファイルにテキストを書き出します。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="804" y="201">
+                            <bitmap>media/images/box/folder.png</bitmap>
+                            <script language="4">
+                                <content>
+                                    <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+    def onLoad(self):
+        pass
+
+    def onUnload(self):
+        pass
+
+    def onInput_onStart(self, text):
+        import codecs
+        try:
+            with codecs.open(self.getParameter("File path"), "w", self.getParameter("Encoding")) as f:
+                f.write(text.decode("utf8"))
+            self.onStopped()
+        except IOError as e:
+            self.logger.error("Failed: %s" % str(e))
+            self.onFailure(str(e))]]>
+</content>
+                            </script>
+                            <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+                            <Input name="onStart" type="3" type_size="1" nature="1" inner="0" tooltip="ファイルに文字列を出力します。" id="2" />
+                            <Output name="onStopped" type="1" type_size="1" nature="2" inner="0" tooltip="書き出し完了した際に出力します。" id="3" />
+                            <Output name="onFailure" type="3" type_size="1" nature="2" inner="0" tooltip="エラーを出力します。" id="4" />
+                            <Parameter name="File path" inherits_from_parent="0" content_type="3" value="" default_value="" custom_choice="0" tooltip="ファイルパスを指定します。現在の実行ディレクトリからの相対です。" id="5" />
+                            <Parameter name="Encoding" inherits_from_parent="0" content_type="3" value="utf8" default_value="utf8" custom_choice="0" tooltip="文字エンコーディングを指定します。&#x0A;デフォルトは utf8 です。&#x0A;&#x0A;http://docs.python.jp/2/library/codecs.html#standard-encodings" id="6" />
+                        </Box>
+                        <Box name="Wait" id="6" localization="8" tooltip="Wait a moment before sending a signal on the output. &#x0A;Can be stopped anytime. &#x0A;Stimulating the input again before output is activated restarts the waiting period.&#x0A;" x="434" y="341">
+                            <bitmap>media/images/box/wait.png</bitmap>
+                            <script language="4">
+                                <content>
+                                    <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self, False)
+
+    def onLoad(self):
+        self.waiting = None
+
+    def onUnload(self):
+        self.cancelWaiting()
+
+    def triggerOutput(self):
+        self.timerOutput()
+
+    def cancelWaiting(self):
+        if self.waiting:
+            self.waiting.cancel()
+        self.waiting = None
+
+    def onInput_onStart(self):
+        self.cancelWaiting()
+        import qi
+        self.waiting = qi.async(self.triggerOutput, delay=int(self.getParameter("Timeout (s)") * 1000 * 1000))
+
+    def onInput_onStop(self):
+        if self.getParameter("Trigger timerOutput if cancelled") and self.waiting and self.waiting.isRunning():
+            self.timerOutput()
+        self.onUnload()]]>
+</content>
+                            </script>
+                            <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+                            <Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Start the Wait box with the configured timeout value." id="2" />
+                            <Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Stop the wait and stimulate the output." id="3" />
+                            <Output name="timerOutput" type="1" type_size="1" nature="1" inner="0" tooltip="Send a bang once time set in parameters is elapsed, or if the box is stopped and the appropriate parameter is set." id="4" />
+                            <Parameter name="Timeout (s)" inherits_from_parent="0" content_type="2" value="0.1" default_value="1" min="0" max="5000" tooltip="Duration the box waits before stimulating the output." id="5" />
+                            <Parameter name="Trigger timerOutput if cancelled" inherits_from_parent="0" content_type="0" value="0" default_value="1" tooltip="If the box is currently waiting and cancelled, output will be stimulated." id="6" />
+                        </Box>
+                        <Box name="Dump Prefs" id="17" localization="8" tooltip="設定の内容をダンプします。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="636" y="457">
+                            <bitmap>media/images/box/interaction/vocabulary.png</bitmap>
+                            <script language="4">
+                                <content>
+                                    <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+    def onLoad(self):
+        pass
+
+    def onUnload(self):
+        pass
+
+    def onInput_onStart(self):
+        prefs = ALProxy("ALPreferenceManager")
+        domain = self.getParameter("Domain")
+        if len(domain) > 0:
+            domains = [domain]
+        else:
+            domains = prefs.getDomainList()
+        self.logger.info("Target domains: %s" % str(domains))
+        result = "domain,key,value\n"
+        for domain in sorted(domains):
+            for kv in prefs.getValueList(domain):
+                result += "%s,%s,%s\n" % (domain, kv[0], kv[1])
+        self.onStopped(result)]]>
+</content>
+                            </script>
+                            <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+                            <Input name="onStart" type="1" type_size="1" nature="1" inner="0" tooltip="処理を開始します。" id="2" />
+                            <Output name="onStopped" type="3" type_size="1" nature="2" inner="0" tooltip="ダンプ結果を出力します。" id="3" />
+                            <Parameter name="Domain" inherits_from_parent="0" content_type="3" value="" default_value="" custom_choice="0" tooltip="ダンプ対象のドメイン名を指定します。" id="4" />
+                        </Box>
+                        <Box name="Get HTML File (1)" id="3" localization="8" tooltip="プロジェクト内の html ファイルのパスを取得します。&#x0A;ビヘイビアファイルのパスからの相対でhtmlフォルダを取得するため、ビヘイビアファイルがデフォルト構成となっている必要があります。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="489" y="241">
+                            <bitmap>media/images/box/folder.png</bitmap>
+                            <script language="4">
+                                <content>
+                                    <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self, False)
+
+    def onLoad(self):
+        self.framemanager = ALProxy("ALFrameManager")
+
+    def onInput_onStart(self):
+        import os
+        htmlPath = os.path.join(self.framemanager.getBehaviorPath(self.behaviorId),
+                                "..", "html")
+        if os.path.exists(htmlPath):
+            self.logger.info("Directory exists: %s" % htmlPath)
+            self.onStopped(os.path.join(htmlPath, self.getParameter("File name")))
+        else:
+            self.logger.error("Directory not exists: %s" % htmlPath)
+            self.onFailure()]]>
+</content>
+                            </script>
+                            <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+                            <Input name="onStart" type="1" type_size="1" nature="1" inner="0" tooltip="To send the filepath on the output." id="2" />
+                            <Output name="onStopped" type="3" type_size="1" nature="2" inner="0" tooltip="The filepath of the selected resource file." id="3" />
+                            <Output name="onFailure" type="1" type_size="1" nature="2" inner="0" tooltip="エラー発生時に出力されます。htmlフォルダがない場合などに出力されます。" id="4" />
+                            <Parameter name="File name" inherits_from_parent="0" content_type="3" value="pref-dump.txt" default_value="" custom_choice="0" tooltip="Name of the file which is going to be sent on the box output.&#x0A;&#x0A;Note: You can click on the folder icon to browse the project content or import&#x0A;new files to the project." id="5" />
+                        </Box>
+                        <Box name="Write Text (1)" id="4" localization="8" tooltip="ファイルにテキストを書き出します。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="808" y="458">
+                            <bitmap>media/images/box/folder.png</bitmap>
+                            <script language="4">
+                                <content>
+                                    <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+    def onLoad(self):
+        pass
+
+    def onUnload(self):
+        pass
+
+    def onInput_onStart(self, text):
+        import codecs
+        try:
+            with codecs.open(self.getParameter("File path"), "w", self.getParameter("Encoding")) as f:
+                f.write(text.decode("utf8"))
+            self.onStopped()
+        except IOError as e:
+            self.logger.error("Failed: %s" % str(e))
+            self.onFailure(str(e))]]>
+</content>
+                            </script>
+                            <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+                            <Input name="onStart" type="3" type_size="1" nature="1" inner="0" tooltip="ファイルに文字列を出力します。" id="2" />
+                            <Output name="onStopped" type="1" type_size="1" nature="2" inner="0" tooltip="書き出し完了した際に出力します。" id="3" />
+                            <Output name="onFailure" type="3" type_size="1" nature="2" inner="0" tooltip="エラーを出力します。" id="4" />
+                            <Parameter name="File path" inherits_from_parent="0" content_type="3" value="" default_value="" custom_choice="0" tooltip="ファイルパスを指定します。現在の実行ディレクトリからの相対です。" id="5" />
+                            <Parameter name="Encoding" inherits_from_parent="0" content_type="3" value="utf8" default_value="utf8" custom_choice="0" tooltip="文字エンコーディングを指定します。&#x0A;デフォルトは utf8 です。&#x0A;&#x0A;http://docs.python.jp/2/library/codecs.html#standard-encodings" id="6" />
+                        </Box>
+                        <Box name="Wait For Signals" id="5" localization="8" tooltip="Wait for both inputs to be stimulated before stimulating its output." x="1199" y="254">
+                            <bitmap>media/images/box/wait.png</bitmap>
+                            <script language="4">
+                                <content>
+                                    <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self, False)
+
+    def onLoad(self):
+        self.ok = [False]*2
+
+    def onUnload(self):
+        #puts code for box cleanup here
+        ""
+
+    def onStart(self, nInput):
+        self.ok[nInput-1] = True
+        bOutput = True
+        for bOk in self.ok:
+            bOutput = bOutput and bOk
+        if( bOutput ):
+            self.ok = [False]*2
+            self.signalsReceived()
+
+    def onInput_signal1(self):
+        self.onStart(1)
+
+    def onInput_signal2(self):
+        self.onStart(2)]]>
+</content>
+                            </script>
+                            <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when Diagram is loaded." id="1" />
+                            <Input name="signal1" type="1" type_size="1" nature="1" inner="0" tooltip="First signal to wait." id="2" />
+                            <Input name="signal2" type="1" type_size="1" nature="1" inner="0" tooltip="Second signal to wait." id="3" />
+                            <Output name="signalsReceived" type="1" type_size="1" nature="2" inner="0" tooltip="Signal sent when both inputs have been stimulated." id="4" />
+                        </Box>
+                        <Link inputowner="2" indexofinput="2" outputowner="0" indexofoutput="2" />
+                        <Link inputowner="1" indexofinput="2" outputowner="0" indexofoutput="2" />
+                        <Link inputowner="8" indexofinput="2" outputowner="15" indexofoutput="3" />
+                        <Link inputowner="8" indexofinput="5" outputowner="1" indexofoutput="3" />
+                        <Link inputowner="6" indexofinput="2" outputowner="0" indexofoutput="2" />
+                        <Link inputowner="15" indexofinput="2" outputowner="6" indexofoutput="4" />
+                        <Link inputowner="17" indexofinput="2" outputowner="6" indexofoutput="4" />
+                        <Link inputowner="3" indexofinput="2" outputowner="0" indexofoutput="2" />
+                        <Link inputowner="4" indexofinput="5" outputowner="3" indexofoutput="3" />
+                        <Link inputowner="4" indexofinput="2" outputowner="17" indexofoutput="3" />
+                        <Link inputowner="5" indexofinput="2" outputowner="8" indexofoutput="3" />
+                        <Link inputowner="5" indexofinput="3" outputowner="4" indexofoutput="3" />
+                        <Link inputowner="0" indexofinput="4" outputowner="5" indexofoutput="4" />
+                    </Diagram>
+                </BehaviorKeyframe>
+            </BehaviorLayer>
+        </Timeline>
+    </Box>
+</ChoregrapheProject>
