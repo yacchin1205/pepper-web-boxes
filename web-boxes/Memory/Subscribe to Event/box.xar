@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ChoregrapheBox xar_version="3">
+    <Box name="root" id="2" localization="8" tooltip="Subscribes to an event in ALMemory.&#x0A;When an event is raised, the output is fired.&#x0A;&#x0A;The box is implemented using qi Framework.&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="323" y="171">
+        <bitmap>media/images/box/sensors/STM.png</bitmap>
+        <script language="4">
+            <content>
+                <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+    def onLoad(self):
+        self.targetKey = None
+        self.valueId = None
+
+    def onUnload(self):
+        if self.targetKey and self.valueId:
+            self.logger.debug("Unsubscribe: %s, id=%s" % (self.targetKey, self.valueId))
+            memory = self.session().service('ALMemory')
+            signal = memory.subscriber(self.getParameter('key')).signal
+            signal.disconnect(self.valueId)
+            self.targetKey = None
+            self.valueId = None
+
+    def onInput_onStart(self):
+        if not self.valueId:
+            self.logger.debug("Subscribe: %s" % self.targetKey)
+            self.targetKey = self.getParameter('key')
+            memory = self.session().service('ALMemory')
+            signal = memory.subscriber(self.targetKey).signal
+            self.valueId = signal.connect(self.onValue)
+
+    def onValue(self, value):
+        import qi
+        qi.async(self.onEvent, value)
+
+    def onInput_onStop(self):
+        self.onUnload()
+        self.onStopped()]]>
+</content>
+        </script>
+        <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+        <Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" />
+        <Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" />
+        <Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="" id="4" />
+        <Output name="onError" type="3" type_size="1" nature="1" inner="0" tooltip="" id="5" />
+        <Output name="onEvent" type="0" type_size="1" nature="2" inner="0" tooltip="" id="6" />
+        <Parameter name="key" inherits_from_parent="0" content_type="3" value="TestKey1" default_value="" custom_choice="0" tooltip="" id="7" />
+    </Box>
+</ChoregrapheBox>

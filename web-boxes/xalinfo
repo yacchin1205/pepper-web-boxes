@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Folder expanded="no">
+<Folder>
     <Node name="Test" />
     <Node name="Tablet" />
     <Node name="IO" />
     <Node name="System" />
+    <Node name="Memory" />
 </Folder>
