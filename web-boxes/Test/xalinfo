@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Folder expanded="yes">
+<Folder>
     <Node name="Reset Test" />
     <Node name="Report Test" />
     <Node name="Failure" />
