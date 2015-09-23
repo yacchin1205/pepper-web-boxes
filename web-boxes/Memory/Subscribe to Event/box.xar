@@ -16,7 +16,7 @@
         if self.targetKey and self.valueId:
             self.logger.debug("Unsubscribe: %s, id=%s" % (self.targetKey, self.valueId))
             memory = self.session().service('ALMemory')
-            signal = memory.subscriber(self.getParameter('key')).signal
+            signal = memory.subscriber(self.targetKey).signal
             signal.disconnect(self.valueId)
             self.targetKey = None
             self.valueId = None

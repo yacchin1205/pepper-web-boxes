@@ -109,22 +109,29 @@
         GeneratedClass.__init__(self)
 
     def onLoad(self):
-        self.memory = self.session().service('ALMemory')
-        self.current = None
+        self.targetKey = None
+        self.valueId = None
 
     def onUnload(self):
-        if self.current and self.valueId:
-            self.current.disconnect(self.valueId)
-            self.current = None
+        if self.targetKey and self.valueId:
+            self.logger.debug("Unsubscribe: %s, id=%s" % (self.targetKey, self.valueId))
+            memory = self.session().service('ALMemory')
+            signal = memory.subscriber(self.targetKey).signal
+            signal.disconnect(self.valueId)
+            self.targetKey = None
             self.valueId = None
-        self.memory = None
 
     def onInput_onStart(self):
-        self.current = self.memory.subscriber(self.getParameter('key')).signal
-        self.valueId = self.current.connect(self.onValue)
+        if not self.valueId:
+            self.logger.debug("Subscribe: %s" % self.targetKey)
+            self.targetKey = self.getParameter('key')
+            memory = self.session().service('ALMemory')
+            signal = memory.subscriber(self.targetKey).signal
+            self.valueId = signal.connect(self.onValue)
 
     def onValue(self, value):
-        self.onEvent(value)
+        import qi
+        qi.async(self.onEvent, value)
 
     def onInput_onStop(self):
         self.onUnload()
@@ -358,22 +365,29 @@ class MyClass(GeneratedClass):
         GeneratedClass.__init__(self)
 
     def onLoad(self):
-        self.memory = self.session().service('ALMemory')
-        self.current = None
+        self.targetKey = None
+        self.valueId = None
 
     def onUnload(self):
-        if self.current and self.valueId:
-            self.current.disconnect(self.valueId)
-            self.current = None
+        if self.targetKey and self.valueId:
+            self.logger.debug("Unsubscribe: %s, id=%s" % (self.targetKey, self.valueId))
+            memory = self.session().service('ALMemory')
+            signal = memory.subscriber(self.targetKey).signal
+            signal.disconnect(self.valueId)
+            self.targetKey = None
             self.valueId = None
-        self.memory = None
 
     def onInput_onStart(self):
-        self.current = self.memory.subscriber(self.getParameter('key')).signal
-        self.valueId = self.current.connect(self.onValue)
+        if not self.valueId:
+            self.logger.debug("Subscribe: %s" % self.targetKey)
+            self.targetKey = self.getParameter('key')
+            memory = self.session().service('ALMemory')
+            signal = memory.subscriber(self.targetKey).signal
+            self.valueId = signal.connect(self.onValue)
 
     def onValue(self, value):
-        self.onEvent(value)
+        import qi
+        qi.async(self.onEvent, value)
 
     def onInput_onStop(self):
         self.onUnload()
@@ -388,7 +402,7 @@ class MyClass(GeneratedClass):
                                                 <Output name="onEvent" type="0" type_size="1" nature="2" inner="0" tooltip="" id="6" />
                                                 <Parameter name="key" inherits_from_parent="0" content_type="3" value="TestKey2" default_value="" custom_choice="0" tooltip="" id="7" />
                                             </Box>
-                                            <Box name="Wait (2)" id="8" localization="8" tooltip="Wait a moment before sending a signal on the output. &#x0A;Can be stopped anytime. &#x0A;Stimulating the input again before output is activated restarts the waiting period.&#x0A;" x="102" y="36">
+                                            <Box name="Wait For Signals" id="10" localization="8" tooltip="Wait for both inputs to be stimulated before stimulating its output." x="1383" y="47">
                                                 <bitmap>media/images/box/wait.png</bitmap>
                                                 <script language="4">
                                                     <content>
@@ -397,52 +411,48 @@ class MyClass(GeneratedClass):
         GeneratedClass.__init__(self, False)
 
     def onLoad(self):
-        self.waiting = None
+        self.ok = [False]*2
 
     def onUnload(self):
-        self.cancelWaiting()
+        #puts code for box cleanup here
+        ""
 
-    def triggerOutput(self):
-        self.timerOutput()
+    def onStart(self, nInput):
+        self.ok[nInput-1] = True
+        bOutput = True
+        for bOk in self.ok:
+            bOutput = bOutput and bOk
+        if( bOutput ):
+            self.ok = [False]*2
+            self.signalsReceived()
 
-    def cancelWaiting(self):
-        if self.waiting:
-            self.waiting.cancel()
-        self.waiting = None
+    def onInput_signal1(self):
+        self.onStart(1)
 
-    def onInput_onStart(self):
-        self.cancelWaiting()
-        import qi
-        self.waiting = qi.async(self.triggerOutput, delay=int(self.getParameter("Timeout (s)") * 1000 * 1000))
-
-    def onInput_onStop(self):
-        if self.getParameter("Trigger timerOutput if cancelled") and self.waiting and self.waiting.isRunning():
-            self.timerOutput()
-        self.onUnload()]]>
+    def onInput_signal2(self):
+        self.onStart(2)]]>
 </content>
                                                 </script>
-                                                <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
-                                                <Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Start the Wait box with the configured timeout value." id="2" />
-                                                <Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Stop the wait and stimulate the output." id="3" />
-                                                <Output name="timerOutput" type="1" type_size="1" nature="1" inner="0" tooltip="Send a bang once time set in parameters is elapsed, or if the box is stopped and the appropriate parameter is set." id="4" />
-                                                <Parameter name="Timeout (s)" inherits_from_parent="0" content_type="2" value="0.1" default_value="1" min="0" max="5000" tooltip="Duration the box waits before stimulating the output." id="5" />
-                                                <Parameter name="Trigger timerOutput if cancelled" inherits_from_parent="0" content_type="0" value="0" default_value="1" tooltip="If the box is currently waiting and cancelled, output will be stimulated." id="6" />
+                                                <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when Diagram is loaded." id="1" />
+                                                <Input name="signal1" type="1" type_size="1" nature="1" inner="0" tooltip="First signal to wait." id="2" />
+                                                <Input name="signal2" type="1" type_size="1" nature="1" inner="0" tooltip="Second signal to wait." id="3" />
+                                                <Output name="signalsReceived" type="1" type_size="1" nature="2" inner="0" tooltip="Signal sent when both inputs have been stimulated." id="4" />
                                             </Box>
                                             <Link inputowner="3" indexofinput="2" outputowner="4" indexofoutput="3" />
                                             <Link inputowner="4" indexofinput="2" outputowner="6" indexofoutput="4" />
                                             <Link inputowner="7" indexofinput="2" outputowner="2" indexofoutput="6" />
                                             <Link inputowner="9" indexofinput="2" outputowner="3" indexofoutput="4" />
                                             <Link inputowner="7" indexofinput="3" outputowner="9" indexofoutput="4" />
-                                            <Link inputowner="0" indexofinput="3" outputowner="7" indexofoutput="4" />
-                                            <Link inputowner="0" indexofinput="3" outputowner="7" indexofoutput="5" />
-                                            <Link inputowner="0" indexofinput="3" outputowner="5" indexofoutput="4" />
-                                            <Link inputowner="0" indexofinput="3" outputowner="5" indexofoutput="5" />
                                             <Link inputowner="5" indexofinput="2" outputowner="1" indexofoutput="6" />
                                             <Link inputowner="5" indexofinput="3" outputowner="9" indexofoutput="4" />
-                                            <Link inputowner="8" indexofinput="2" outputowner="0" indexofoutput="2" />
-                                            <Link inputowner="1" indexofinput="2" outputowner="8" indexofoutput="4" />
-                                            <Link inputowner="2" indexofinput="2" outputowner="8" indexofoutput="4" />
-                                            <Link inputowner="6" indexofinput="2" outputowner="8" indexofoutput="4" />
+                                            <Link inputowner="0" indexofinput="3" outputowner="10" indexofoutput="4" />
+                                            <Link inputowner="10" indexofinput="3" outputowner="7" indexofoutput="4" />
+                                            <Link inputowner="10" indexofinput="3" outputowner="7" indexofoutput="5" />
+                                            <Link inputowner="10" indexofinput="2" outputowner="5" indexofoutput="4" />
+                                            <Link inputowner="10" indexofinput="2" outputowner="5" indexofoutput="5" />
+                                            <Link inputowner="1" indexofinput="2" outputowner="0" indexofoutput="2" />
+                                            <Link inputowner="2" indexofinput="2" outputowner="0" indexofoutput="2" />
+                                            <Link inputowner="6" indexofinput="2" outputowner="0" indexofoutput="2" />
                                         </Diagram>
                                     </BehaviorKeyframe>
                                 </BehaviorLayer>
@@ -471,22 +481,29 @@ class MyClass(GeneratedClass):
         GeneratedClass.__init__(self)
 
     def onLoad(self):
-        self.memory = self.session().service('ALMemory')
-        self.current = None
+        self.targetKey = None
+        self.valueId = None
 
     def onUnload(self):
-        if self.current and self.valueId:
-            self.current.disconnect(self.valueId)
-            self.current = None
+        if self.targetKey and self.valueId:
+            self.logger.debug("Unsubscribe: %s, id=%s" % (self.targetKey, self.valueId))
+            memory = self.session().service('ALMemory')
+            signal = memory.subscriber(self.targetKey).signal
+            signal.disconnect(self.valueId)
+            self.targetKey = None
             self.valueId = None
-        self.memory = None
 
     def onInput_onStart(self):
-        self.current = self.memory.subscriber(self.getParameter('key')).signal
-        self.valueId = self.current.connect(self.onValue)
+        if not self.valueId:
+            self.logger.debug("Subscribe: %s" % self.targetKey)
+            self.targetKey = self.getParameter('key')
+            memory = self.session().service('ALMemory')
+            signal = memory.subscriber(self.targetKey).signal
+            self.valueId = signal.connect(self.onValue)
 
     def onValue(self, value):
-        self.onEvent(value)
+        import qi
+        qi.async(self.onEvent, value)
 
     def onInput_onStop(self):
         self.onUnload()
@@ -720,22 +737,29 @@ class MyClass(GeneratedClass):
         GeneratedClass.__init__(self)
 
     def onLoad(self):
-        self.memory = self.session().service('ALMemory')
-        self.current = None
+        self.targetKey = None
+        self.valueId = None
 
     def onUnload(self):
-        if self.current and self.valueId:
-            self.current.disconnect(self.valueId)
-            self.current = None
+        if self.targetKey and self.valueId:
+            self.logger.debug("Unsubscribe: %s, id=%s" % (self.targetKey, self.valueId))
+            memory = self.session().service('ALMemory')
+            signal = memory.subscriber(self.targetKey).signal
+            signal.disconnect(self.valueId)
+            self.targetKey = None
             self.valueId = None
-        self.memory = None
 
     def onInput_onStart(self):
-        self.current = self.memory.subscriber(self.getParameter('key')).signal
-        self.valueId = self.current.connect(self.onValue)
+        if not self.valueId:
+            self.logger.debug("Subscribe: %s" % self.targetKey)
+            self.targetKey = self.getParameter('key')
+            memory = self.session().service('ALMemory')
+            signal = memory.subscriber(self.targetKey).signal
+            self.valueId = signal.connect(self.onValue)
 
     def onValue(self, value):
-        self.onEvent(value)
+        import qi
+        qi.async(self.onEvent, value)
 
     def onInput_onStop(self):
         self.onUnload()
@@ -750,7 +774,7 @@ class MyClass(GeneratedClass):
                                                 <Output name="onEvent" type="0" type_size="1" nature="2" inner="0" tooltip="" id="6" />
                                                 <Parameter name="key" inherits_from_parent="0" content_type="3" value="TestKey2" default_value="" custom_choice="0" tooltip="" id="7" />
                                             </Box>
-                                            <Box name="Wait (2)" id="8" localization="8" tooltip="Wait a moment before sending a signal on the output. &#x0A;Can be stopped anytime. &#x0A;Stimulating the input again before output is activated restarts the waiting period.&#x0A;" x="109" y="43">
+                                            <Box name="Wait For Signals" id="10" localization="8" tooltip="Wait for both inputs to be stimulated before stimulating its output." x="1384" y="52">
                                                 <bitmap>media/images/box/wait.png</bitmap>
                                                 <script language="4">
                                                     <content>
@@ -759,52 +783,48 @@ class MyClass(GeneratedClass):
         GeneratedClass.__init__(self, False)
 
     def onLoad(self):
-        self.waiting = None
+        self.ok = [False]*2
 
     def onUnload(self):
-        self.cancelWaiting()
+        #puts code for box cleanup here
+        ""
 
-    def triggerOutput(self):
-        self.timerOutput()
+    def onStart(self, nInput):
+        self.ok[nInput-1] = True
+        bOutput = True
+        for bOk in self.ok:
+            bOutput = bOutput and bOk
+        if( bOutput ):
+            self.ok = [False]*2
+            self.signalsReceived()
 
-    def cancelWaiting(self):
-        if self.waiting:
-            self.waiting.cancel()
-        self.waiting = None
+    def onInput_signal1(self):
+        self.onStart(1)
 
-    def onInput_onStart(self):
-        self.cancelWaiting()
-        import qi
-        self.waiting = qi.async(self.triggerOutput, delay=int(self.getParameter("Timeout (s)") * 1000 * 1000))
-
-    def onInput_onStop(self):
-        if self.getParameter("Trigger timerOutput if cancelled") and self.waiting and self.waiting.isRunning():
-            self.timerOutput()
-        self.onUnload()]]>
+    def onInput_signal2(self):
+        self.onStart(2)]]>
 </content>
                                                 </script>
-                                                <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
-                                                <Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Start the Wait box with the configured timeout value." id="2" />
-                                                <Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Stop the wait and stimulate the output." id="3" />
-                                                <Output name="timerOutput" type="1" type_size="1" nature="1" inner="0" tooltip="Send a bang once time set in parameters is elapsed, or if the box is stopped and the appropriate parameter is set." id="4" />
-                                                <Parameter name="Timeout (s)" inherits_from_parent="0" content_type="2" value="0.1" default_value="1" min="0" max="5000" tooltip="Duration the box waits before stimulating the output." id="5" />
-                                                <Parameter name="Trigger timerOutput if cancelled" inherits_from_parent="0" content_type="0" value="0" default_value="1" tooltip="If the box is currently waiting and cancelled, output will be stimulated." id="6" />
+                                                <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when Diagram is loaded." id="1" />
+                                                <Input name="signal1" type="1" type_size="1" nature="1" inner="0" tooltip="First signal to wait." id="2" />
+                                                <Input name="signal2" type="1" type_size="1" nature="1" inner="0" tooltip="Second signal to wait." id="3" />
+                                                <Output name="signalsReceived" type="1" type_size="1" nature="2" inner="0" tooltip="Signal sent when both inputs have been stimulated." id="4" />
                                             </Box>
                                             <Link inputowner="3" indexofinput="2" outputowner="4" indexofoutput="3" />
                                             <Link inputowner="4" indexofinput="2" outputowner="6" indexofoutput="4" />
                                             <Link inputowner="9" indexofinput="2" outputowner="3" indexofoutput="4" />
                                             <Link inputowner="7" indexofinput="3" outputowner="9" indexofoutput="4" />
-                                            <Link inputowner="0" indexofinput="3" outputowner="7" indexofoutput="4" />
-                                            <Link inputowner="0" indexofinput="3" outputowner="7" indexofoutput="5" />
-                                            <Link inputowner="0" indexofinput="3" outputowner="5" indexofoutput="4" />
-                                            <Link inputowner="0" indexofinput="3" outputowner="5" indexofoutput="5" />
                                             <Link inputowner="5" indexofinput="3" outputowner="9" indexofoutput="4" />
                                             <Link inputowner="5" indexofinput="2" outputowner="2" indexofoutput="6" />
                                             <Link inputowner="7" indexofinput="2" outputowner="1" indexofoutput="6" />
-                                            <Link inputowner="8" indexofinput="2" outputowner="0" indexofoutput="2" />
-                                            <Link inputowner="1" indexofinput="2" outputowner="8" indexofoutput="4" />
-                                            <Link inputowner="2" indexofinput="2" outputowner="8" indexofoutput="4" />
-                                            <Link inputowner="6" indexofinput="2" outputowner="8" indexofoutput="4" />
+                                            <Link inputowner="10" indexofinput="2" outputowner="5" indexofoutput="4" />
+                                            <Link inputowner="10" indexofinput="2" outputowner="5" indexofoutput="5" />
+                                            <Link inputowner="10" indexofinput="3" outputowner="7" indexofoutput="4" />
+                                            <Link inputowner="10" indexofinput="3" outputowner="7" indexofoutput="5" />
+                                            <Link inputowner="0" indexofinput="3" outputowner="10" indexofoutput="4" />
+                                            <Link inputowner="1" indexofinput="2" outputowner="0" indexofoutput="2" />
+                                            <Link inputowner="2" indexofinput="2" outputowner="0" indexofoutput="2" />
+                                            <Link inputowner="6" indexofinput="2" outputowner="0" indexofoutput="2" />
                                         </Diagram>
                                     </BehaviorKeyframe>
                                 </BehaviorLayer>
@@ -840,7 +860,7 @@ class MyClass(GeneratedClass):
         if self.targetKey and self.valueId:
             self.logger.debug("Unsubscribe: %s, id=%s" % (self.targetKey, self.valueId))
             memory = self.session().service('ALMemory')
-            signal = memory.subscriber(self.getParameter('key')).signal
+            signal = memory.subscriber(self.targetKey).signal
             signal.disconnect(self.valueId)
             self.targetKey = None
             self.valueId = None
@@ -1012,22 +1032,29 @@ class MyClass(GeneratedClass):
         GeneratedClass.__init__(self)
 
     def onLoad(self):
-        self.memory = self.session().service('ALMemory')
-        self.current = None
+        self.targetKey = None
+        self.valueId = None
 
     def onUnload(self):
-        if self.current and self.valueId:
-            self.current.disconnect(self.valueId)
-            self.current = None
+        if self.targetKey and self.valueId:
+            self.logger.debug("Unsubscribe: %s, id=%s" % (self.targetKey, self.valueId))
+            memory = self.session().service('ALMemory')
+            signal = memory.subscriber(self.targetKey).signal
+            signal.disconnect(self.valueId)
+            self.targetKey = None
             self.valueId = None
-        self.memory = None
 
     def onInput_onStart(self):
-        self.current = self.memory.subscriber(self.getParameter('key')).signal
-        self.valueId = self.current.connect(self.onValue)
+        if not self.valueId:
+            self.logger.debug("Subscribe: %s" % self.targetKey)
+            self.targetKey = self.getParameter('key')
+            memory = self.session().service('ALMemory')
+            signal = memory.subscriber(self.targetKey).signal
+            self.valueId = signal.connect(self.onValue)
 
     def onValue(self, value):
-        self.onEvent(value)
+        import qi
+        qi.async(self.onEvent, value)
 
     def onInput_onStop(self):
         self.onUnload()
@@ -1195,24 +1222,61 @@ class MyClass(GeneratedClass):
                                                 <Output name="onOutput" type="1" type_size="1" nature="2" inner="0" tooltip="テスト完了時に出力されます。" id="4" />
                                                 <Output name="onFailure" type="1" type_size="1" nature="2" inner="0" tooltip="失敗時に出力されます。" id="5" />
                                             </Box>
+                                            <Box name="Wait For Signals" id="11" localization="8" tooltip="Wait for both inputs to be stimulated before stimulating its output." x="1380" y="101">
+                                                <bitmap>media/images/box/wait.png</bitmap>
+                                                <script language="4">
+                                                    <content>
+                                                        <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self, False)
+
+    def onLoad(self):
+        self.ok = [False]*2
+
+    def onUnload(self):
+        #puts code for box cleanup here
+        ""
+
+    def onStart(self, nInput):
+        self.ok[nInput-1] = True
+        bOutput = True
+        for bOk in self.ok:
+            bOutput = bOutput and bOk
+        if( bOutput ):
+            self.ok = [False]*2
+            self.signalsReceived()
+
+    def onInput_signal1(self):
+        self.onStart(1)
+
+    def onInput_signal2(self):
+        self.onStart(2)]]>
+</content>
+                                                </script>
+                                                <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when Diagram is loaded." id="1" />
+                                                <Input name="signal1" type="1" type_size="1" nature="1" inner="0" tooltip="First signal to wait." id="2" />
+                                                <Input name="signal2" type="1" type_size="1" nature="1" inner="0" tooltip="Second signal to wait." id="3" />
+                                                <Output name="signalsReceived" type="1" type_size="1" nature="2" inner="0" tooltip="Signal sent when both inputs have been stimulated." id="4" />
+                                            </Box>
                                             <Link inputowner="3" indexofinput="2" outputowner="4" indexofoutput="3" />
                                             <Link inputowner="4" indexofinput="2" outputowner="6" indexofoutput="4" />
                                             <Link inputowner="9" indexofinput="2" outputowner="3" indexofoutput="4" />
                                             <Link inputowner="8" indexofinput="2" outputowner="2" indexofoutput="6" />
                                             <Link inputowner="8" indexofinput="3" outputowner="9" indexofoutput="4" />
-                                            <Link inputowner="0" indexofinput="3" outputowner="8" indexofoutput="4" />
-                                            <Link inputowner="0" indexofinput="3" outputowner="8" indexofoutput="5" />
                                             <Link inputowner="6" indexofinput="2" outputowner="7" indexofoutput="4" />
                                             <Link inputowner="2" indexofinput="3" outputowner="7" indexofoutput="4" />
                                             <Link inputowner="10" indexofinput="3" outputowner="9" indexofoutput="4" />
-                                            <Link inputowner="0" indexofinput="3" outputowner="10" indexofoutput="4" />
-                                            <Link inputowner="0" indexofinput="3" outputowner="10" indexofoutput="5" />
                                             <Link inputowner="10" indexofinput="2" outputowner="1" indexofoutput="6" />
                                             <Link inputowner="5" indexofinput="2" outputowner="2" indexofoutput="4" />
                                             <Link inputowner="5" indexofinput="3" outputowner="6" indexofoutput="4" />
-                                            <Link inputowner="1" indexofinput="2" outputowner="0" indexofoutput="2" />
-                                            <Link inputowner="2" indexofinput="2" outputowner="0" indexofoutput="2" />
                                             <Link inputowner="7" indexofinput="2" outputowner="0" indexofoutput="2" />
+                                            <Link inputowner="2" indexofinput="2" outputowner="0" indexofoutput="2" />
+                                            <Link inputowner="1" indexofinput="2" outputowner="0" indexofoutput="2" />
+                                            <Link inputowner="11" indexofinput="2" outputowner="10" indexofoutput="4" />
+                                            <Link inputowner="11" indexofinput="2" outputowner="10" indexofoutput="5" />
+                                            <Link inputowner="11" indexofinput="3" outputowner="8" indexofoutput="4" />
+                                            <Link inputowner="11" indexofinput="3" outputowner="8" indexofoutput="5" />
+                                            <Link inputowner="0" indexofinput="3" outputowner="11" indexofoutput="4" />
                                         </Diagram>
                                     </BehaviorKeyframe>
                                 </BehaviorLayer>
