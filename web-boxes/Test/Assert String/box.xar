@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <ChoregrapheBox xar_version="3">
-    <Box name="root" id="3" localization="8" tooltip="Stringが出力されることを明言するためのボックスです。&#x0A;onTest入力がおこなわれた際に、onInputに予期した入力がないとエラーとなります。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="523" y="234">
+    <Box name="root" id="9" localization="8" tooltip="Stringが出力されることを明言するためのボックスです。&#x0A;onTest入力がおこなわれた際に、onInputに予期した入力がないとエラーとなります。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="689" y="241">
         <bitmap>media/images/box/movement/stiffness.png</bitmap>
         <script language="4">
             <content>
@@ -20,7 +20,7 @@
     def onInput_onTest(self):
         keyName = "com_github_yacchin1205_pepper_web_boxes_test/%s" % self.getName()
         memory = ALProxy("ALMemory")
-        if not self.received:
+        if self.received is None:
             memory.insertData(keyName, "Failure")
             self.logger.error("Failure: not received")
             self.onFailure()
