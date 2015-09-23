@@ -107,27 +107,32 @@
                                                         <![CDATA[class MyClass(GeneratedClass):
     def __init__(self):
         GeneratedClass.__init__(self)
+        import threading
+        self.lock = threading.RLock()
 
     def onLoad(self):
-        self.targetKey = None
-        self.valueId = None
-
-    def onUnload(self):
-        if self.targetKey and self.valueId:
-            self.logger.debug("Unsubscribe: %s, id=%s" % (self.targetKey, self.valueId))
-            memory = self.session().service('ALMemory')
-            signal = memory.subscriber(self.targetKey).signal
-            signal.disconnect(self.valueId)
+        with self.lock:
             self.targetKey = None
             self.valueId = None
 
+    def onUnload(self):
+        with self.lock:
+            if self.targetKey and self.valueId:
+                self.logger.debug("Unsubscribe: %s, id=%s" % (self.targetKey, self.valueId))
+                memory = self.session().service('ALMemory')
+                signal = memory.subscriber(self.targetKey).signal
+                signal.disconnect(self.valueId)
+                self.targetKey = None
+                self.valueId = None
+
     def onInput_onStart(self):
-        if not self.valueId:
-            self.logger.debug("Subscribe: %s" % self.targetKey)
-            self.targetKey = self.getParameter('key')
-            memory = self.session().service('ALMemory')
-            signal = memory.subscriber(self.targetKey).signal
-            self.valueId = signal.connect(self.onValue)
+        with self.lock:
+            if not self.valueId:
+                self.logger.debug("Subscribe: %s" % self.targetKey)
+                self.targetKey = self.getParameter('key')
+                memory = self.session().service('ALMemory')
+                signal = memory.subscriber(self.targetKey).signal
+                self.valueId = signal.connect(self.onValue)
 
     def onValue(self, value):
         import qi
@@ -363,27 +368,32 @@ class MyClass(GeneratedClass):
                                                         <![CDATA[class MyClass(GeneratedClass):
     def __init__(self):
         GeneratedClass.__init__(self)
+        import threading
+        self.lock = threading.RLock()
 
     def onLoad(self):
-        self.targetKey = None
-        self.valueId = None
-
-    def onUnload(self):
-        if self.targetKey and self.valueId:
-            self.logger.debug("Unsubscribe: %s, id=%s" % (self.targetKey, self.valueId))
-            memory = self.session().service('ALMemory')
-            signal = memory.subscriber(self.targetKey).signal
-            signal.disconnect(self.valueId)
+        with self.lock:
             self.targetKey = None
             self.valueId = None
 
+    def onUnload(self):
+        with self.lock:
+            if self.targetKey and self.valueId:
+                self.logger.debug("Unsubscribe: %s, id=%s" % (self.targetKey, self.valueId))
+                memory = self.session().service('ALMemory')
+                signal = memory.subscriber(self.targetKey).signal
+                signal.disconnect(self.valueId)
+                self.targetKey = None
+                self.valueId = None
+
     def onInput_onStart(self):
-        if not self.valueId:
-            self.logger.debug("Subscribe: %s" % self.targetKey)
-            self.targetKey = self.getParameter('key')
-            memory = self.session().service('ALMemory')
-            signal = memory.subscriber(self.targetKey).signal
-            self.valueId = signal.connect(self.onValue)
+        with self.lock:
+            if not self.valueId:
+                self.logger.debug("Subscribe: %s" % self.targetKey)
+                self.targetKey = self.getParameter('key')
+                memory = self.session().service('ALMemory')
+                signal = memory.subscriber(self.targetKey).signal
+                self.valueId = signal.connect(self.onValue)
 
     def onValue(self, value):
         import qi
@@ -479,27 +489,32 @@ class MyClass(GeneratedClass):
                                                         <![CDATA[class MyClass(GeneratedClass):
     def __init__(self):
         GeneratedClass.__init__(self)
+        import threading
+        self.lock = threading.RLock()
 
     def onLoad(self):
-        self.targetKey = None
-        self.valueId = None
-
-    def onUnload(self):
-        if self.targetKey and self.valueId:
-            self.logger.debug("Unsubscribe: %s, id=%s" % (self.targetKey, self.valueId))
-            memory = self.session().service('ALMemory')
-            signal = memory.subscriber(self.targetKey).signal
-            signal.disconnect(self.valueId)
+        with self.lock:
             self.targetKey = None
             self.valueId = None
 
+    def onUnload(self):
+        with self.lock:
+            if self.targetKey and self.valueId:
+                self.logger.debug("Unsubscribe: %s, id=%s" % (self.targetKey, self.valueId))
+                memory = self.session().service('ALMemory')
+                signal = memory.subscriber(self.targetKey).signal
+                signal.disconnect(self.valueId)
+                self.targetKey = None
+                self.valueId = None
+
     def onInput_onStart(self):
-        if not self.valueId:
-            self.logger.debug("Subscribe: %s" % self.targetKey)
-            self.targetKey = self.getParameter('key')
-            memory = self.session().service('ALMemory')
-            signal = memory.subscriber(self.targetKey).signal
-            self.valueId = signal.connect(self.onValue)
+        with self.lock:
+            if not self.valueId:
+                self.logger.debug("Subscribe: %s" % self.targetKey)
+                self.targetKey = self.getParameter('key')
+                memory = self.session().service('ALMemory')
+                signal = memory.subscriber(self.targetKey).signal
+                self.valueId = signal.connect(self.onValue)
 
     def onValue(self, value):
         import qi
@@ -735,27 +750,32 @@ class MyClass(GeneratedClass):
                                                         <![CDATA[class MyClass(GeneratedClass):
     def __init__(self):
         GeneratedClass.__init__(self)
+        import threading
+        self.lock = threading.RLock()
 
     def onLoad(self):
-        self.targetKey = None
-        self.valueId = None
-
-    def onUnload(self):
-        if self.targetKey and self.valueId:
-            self.logger.debug("Unsubscribe: %s, id=%s" % (self.targetKey, self.valueId))
-            memory = self.session().service('ALMemory')
-            signal = memory.subscriber(self.targetKey).signal
-            signal.disconnect(self.valueId)
+        with self.lock:
             self.targetKey = None
             self.valueId = None
 
+    def onUnload(self):
+        with self.lock:
+            if self.targetKey and self.valueId:
+                self.logger.debug("Unsubscribe: %s, id=%s" % (self.targetKey, self.valueId))
+                memory = self.session().service('ALMemory')
+                signal = memory.subscriber(self.targetKey).signal
+                signal.disconnect(self.valueId)
+                self.targetKey = None
+                self.valueId = None
+
     def onInput_onStart(self):
-        if not self.valueId:
-            self.logger.debug("Subscribe: %s" % self.targetKey)
-            self.targetKey = self.getParameter('key')
-            memory = self.session().service('ALMemory')
-            signal = memory.subscriber(self.targetKey).signal
-            self.valueId = signal.connect(self.onValue)
+        with self.lock:
+            if not self.valueId:
+                self.logger.debug("Subscribe: %s" % self.targetKey)
+                self.targetKey = self.getParameter('key')
+                memory = self.session().service('ALMemory')
+                signal = memory.subscriber(self.targetKey).signal
+                self.valueId = signal.connect(self.onValue)
 
     def onValue(self, value):
         import qi
@@ -774,7 +794,7 @@ class MyClass(GeneratedClass):
                                                 <Output name="onEvent" type="0" type_size="1" nature="2" inner="0" tooltip="" id="6" />
                                                 <Parameter name="key" inherits_from_parent="0" content_type="3" value="TestKey2" default_value="" custom_choice="0" tooltip="" id="7" />
                                             </Box>
-                                            <Box name="Wait For Signals" id="10" localization="8" tooltip="Wait for both inputs to be stimulated before stimulating its output." x="1384" y="52">
+                                            <Box name="Wait For Signals" id="8" localization="8" tooltip="Wait for both inputs to be stimulated before stimulating its output." x="1391" y="80">
                                                 <bitmap>media/images/box/wait.png</bitmap>
                                                 <script language="4">
                                                     <content>
@@ -817,14 +837,14 @@ class MyClass(GeneratedClass):
                                             <Link inputowner="5" indexofinput="3" outputowner="9" indexofoutput="4" />
                                             <Link inputowner="5" indexofinput="2" outputowner="2" indexofoutput="6" />
                                             <Link inputowner="7" indexofinput="2" outputowner="1" indexofoutput="6" />
-                                            <Link inputowner="10" indexofinput="2" outputowner="5" indexofoutput="4" />
-                                            <Link inputowner="10" indexofinput="2" outputowner="5" indexofoutput="5" />
-                                            <Link inputowner="10" indexofinput="3" outputowner="7" indexofoutput="4" />
-                                            <Link inputowner="10" indexofinput="3" outputowner="7" indexofoutput="5" />
-                                            <Link inputowner="0" indexofinput="3" outputowner="10" indexofoutput="4" />
                                             <Link inputowner="1" indexofinput="2" outputowner="0" indexofoutput="2" />
                                             <Link inputowner="2" indexofinput="2" outputowner="0" indexofoutput="2" />
                                             <Link inputowner="6" indexofinput="2" outputowner="0" indexofoutput="2" />
+                                            <Link inputowner="8" indexofinput="2" outputowner="5" indexofoutput="4" />
+                                            <Link inputowner="8" indexofinput="2" outputowner="5" indexofoutput="5" />
+                                            <Link inputowner="8" indexofinput="3" outputowner="7" indexofoutput="4" />
+                                            <Link inputowner="8" indexofinput="3" outputowner="7" indexofoutput="5" />
+                                            <Link inputowner="0" indexofinput="3" outputowner="8" indexofoutput="4" />
                                         </Diagram>
                                     </BehaviorKeyframe>
                                 </BehaviorLayer>
@@ -851,27 +871,32 @@ class MyClass(GeneratedClass):
                                                         <![CDATA[class MyClass(GeneratedClass):
     def __init__(self):
         GeneratedClass.__init__(self)
+        import threading
+        self.lock = threading.RLock()
 
     def onLoad(self):
-        self.targetKey = None
-        self.valueId = None
-
-    def onUnload(self):
-        if self.targetKey and self.valueId:
-            self.logger.debug("Unsubscribe: %s, id=%s" % (self.targetKey, self.valueId))
-            memory = self.session().service('ALMemory')
-            signal = memory.subscriber(self.targetKey).signal
-            signal.disconnect(self.valueId)
+        with self.lock:
             self.targetKey = None
             self.valueId = None
 
+    def onUnload(self):
+        with self.lock:
+            if self.targetKey and self.valueId:
+                self.logger.debug("Unsubscribe: %s, id=%s" % (self.targetKey, self.valueId))
+                memory = self.session().service('ALMemory')
+                signal = memory.subscriber(self.targetKey).signal
+                signal.disconnect(self.valueId)
+                self.targetKey = None
+                self.valueId = None
+
     def onInput_onStart(self):
-        if not self.valueId:
-            self.logger.debug("Subscribe: %s" % self.targetKey)
-            self.targetKey = self.getParameter('key')
-            memory = self.session().service('ALMemory')
-            signal = memory.subscriber(self.targetKey).signal
-            self.valueId = signal.connect(self.onValue)
+        with self.lock:
+            if not self.valueId:
+                self.logger.debug("Subscribe: %s" % self.targetKey)
+                self.targetKey = self.getParameter('key')
+                memory = self.session().service('ALMemory')
+                signal = memory.subscriber(self.targetKey).signal
+                self.valueId = signal.connect(self.onValue)
 
     def onValue(self, value):
         import qi
@@ -1030,27 +1055,32 @@ class MyClass(GeneratedClass):
                                                         <![CDATA[class MyClass(GeneratedClass):
     def __init__(self):
         GeneratedClass.__init__(self)
+        import threading
+        self.lock = threading.RLock()
 
     def onLoad(self):
-        self.targetKey = None
-        self.valueId = None
-
-    def onUnload(self):
-        if self.targetKey and self.valueId:
-            self.logger.debug("Unsubscribe: %s, id=%s" % (self.targetKey, self.valueId))
-            memory = self.session().service('ALMemory')
-            signal = memory.subscriber(self.targetKey).signal
-            signal.disconnect(self.valueId)
+        with self.lock:
             self.targetKey = None
             self.valueId = None
 
+    def onUnload(self):
+        with self.lock:
+            if self.targetKey and self.valueId:
+                self.logger.debug("Unsubscribe: %s, id=%s" % (self.targetKey, self.valueId))
+                memory = self.session().service('ALMemory')
+                signal = memory.subscriber(self.targetKey).signal
+                signal.disconnect(self.valueId)
+                self.targetKey = None
+                self.valueId = None
+
     def onInput_onStart(self):
-        if not self.valueId:
-            self.logger.debug("Subscribe: %s" % self.targetKey)
-            self.targetKey = self.getParameter('key')
-            memory = self.session().service('ALMemory')
-            signal = memory.subscriber(self.targetKey).signal
-            self.valueId = signal.connect(self.onValue)
+        with self.lock:
+            if not self.valueId:
+                self.logger.debug("Subscribe: %s" % self.targetKey)
+                self.targetKey = self.getParameter('key')
+                memory = self.session().service('ALMemory')
+                signal = memory.subscriber(self.targetKey).signal
+                self.valueId = signal.connect(self.onValue)
 
     def onValue(self, value):
         import qi
