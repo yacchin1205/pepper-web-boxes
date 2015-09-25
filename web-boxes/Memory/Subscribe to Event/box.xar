@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <ChoregrapheBox xar_version="3">
-    <Box name="root" id="2" localization="8" tooltip="Subscribes to an event in ALMemory.&#x0A;When an event is raised, the output is fired.&#x0A;&#x0A;The box is implemented using qi Framework.&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="323" y="171">
+    <Box name="root" id="10" localization="8" tooltip="Subscribes to an event in ALMemory.&#x0A;When an event is raised, the output is fired.&#x0A;&#x0A;The box is implemented using qi Framework.&#x0A;&#x0A;ALMemory中のイベントを監視します。監視対象のイベントが発火すると、onEvent出力が発火します。&#x0A;&#x0A;このボックスはqi Frameworkを利用して実装されています。&#x0A;&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="564" y="306">
         <bitmap>media/images/box/sensors/STM.png</bitmap>
         <script language="4">
             <content>
@@ -36,6 +36,9 @@
 
     def onValue(self, value):
         import qi
+        import types
+        if type(value) == types.LongType:
+            value = int(value)
         qi.async(self.onEvent, value)
 
     def onInput_onStop(self):
@@ -49,6 +52,6 @@
         <Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="" id="4" />
         <Output name="onError" type="3" type_size="1" nature="1" inner="0" tooltip="" id="5" />
         <Output name="onEvent" type="0" type_size="1" nature="2" inner="0" tooltip="" id="6" />
-        <Parameter name="key" inherits_from_parent="0" content_type="3" value="TestKey1" default_value="" custom_choice="0" tooltip="" id="7" />
+        <Parameter name="key" inherits_from_parent="0" content_type="3" value="" default_value="" custom_choice="0" tooltip="" id="7" />
     </Box>
 </ChoregrapheBox>
