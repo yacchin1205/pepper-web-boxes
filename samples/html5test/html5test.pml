@@ -7,4 +7,5 @@
     <Dialogs />
     <Resources />
     <Topics />
+    <IgnoredPaths />
 </Package>

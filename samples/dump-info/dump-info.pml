@@ -9,4 +9,5 @@
         <File name="index" src="html/index.html" />
     </Resources>
     <Topics />
+    <IgnoredPaths />
 </Package>
