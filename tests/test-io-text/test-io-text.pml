@@ -9,4 +9,5 @@
         <File name="test" src="html/test.txt" />
     </Resources>
     <Topics />
+    <IgnoredPaths />
 </Package>

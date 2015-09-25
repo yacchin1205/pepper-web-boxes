@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<package uuid="test-io-text-f23811">
+<package uuid="test-io-text-f23811" version="0.0.0">
  <names>
   <name lang="en_US">test-io-text</name>
  </names>

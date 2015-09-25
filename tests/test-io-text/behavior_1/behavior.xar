@@ -324,7 +324,7 @@ class MyClass(GeneratedClass):
     def onInput_onTest(self):
         keyName = "com_github_yacchin1205_pepper_web_boxes_test/%s" % self.getName()
         memory = ALProxy("ALMemory")
-        if not self.received:
+        if self.received is None:
             memory.insertData(keyName, "Failure")
             self.logger.error("Failure: not received")
             self.onFailure()
@@ -766,7 +766,7 @@ class MyClass(GeneratedClass):
     def onInput_onTest(self):
         keyName = "com_github_yacchin1205_pepper_web_boxes_test/%s" % self.getName()
         memory = ALProxy("ALMemory")
-        if not self.received:
+        if self.received is None:
             memory.insertData(keyName, "Failure")
             self.logger.error("Failure: not received")
             self.onFailure()
@@ -1004,7 +1004,7 @@ class MyClass(GeneratedClass):
     def onInput_onTest(self):
         keyName = "com_github_yacchin1205_pepper_web_boxes_test/%s" % self.getName()
         memory = ALProxy("ALMemory")
-        if not self.received:
+        if self.received is None:
             memory.insertData(keyName, "Failure")
             self.logger.error("Failure: not received")
             self.onFailure()
