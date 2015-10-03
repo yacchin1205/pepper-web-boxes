@@ -136,8 +136,7 @@
 
     def onValue(self, value):
         import qi
-        import types
-        if type(value) == types.LongType:
+        if isinstance(value, long):
             value = int(value)
         qi.async(self.onEvent, value)
 
@@ -400,8 +399,7 @@ class MyClass(GeneratedClass):
 
     def onValue(self, value):
         import qi
-        import types
-        if type(value) == types.LongType:
+        if isinstance(value, long):
             value = int(value)
         qi.async(self.onEvent, value)
 
@@ -524,8 +522,7 @@ class MyClass(GeneratedClass):
 
     def onValue(self, value):
         import qi
-        import types
-        if type(value) == types.LongType:
+        if isinstance(value, long):
             value = int(value)
         qi.async(self.onEvent, value)
 
@@ -788,8 +785,7 @@ class MyClass(GeneratedClass):
 
     def onValue(self, value):
         import qi
-        import types
-        if type(value) == types.LongType:
+        if isinstance(value, long):
             value = int(value)
         qi.async(self.onEvent, value)
 
@@ -912,8 +908,7 @@ class MyClass(GeneratedClass):
 
     def onValue(self, value):
         import qi
-        import types
-        if type(value) == types.LongType:
+        if isinstance(value, long):
             value = int(value)
         qi.async(self.onEvent, value)
 
@@ -1099,8 +1094,7 @@ class MyClass(GeneratedClass):
 
     def onValue(self, value):
         import qi
-        import types
-        if type(value) == types.LongType:
+        if isinstance(value, long):
             value = int(value)
         qi.async(self.onEvent, value)
 
@@ -1411,8 +1405,7 @@ class MyClass(GeneratedClass):
 
     def onValue(self, value):
         import qi
-        import types
-        if type(value) == types.LongType:
+        if isinstance(value, long):
             value = int(value)
         qi.async(self.onEvent, value)
 
@@ -1634,8 +1627,7 @@ class MyClass(GeneratedClass):
 
     def onValue(self, value):
         import qi
-        import types
-        if type(value) == types.LongType:
+        if isinstance(value, long):
             value = int(value)
         qi.async(self.onEvent, value)
 
@@ -1879,8 +1871,7 @@ class MyClass(GeneratedClass):
 
     def onValue(self, value):
         import qi
-        import types
-        if type(value) == types.LongType:
+        if isinstance(value, long):
             value = int(value)
         qi.async(self.onEvent, value)
 
@@ -2121,8 +2112,7 @@ class MyClass(GeneratedClass):
 
     def onValue(self, value):
         import qi
-        import types
-        if type(value) == types.LongType:
+        if isinstance(value, long):
             value = int(value)
         qi.async(self.onEvent, value)
 
@@ -2265,8 +2255,7 @@ class MyClass(GeneratedClass):
 
     def onValue(self, value):
         import qi
-        import types
-        if type(value) == types.LongType:
+        if isinstance(value, long):
             value = int(value)
         qi.async(self.onEvent, value)
 
@@ -2529,8 +2518,7 @@ class MyClass(GeneratedClass):
 
     def onValue(self, value):
         import qi
-        import types
-        if type(value) == types.LongType:
+        if isinstance(value, long):
             value = int(value)
         qi.async(self.onEvent, value)
 
@@ -2653,8 +2641,7 @@ class MyClass(GeneratedClass):
 
     def onValue(self, value):
         import qi
-        import types
-        if type(value) == types.LongType:
+        if isinstance(value, long):
             value = int(value)
         qi.async(self.onEvent, value)
 
@@ -2895,8 +2882,7 @@ class MyClass(GeneratedClass):
 
     def onValue(self, value):
         import qi
-        import types
-        if type(value) == types.LongType:
+        if isinstance(value, long):
             value = int(value)
         qi.async(self.onEvent, value)
 
