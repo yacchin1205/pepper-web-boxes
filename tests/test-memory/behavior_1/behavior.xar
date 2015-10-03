@@ -1300,37 +1300,6 @@ class MyClass(GeneratedClass):
                                                 <Input name="signal2" type="1" type_size="1" nature="1" inner="0" tooltip="Second signal to wait." id="3" />
                                                 <Output name="signalsReceived" type="1" type_size="1" nature="2" inner="0" tooltip="Signal sent when both inputs have been stimulated." id="4" />
                                             </Box>
-                                            <Box name="Raise Event (1)" id="12" localization="8" tooltip="Stores in NAOqi&apos;s shared memory the given value at the given key, and spreads the event to all its subscribers." x="475" y="589">
-                                                <bitmap>media/images/box/sensors/STM.png</bitmap>
-                                                <script language="4">
-                                                    <content>
-                                                        <![CDATA[class MyClass(GeneratedClass):
-    def __init__(self):
-        GeneratedClass.__init__(self)
-        pass
-
-    def onLoad(self):
-        self.memory = ALProxy("ALMemory")
-
-    def onUnload(self):
-        self.memory = None
-
-    def onInput_onStart(self, p):
-        self.memory.raiseEvent(self.getParameter("key"), p)
-        self.onStopped(p)
-
-    def onInput_onStop(self):
-        self.onUnload() #~ it is recommended to call onUnload of this box in a onStop method, as the code written in onUnload is used to stop the box as well
-        pass]]>
-</content>
-                                                </script>
-                                                <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
-                                                <Input name="onStart" type="0" type_size="1" nature="2" inner="0" tooltip="Receives the value to be inserted as an event in ALMemory." id="2" />
-                                                <Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" />
-                                                <Output name="onStopped" type="0" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished. It contains the inserted value in ALMemory." id="4" />
-                                                <Output name="onError" type="3" type_size="1" nature="1" inner="0" tooltip="Output when error is raised by the behavior. Contains the error message." id="5" />
-                                                <Parameter name="key" inherits_from_parent="0" content_type="3" value="MyApplication/MyData" default_value="MyApplication/MyData" custom_choice="0" tooltip="" id="6" />
-                                            </Box>
                                             <Link inputowner="3" indexofinput="2" outputowner="4" indexofoutput="3" />
                                             <Link inputowner="4" indexofinput="2" outputowner="6" indexofoutput="4" />
                                             <Link inputowner="9" indexofinput="2" outputowner="3" indexofoutput="4" />
