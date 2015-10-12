@@ -40,9 +40,18 @@
         self.running = False
         self.mappers = None
         self.memory = None
+        self.keyAddedId = None
+        self.keyRemovedId = None
 
     def onUnload(self):
         with self.lock:
+            if self.keyAddedId:
+                self.memory.subscriber('ALMemory/KeyAdded').signal.disconnect(self.keyAddedId)
+                self.keyAddedId = None
+            if self.keyRemovedId:
+                self.memory.subscriber('ALMemory/KeyRemoved').signal.disconnect(self.keyRemovedId)
+                self.keyRemovedId = None
+
             for mapper in self.mappers:
                 mapper.unsubscribe()
             self.mappers = []
@@ -87,9 +96,26 @@
             if self.getParameter('ALMemory to MQTT'):
                 for mapper in self.mappers:
                     mapper.subscribe(self.memory, self.client)
+                if not self.keyAddedId:
+                    self.keyAddedId = self.memory.subscriber('ALMemory/KeyAdded').signal.connect(self.onKeyAdded)
+                if not self.keyRemovedId:
+                    self.keyRemovedId = self.memory.subscriber('ALMemory/KeyRemoved').signal.connect(self.onKeyRemoved)
 
         import threading
         threading.Thread(target=self.run).start()
+
+    def onKeyAdded(self, name):
+        self.logger.debug('KeyAdded: {}'.format(name))
+        for mapper in self.mappers:
+            if mapper.isKeyMatched(name):
+                mapper.subscribe(self.memory, self.client, name)
+
+    def onKeyRemoved(self, name):
+        self.logger.debug('KeyRemoved: {}'.format(name))
+        for mapper in self.mappers:
+            if mapper.isKeyMatched(name):
+                mapper.unsubscribe(name)
+
 
     def onConnect(self, client, userdata, flags, rc):
         self.logger.info("Connected with result code "+str(rc))
@@ -167,10 +193,15 @@
             self.fromMemory = self.DummyHistories(self.logger)
             self.fromMQTT = self.DummyHistories(self.logger)
 
-        def unsubscribe(self):
-            for subscriber in self.subscribers.values():
-                subscriber.disconnect()
-            self.subscribers = {}
+        def unsubscribe(self, key=None):
+            if key:
+                if key in self.subscribers:
+                    self.subscribers[key].disconnect()
+                    del self.subscribers[key]
+            else:
+                for subscriber in self.subscribers.values():
+                    subscriber.disconnect()
+                self.subscribers = {}
 
         def isTopicMatched(self, topic):
             if self.mqttTopic.endswith('/#'):
@@ -198,11 +229,15 @@
             else:
                 return self.memorykey
 
-        def subscribe(self, memory, client):
+        def subscribe(self, memory, client, addedKey=None):
             if self.memoryKey.endswith('/#'):
-                for key in memory.getEventList():
-                    if self.isKeyMatched(key) and key not in self.subscribers:
-                        self.subscribers[key] = self.Subscriber(self.logger, self.fromMemory, self.fromMQTT, memory, client, key, self.toTopic(key), self.format)
+                if addedKey:
+                    if self.isKeyMatched(addedKey) and addedKey not in self.subscribers:
+                        self.subscribers[addedKey] = self.Subscriber(self.logger, self.fromMemory, self.fromMQTT,              memory, client, addedKey, self.toTopic(addedKey), self.format)
+                else:
+                    for key in memory.getEventList():
+                        if self.isKeyMatched(key) and key not in self.subscribers:
+                            self.subscribers[key] = self.Subscriber(self.logger, self.fromMemory, self.fromMQTT, memory, client, key, self.toTopic(key), self.format)
             elif self.memoryKey not in self.subscribers:
                 self.subscribers[self.memoryKey] = self.Subscriber(self.logger, self.fromMemory, self.fromMQTT, memory, client, self.memorykey, self.mqttTopic, self.format)
 
@@ -212,7 +247,7 @@
             value = self.format.convertMQTTToALMemory(payload)
 
             if not self.fromMemory.contains(topic):
-                # MQTTから来たキー・値とみなす
+                # 自分以外からMQTT経由で来たメッセージとみなす
                 self.logger.debug('Raise event: {0}'.format(targetKey))
                 self.fromMQTT.put(targetKey)
                 memory.raiseEvent(targetKey, value)
@@ -301,9 +336,9 @@
                 self.client = client
                 self.targetKey = targetKey
                 self.targetTopic = targetTopic
-                self.logger.debug("Subscribe: %s" % self.targetKey)
-                signal = memory.subscriber(self.targetKey).signal
-                self.valueId = signal.connect(self.onValue)
+                self.logger.debug("Subscribe: {}".format(self.targetKey))
+                self.signal = memory.subscriber(self.targetKey).signal
+                self.valueId = self.signal.connect(self.onValue)
 
             def onValue(self, value):
                 import json
@@ -323,9 +358,9 @@
 
             def disconnect(self):
                 if self.valueId is not None:
-                    self.logger.debug("Unsubscribe: %s, id=%s" % (self.targetKey, self.valueId))
-                    signal = self.memory.subscriber(self.targetKey).signal
-                    signal.disconnect(self.valueId)
+                    self.logger.debug("Unsubscribe: {}".format(self.targetKey))
+                    self.signal.disconnect(self.valueId)
+                    self.signal = None
                     self.memory = None
                     self.logger = None
                     self.targetKey = None
