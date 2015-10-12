@@ -231,18 +231,21 @@
                 self.subscribers[self.memoryKey] = self.Subscriber(self.logger, self.fromMemory, self.fromMQTT, memory, client, self.memorykey, self.mqttTopic, self.format)
 
         def onMessage(self, memory, topic, payload):
-            import sys
-            targetKey = self.toKey(topic)
-            value = self.format.convertMQTTToALMemory(payload)
-
+            import qi
             if not self.fromMemory.contains(topic):
                 # 自分以外からMQTT経由で来たメッセージとみなす
-                self.logger.debug('Raise event: {0}'.format(targetKey))
-                self.fromMQTT.put(targetKey)
-                memory.raiseEvent(targetKey, value)
+                self.fromMQTT.put(self.toKey(topic))
+                qi.async(self.raiseEvent, memory, topic, payload)
             else:
                 # 自身がPublishしたメッセージとみなす
-                self.logger.debug('Ignore Message: {0}'.format(targetKey))
+                self.logger.debug('Ignore Message: {0}'.format(topic))
+
+        def raiseEvent(self, memory, topic, payload):
+            targetKey = self.toKey(topic)
+            self.logger.debug('Raise event: {0}'.format(targetKey))
+            value = self.format.convertMQTTToALMemory(payload)
+            memory.raiseEvent(targetKey, value)
+
 
         # 値の変換処理
         class Format(object):
@@ -265,6 +268,8 @@
 
             def convertALMemoryToMQTT(self, value):
                 import json
+                if isinstance(value, long):
+                    value = int(value)
                 if self.name == 'json':
                     try:
 
@@ -283,21 +288,25 @@
         class Histories(object):
             def __init__(self, logger):
                 import threading
-                self.values = []
+                self.counts = {}
                 self.lock = threading.Lock()
                 self.logger = logger
 
             def put(self, key):
                 with self.lock:
-                    if len(self.values) > 0:
-                        self.logger.debug('Queue is not empty: size={size}, key={key}'.format(size=len(self.values), key=key))
-                    self.values.append(key)
+                    if key not in self.counts:
+                        self.counts[key] = 1
+                    else:
+                        self.counts[key] += 1
 
             def contains(self, key):
                 with self.lock:
-                    for index, hkey in enumerate(self.values):
+                    for hkey, count in self.counts.items():
                         if hkey == key:
-                            del self.values[index]
+                            if count <= 1:
+                                del self.counts[key]
+                            else:
+                                self.counts[key] = count - 1
                             return True
                     return False
 
@@ -318,20 +327,20 @@
                 self.valueId = self.signal.connect(self.onValue)
 
             def onValue(self, value):
-                import json
-                if isinstance(value, long):
-                    value = int(value)
-
+                import qi
                 if not self.fromMQTT.contains(self.targetKey):
                     # ALMemoryからきたキー・値とみなす
                     self.fromMemory.put(self.targetTopic)
-                    payload = self.format.convertALMemoryToMQTT(value)
-                    self.logger.debug('Publishing... {0}->{1}'.format(self.targetTopic, payload))
-                    self.client.publish(self.targetTopic.encode('utf8'), payload=payload)
-                    self.logger.debug('Published: {0}'.format(self.targetTopic))
+                    qi.async(self.publishMessage, value)
                 else:
                     # MQTTからきたキー・値は無視する
                     self.logger.debug('Ignore event: {0}'.format(self.targetKey))
+
+            def publishMessage(self, value):
+                payload = self.format.convertALMemoryToMQTT(value)
+                self.logger.debug('Publishing... {0}->{1}'.format(self.targetTopic, payload))
+                self.client.publish(self.targetTopic.encode('utf8'), payload=payload)
+                self.logger.debug('Published: {0}'.format(self.targetTopic))
 
             def disconnect(self):
                 if self.valueId is not None:
