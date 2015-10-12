@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ChoregrapheBox xar_version="3">
+    <Box name="root" id="3" localization="8" tooltip="MQTT Adapter for ALMemory.&#x0A;&#x0A;ALMemory用のMQTTアダプタです。&#x0A;&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="577" y="88">
+        <bitmap>media/images/box/sensors/STM.png</bitmap>
+        <script language="4">
+            <content>
+                <![CDATA[]]>
+</content>
+        </script>
+        <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+        <Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="This input has been automatically generated&#x0A;by converting several boxes into a single box." id="2" />
+        <Input name="onStop" type="1" type_size="1" nature="1" inner="0" tooltip="This input has been automatically generated&#x0A;by converting several boxes into a single box." id="3" />
+        <Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="This output has been automatically generated&#x0A;by converting several boxes into a single box." id="4" />
+        <Output name="onConnected" type="1" type_size="1" nature="2" inner="0" tooltip="This output has been automatically generated&#x0A;by converting several boxes into a single box." id="5" />
+        <Output name="onError" type="3" type_size="1" nature="2" inner="0" tooltip="" id="6" />
+        <Parameter name="Host" inherits_from_parent="0" content_type="3" value="" default_value="" custom_choice="0" tooltip="MQTTブローカーのホスト名です。" id="7" />
+        <Parameter name="Port" inherits_from_parent="0" content_type="1" value="1883" default_value="1883" min="0" max="99999" tooltip="MQTTブローカーのポート番号です。" id="8" />
+        <Parameter name="Username" inherits_from_parent="0" content_type="3" value="" default_value="" custom_choice="0" tooltip="MQTTブローカーに接続する際のユーザー名です。" id="9" />
+        <Parameter name="Password" inherits_from_parent="0" content_type="3" value="" default_value="" custom_choice="0" password="1" tooltip="MQTTブローカーに接続する際のパスワードです。" id="10" />
+        <Parameter name="Key-Topic Bindings" inherits_from_parent="0" content_type="3" value="" default_value="" custom_choice="0" tooltip="ALMemoryのKeyとMQTTのTopicの対応づけを定義します。&#x0A;&#x0A;特定のキーのみを関連づける場合は、&#x0A;ALMemoryのキー:MQTTのトピック&#x0A;&#x0A;特定のキー以下の項目をすべて関連づける場合は、&#x0A;ALMemoryのキー/#:MQTTのトピック/#&#x0A;&#x0A;などと記述します。&#x0A;&#x0A;また、:json, :strなどと付加することで、ALMemoryにマッピングする際の型の変換をおこなうことができます。&#x0A;&#x0A;複数の対応づけを定義する場合はセミコロン(;)で区切ります。" id="11" />
+        <Parameter name="MQTT to ALMemory" inherits_from_parent="0" content_type="0" value="1" default_value="1" tooltip="MQTTからALMemoryへのメッセージ転送をおこなう場合はチェックします。" id="12" />
+        <Parameter name="ALMemory to MQTT" inherits_from_parent="0" content_type="0" value="1" default_value="1" tooltip="ALMemoryからMQTTへのイベント転送をおこなう場合はチェックします。" id="13" />
+        <Timeline enable="0">
+            <BehaviorLayer name="behavior_layer1">
+                <BehaviorKeyframe name="keyframe1" index="1">
+                    <Diagram>
+                        <Box name="MQTTAdapterImpl" id="1" localization="8" tooltip="MQTTアダプターの実装コードです。&#x0A;&#x0A;パラメータに添付ファイルが定義されているため、インポート時にこのファイルがビヘイビアにインポートされます。" x="267" y="68">
+                            <bitmap>media/images/box/box-python-script.png</bitmap>
+                            <script language="4">
+                                <content>
+                                    <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+        import threading
+        self.lock = threading.RLock()
+
+    def onLoad(self):
+        self.folderName = None
+        self.client = None
+        self.running = False
+        self.mappers = None
+        self.memory = None
+
+    def onUnload(self):
+        with self.lock:
+            for mapper in self.mappers:
+                mapper.unsubscribe()
+            self.mappers = []
+            self.running = False
+            self.client = None
+            import sys
+            if self.folderName and self.folderName in sys.path:
+                sys.path.remove(self.folderName)
+            self.folderName = None
+            self.memory = None
+
+    def onInput_onStart(self):
+        with self.lock:
+            if self.running:
+                return
+            self.running = True
+            self.memory = self.session().service('ALMemory')
+
+            # モジュールの読み込み
+            self.logger.debug('Loading modules...')
+            import os, sys
+            self.folderName = os.path.join(self.behaviorAbsolutePath())
+            if self.folderName not in sys.path:
+                sys.path.append(self.folderName)
+            if 'paho' in sys.modules:
+                self.logger.info("Already Loaded: %s" % (sys.modules['paho'].__file__))
+                reload(sys.modules['paho'])
+
+            # MQTTクライアントの初期化
+            import paho.mqtt.client as mqtt
+            self.client = mqtt.Client()
+            self.client.on_connect = self.onConnect
+            self.client.on_message = self.onMessage
+            self.logger.debug('Modules loaded successfully. connecting to the broker...')
+
+            # マッピング定義の解析
+            self.mappers = map(lambda x: self.MapperDef(self.logger, x),
+                               self.getParameter('Key-Topic Bindings').split(';'))
+            if not self.getParameter('MQTT to ALMemory') or not self.getParameter('ALMemory to MQTT'):
+                for mapper in self.mappers:
+                    mapper.disableHistories()
+            if self.getParameter('ALMemory to MQTT'):
+                for mapper in self.mappers:
+                    mapper.subscribe(self.memory, self.client)
+
+        import threading
+        threading.Thread(target=self.run).start()
+
+    def onConnect(self, client, userdata, flags, rc):
+        self.logger.info("Connected with result code "+str(rc))
+        if self.getParameter('MQTT to ALMemory'):
+            for mapper in self.mappers:
+                client.subscribe(mapper.mqttTopic)
+
+    def onMessage(self, client, userdata, msg):
+        self.logger.debug('onMessage({0}): {1}'.format(msg.topic, str(msg.payload)))
+        for mapper in self.mappers:
+            if mapper.isTopicMatched(msg.topic):
+                mapper.onMessage(self.memory, msg.topic, msg.payload)
+
+    def run(self):
+        self.logger.debug('Starting worker...')
+        import qi
+        import sys
+        client = self.client
+        try:
+            username = self.getParameter('Username')
+            if username:
+                client.username_pw_set(username,
+                                            self.getParameter('Password'))
+            client.connect(self.getParameter('Host'),
+                                self.getParameter('Port'))
+            qi.async(self.onConnected)
+            self.logger.info('Connected')
+
+            # MQTTの待機処理を開始する
+            try:
+                while self.running:
+                    client.loop()
+            finally:
+                self.logger.debug('Worker finished')
+        except IOError as (errno, strerror):
+            errormsg = 'IO Error({0}) occured: {1}'.format(errno, strerror)
+            self.logger.warn(errormsg)
+            qi.async(self.onError, errormsg)
+        except:
+            errormsg = 'Unexpected Error occured: {}'.format(str(sys.exc_info()[0]))
+            self.logger.warn(errormsg)
+            qi.async(self.onError, errormsg)
+        finally:
+            client.disconnect()
+            self.logger.info('Disconnected')
+
+    def onInput_onStop(self):
+        self.onUnload() #it is recommended to reuse the clean-up as the box is stopped
+        self.onStopped() #activate the output of the box
+
+    # MQTT・ALMemoryのトピック・キーの対応づけ管理
+    class MapperDef(object):
+
+        subscribers = {}
+
+        def __init__(self, logger, targetDef):
+            self.logger = logger
+            self.fromMemory = self.Histories(logger)
+            self.fromMQTT = self.Histories(logger)
+
+            values = targetDef.split(':')
+            if len(values) == 2:
+                self.memoryKey, self.mqttTopic = values
+                self.format = self.Format(None, logger)
+            elif len(values) == 3:
+                self.memoryKey, self.mqttTopic, formatName = values
+                self.format = self.Format(formatName, logger)
+            if self.mqttTopic.endswith('/#') or self.memoryKey.endswith('/#'):
+                if not self.mqttTopic.endswith('/#'):
+                    raise ValueError('末尾が/#ではありません: {0}'.format(self.mqttTopic))
+                if not self.memoryKey.endswith('/#'):
+                    raise ValueError('末尾が/#ではありません: {0}'.format(self.memoryKey))
+
+        def disableHistories(self):
+            self.fromMemory = self.DummyHistories(self.logger)
+            self.fromMQTT = self.DummyHistories(self.logger)
+
+        def unsubscribe(self):
+            for subscriber in self.subscribers.values():
+                subscriber.disconnect()
+            self.subscribers = {}
+
+        def isTopicMatched(self, topic):
+            if self.mqttTopic.endswith('/#'):
+                return topic.startswith(self.mqttTopic[:-2])
+            else:
+                return topic == self.mqttTopic
+
+        def isKeyMatched(self, key):
+            if self.memoryKey.endswith('/#'):
+                return key.startswith(self.memoryKey[:-2])
+            else:
+                return key == self.memoryKey
+
+        def toTopic(self, key):
+            assert(self.isKeyMatched(key))
+            if self.memoryKey.endswith('/#'):
+                return self.mqttTopic[:-1] + key[len(self.memoryKey) - 1:]
+            else:
+                return self.mqttTopic
+
+        def toKey(self, topic):
+            assert(self.isTopicMatched(topic))
+            if self.mqttTopic.endswith('/#'):
+                return self.memoryKey[:-1] + topic[len(self.mqttTopic) - 1:]
+            else:
+                return self.memorykey
+
+        def subscribe(self, memory, client):
+            if self.memoryKey.endswith('/#'):
+                for key in memory.getEventList():
+                    if self.isKeyMatched(key) and key not in self.subscribers:
+                        self.subscribers[key] = self.Subscriber(self.logger, self.fromMemory, self.fromMQTT, memory, client, key, self.toTopic(key), self.format)
+            elif self.memoryKey not in self.subscribers:
+                self.subscribers[self.memoryKey] = self.Subscriber(self.logger, self.fromMemory, self.fromMQTT, memory, client, self.memorykey, self.mqttTopic, self.format)
+
+        def onMessage(self, memory, topic, payload):
+            import sys
+            targetKey = self.toKey(topic)
+            value = self.format.convertMQTTToALMemory(payload)
+
+            if not self.fromMemory.contains(topic):
+                # MQTTから来たキー・値とみなす
+                self.logger.debug('Raise event: {0}'.format(targetKey))
+                self.fromMQTT.put(targetKey)
+                memory.raiseEvent(targetKey, value)
+            else:
+                # 自身がPublishしたメッセージとみなす
+                self.logger.debug('Ignore Message: {0}'.format(targetKey))
+
+        # 値の変換処理
+        class Format(object):
+            def __init__(self, name, logger):
+                self.name = name
+                self.logger = logger
+
+            def convertMQTTToALMemory(self, payload):
+                import json
+                if self.name == 'json':
+                    try:
+
+                        return json.loads(payload)
+                    except:
+                        errormsg = 'Unexpected Error occured: {0} when parsing {1}'.format(str(sys.exc_info()[0]), str(payload))
+                        self.logger.warn(errormsg)
+                        return payload
+                else:
+                    return payload
+
+            def convertALMemoryToMQTT(self, value):
+                import json
+                if self.name == 'json':
+                    try:
+
+                        return json.dumps(value)
+                    except:
+                        errormsg = 'Unexpected Error occured: {0} when serializing {1}'.format(str(sys.exc_info()[0]), str(value))
+                        self.logger.warn(errormsg)
+                        return value
+                else:
+                    return value
+
+
+        # 送信履歴の管理
+        # 自分自身が送信したイベント・メッセージを、外部からきたメッセージと誤認しループすることを
+        # 防止します。
+        class Histories(object):
+            def __init__(self, logger):
+                import threading
+                self.values = []
+                self.lock = threading.Lock()
+                self.logger = logger
+
+            def put(self, key):
+                with self.lock:
+                    if len(self.values) > 0:
+                        self.logger.debug('Queue is not empty: size={size}, key={key}'.format(size=len(self.values), key=key))
+                    self.values.append(key)
+
+            def contains(self, key):
+                with self.lock:
+                    for index, hkey in enumerate(self.values):
+                        if hkey == key:
+                            del self.values[index]
+                            return True
+                    return False
+
+        # 送信履歴の管理(ダミー)
+        # ALMemory->MQTTのみ、MQTT->ALMemoryのみの同期の場合は
+        # 履歴管理は不要なので、送信履歴管理クラスとしてこれを利用します。
+        class DummyHistories(object):
+            def __init__(self, logger):
+                pass
+
+            def put(self, key):
+                pass
+
+            def contains(self, key):
+                return False
+
+        # ALMemoryの監視
+        class Subscriber(object):
+            def __init__(self, logger, fromMemory, fromMQTT, memory, client, targetKey, targetTopic, format):
+                self.logger = logger
+                self.fromMemory = fromMemory
+                self.fromMQTT = fromMQTT
+                self.format = format
+                self.memory = memory
+                self.client = client
+                self.targetKey = targetKey
+                self.targetTopic = targetTopic
+                self.logger.debug("Subscribe: %s" % self.targetKey)
+                signal = memory.subscriber(self.targetKey).signal
+                self.valueId = signal.connect(self.onValue)
+
+            def onValue(self, value):
+                import json
+                if isinstance(value, long):
+                    value = int(value)
+
+                if not self.fromMQTT.contains(self.targetKey):
+                    # ALMemoryからきたキー・値とみなす
+                    self.fromMemory.put(self.targetTopic)
+                    payload = self.format.convertALMemoryToMQTT(value)
+                    self.logger.debug('Publishing... {0}->{1}'.format(self.targetTopic, payload))
+                    self.client.publish(self.targetTopic.encode('utf8'), payload=payload)
+                    self.logger.debug('Published: {0}'.format(self.targetTopic))
+                else:
+                    # MQTTからきたキー・値は無視する
+                    self.logger.debug('Ignore event: {0}'.format(self.targetKey))
+
+            def disconnect(self):
+                if self.valueId is not None:
+                    self.logger.debug("Unsubscribe: %s, id=%s" % (self.targetKey, self.valueId))
+                    signal = self.memory.subscriber(self.targetKey).signal
+                    signal.disconnect(self.valueId)
+                    self.memory = None
+                    self.logger = None
+                    self.targetKey = None
+                    self.valueId = None]]>
+</content>
+                            </script>
+                            <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+                            <Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" />
+                            <Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" />
+                            <Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="ボックスBehaviorの終了時に信号を送る。" id="4" />
+                            <Output name="onConnected" type="1" type_size="1" nature="2" inner="0" tooltip="" id="5" />
+                            <Output name="onError" type="3" type_size="1" nature="2" inner="0" tooltip="" id="6" />
+                            <Parameter name="Host" inherits_from_parent="1" content_type="3" value="" default_value="" custom_choice="0" tooltip="" id="7" />
+                            <Parameter name="Port" inherits_from_parent="1" content_type="1" value="0" default_value="0" min="0" max="100" tooltip="" id="8" />
+                            <Parameter name="Username" inherits_from_parent="1" content_type="3" value="" default_value="" custom_choice="0" tooltip="" id="9" />
+                            <Parameter name="Password" inherits_from_parent="1" content_type="3" value="" default_value="" custom_choice="0" tooltip="" id="10" />
+                            <Parameter name="LibFile1" inherits_from_parent="0" content_type="4" value="/paho/__init__.py" default_value="" tooltip="" id="11" />
+                            <Parameter name="LibFile2" inherits_from_parent="0" content_type="4" value="/paho/mqtt/__init__.py" default_value="" tooltip="" id="12" />
+                            <Parameter name="LibFile3" inherits_from_parent="0" content_type="4" value="/paho/mqtt/client.py" default_value="" tooltip="" id="13" />
+                            <Parameter name="LibFile4" inherits_from_parent="0" content_type="4" value="/paho/mqtt/publish.py" default_value="" tooltip="" id="14" />
+                            <Parameter name="Key-Topic Bindings" inherits_from_parent="1" content_type="3" value="" default_value="" custom_choice="0" tooltip="" id="15" />
+                            <Parameter name="MQTT to ALMemory" inherits_from_parent="1" content_type="0" value="1" default_value="1" tooltip="" id="16" />
+                            <Parameter name="ALMemory to MQTT" inherits_from_parent="1" content_type="0" value="1" default_value="1" tooltip="" id="17" />
+                        </Box>
+                        <Link inputowner="1" indexofinput="2" outputowner="0" indexofoutput="2" />
+                        <Link inputowner="0" indexofinput="4" outputowner="1" indexofoutput="4" />
+                        <Link inputowner="0" indexofinput="5" outputowner="1" indexofoutput="5" />
+                        <Link inputowner="1" indexofinput="3" outputowner="0" indexofoutput="3" />
+                        <Link inputowner="0" indexofinput="6" outputowner="1" indexofoutput="6" />
+                    </Diagram>
+                </BehaviorKeyframe>
+            </BehaviorLayer>
+        </Timeline>
+    </Box>
+</ChoregrapheBox>
