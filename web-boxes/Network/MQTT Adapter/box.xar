@@ -292,10 +292,22 @@
             def convertALMemoryToMQTT(self, value):
                 import json
                 try:
-                    return json.dumps(value)
+                    # ALMemoryはdictを自動的に [[k1, v1], [k2, v2], ...] の形式にしてしまうので
+                    # 可能な範囲でdictに戻す
+                    return json.dumps(self._convDict(value))
                 except:
                     errormsg = 'Unexpected Error occured: {0} when serializing {1}'.format(str(sys.exc_info()[0]), str(value))
                     self.logger.warn(errormsg)
+                    return value
+
+            def _convDict(self, value):
+                if isinstance(value, list):
+                    elems = filter(lambda x: isinstance(x, list) and len(x) == 2, value)
+                    if len(value) == len(elems):
+                        return dict(map(lambda e: (e[0], self._convDict(e[1])), elems))
+                    else:
+                        return map(lambda x: self._convDict(x), value)
+                else:
                     return value
 
         # 送信履歴の管理
