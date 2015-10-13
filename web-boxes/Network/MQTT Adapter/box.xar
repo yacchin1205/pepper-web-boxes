@@ -175,7 +175,9 @@
                 self.format = self.NoFormat()
             elif len(values) == 3:
                 self.memoryKey, self.mqttTopic, formatName = values
-                if formatName == 'json':
+                if formatName == 'str':
+                    self.format = self.StrFormat()
+                elif formatName == 'json':
                     self.format = self.JsonFormat(logger)
                 else:
                     self.logger.warn('Unknown format: {0}'.format(formatName))
@@ -262,6 +264,16 @@
                     return int(value)
                 else:
                     return value
+
+        class StrFormat(object):
+            def __init__(self):
+                pass
+
+            def convertMQTTToALMemory(self, payload):
+                return str(payload)
+
+            def convertALMemoryToMQTT(self, value):
+                return str(value)
 
         # 値の変換処理
         class JsonFormat(object):
