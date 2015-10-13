@@ -229,7 +229,7 @@
             if self.mqttTopic.endswith('/#'):
                 return self.memoryKey[:-1] + topic[len(self.mqttTopic) - 1:]
             else:
-                return self.memorykey
+                return self.memoryKey
 
         def subscribe(self, memory, client, addedKey=None):
             if self.memoryKey.endswith('/#'):
@@ -241,7 +241,7 @@
                         if self.isKeyMatched(key) and key not in self.subscribers:
                             self.subscribers[key] = self.Subscriber(self.logger, self.fromMemory, self.fromMQTT, memory, client, key, self.toTopic(key), self.format)
             elif self.memoryKey not in self.subscribers:
-                self.subscribers[self.memoryKey] = self.Subscriber(self.logger, self.fromMemory, self.fromMQTT, memory, client, self.memorykey, self.mqttTopic, self.format)
+                self.subscribers[self.memoryKey] = self.Subscriber(self.logger, self.fromMemory, self.fromMQTT, memory, client, self.memoryKey, self.mqttTopic, self.format)
 
         def onMessage(self, memory, topic, payload):
             import qi
