@@ -128,8 +128,8 @@
     def onInput_onStart(self):
         with self.lock:
             if not self.valueId:
-                self.logger.debug("Subscribe: %s" % self.targetKey)
                 self.targetKey = self.getParameter('key')
+                self.logger.debug("Subscribe: %s" % self.targetKey)
                 memory = self.session().service('ALMemory')
                 signal = memory.subscriber(self.targetKey).signal
                 self.valueId = signal.connect(self.onValue)
@@ -391,8 +391,8 @@ class MyClass(GeneratedClass):
     def onInput_onStart(self):
         with self.lock:
             if not self.valueId:
-                self.logger.debug("Subscribe: %s" % self.targetKey)
                 self.targetKey = self.getParameter('key')
+                self.logger.debug("Subscribe: %s" % self.targetKey)
                 memory = self.session().service('ALMemory')
                 signal = memory.subscriber(self.targetKey).signal
                 self.valueId = signal.connect(self.onValue)
@@ -514,8 +514,8 @@ class MyClass(GeneratedClass):
     def onInput_onStart(self):
         with self.lock:
             if not self.valueId:
-                self.logger.debug("Subscribe: %s" % self.targetKey)
                 self.targetKey = self.getParameter('key')
+                self.logger.debug("Subscribe: %s" % self.targetKey)
                 memory = self.session().service('ALMemory')
                 signal = memory.subscriber(self.targetKey).signal
                 self.valueId = signal.connect(self.onValue)
@@ -777,8 +777,8 @@ class MyClass(GeneratedClass):
     def onInput_onStart(self):
         with self.lock:
             if not self.valueId:
-                self.logger.debug("Subscribe: %s" % self.targetKey)
                 self.targetKey = self.getParameter('key')
+                self.logger.debug("Subscribe: %s" % self.targetKey)
                 memory = self.session().service('ALMemory')
                 signal = memory.subscriber(self.targetKey).signal
                 self.valueId = signal.connect(self.onValue)
@@ -900,8 +900,8 @@ class MyClass(GeneratedClass):
     def onInput_onStart(self):
         with self.lock:
             if not self.valueId:
-                self.logger.debug("Subscribe: %s" % self.targetKey)
                 self.targetKey = self.getParameter('key')
+                self.logger.debug("Subscribe: %s" % self.targetKey)
                 memory = self.session().service('ALMemory')
                 signal = memory.subscriber(self.targetKey).signal
                 self.valueId = signal.connect(self.onValue)
@@ -1086,8 +1086,8 @@ class MyClass(GeneratedClass):
     def onInput_onStart(self):
         with self.lock:
             if not self.valueId:
-                self.logger.debug("Subscribe: %s" % self.targetKey)
                 self.targetKey = self.getParameter('key')
+                self.logger.debug("Subscribe: %s" % self.targetKey)
                 memory = self.session().service('ALMemory')
                 signal = memory.subscriber(self.targetKey).signal
                 self.valueId = signal.connect(self.onValue)
@@ -1366,8 +1366,8 @@ class MyClass(GeneratedClass):
     def onInput_onStart(self):
         with self.lock:
             if not self.valueId:
-                self.logger.debug("Subscribe: %s" % self.targetKey)
                 self.targetKey = self.getParameter('key')
+                self.logger.debug("Subscribe: %s" % self.targetKey)
                 memory = self.session().service('ALMemory')
                 signal = memory.subscriber(self.targetKey).signal
                 self.valueId = signal.connect(self.onValue)
@@ -1588,8 +1588,8 @@ class MyClass(GeneratedClass):
     def onInput_onStart(self):
         with self.lock:
             if not self.valueId:
-                self.logger.debug("Subscribe: %s" % self.targetKey)
                 self.targetKey = self.getParameter('key')
+                self.logger.debug("Subscribe: %s" % self.targetKey)
                 memory = self.session().service('ALMemory')
                 signal = memory.subscriber(self.targetKey).signal
                 self.valueId = signal.connect(self.onValue)
@@ -1832,8 +1832,8 @@ class MyClass(GeneratedClass):
     def onInput_onStart(self):
         with self.lock:
             if not self.valueId:
-                self.logger.debug("Subscribe: %s" % self.targetKey)
                 self.targetKey = self.getParameter('key')
+                self.logger.debug("Subscribe: %s" % self.targetKey)
                 memory = self.session().service('ALMemory')
                 signal = memory.subscriber(self.targetKey).signal
                 self.valueId = signal.connect(self.onValue)
@@ -1967,7 +1967,7 @@ class MyClass(GeneratedClass):
                                                 <Input name="onTest" type="1" type_size="1" nature="1" inner="0" tooltip="Inputに入力があったかをテストします。&#x0A;Inputに入力がなければエラー、入力があればonOutputを出力します。" id="3" />
                                                 <Output name="onOutput" type="1" type_size="1" nature="2" inner="0" tooltip="テスト完了時に出力されます。" id="4" />
                                                 <Output name="onFailure" type="1" type_size="1" nature="2" inner="0" tooltip="失敗時に出力されます。" id="5" />
-                                                <Parameter name="Expected" inherits_from_parent="0" content_type="2" value="1.5" default_value="0" min="-1e+08" max="1e+08" tooltip="出力されるべき文字列。" id="6" />
+                                                <Parameter name="Expected" inherits_from_parent="0" content_type="2" value="1.5" default_value="0" min="-1e+08" max="1e+08" tooltip="出力されるべき数値。" id="6" />
                                             </Box>
                                             <Box name="Wait (1)" id="9" localization="8" tooltip="Wait a moment before sending a signal on the output. &#x0A;Can be stopped anytime. &#x0A;Stimulating the input again before output is activated restarts the waiting period.&#x0A;" x="914" y="292">
                                                 <bitmap>media/images/box/wait.png</bitmap>
@@ -2073,8 +2073,8 @@ class MyClass(GeneratedClass):
     def onInput_onStart(self):
         with self.lock:
             if not self.valueId:
-                self.logger.debug("Subscribe: %s" % self.targetKey)
                 self.targetKey = self.getParameter('key')
+                self.logger.debug("Subscribe: %s" % self.targetKey)
                 memory = self.session().service('ALMemory')
                 signal = memory.subscriber(self.targetKey).signal
                 self.valueId = signal.connect(self.onValue)
@@ -2216,8 +2216,8 @@ class MyClass(GeneratedClass):
     def onInput_onStart(self):
         with self.lock:
             if not self.valueId:
-                self.logger.debug("Subscribe: %s" % self.targetKey)
                 self.targetKey = self.getParameter('key')
+                self.logger.debug("Subscribe: %s" % self.targetKey)
                 memory = self.session().service('ALMemory')
                 signal = memory.subscriber(self.targetKey).signal
                 self.valueId = signal.connect(self.onValue)
@@ -2479,8 +2479,8 @@ class MyClass(GeneratedClass):
     def onInput_onStart(self):
         with self.lock:
             if not self.valueId:
-                self.logger.debug("Subscribe: %s" % self.targetKey)
                 self.targetKey = self.getParameter('key')
+                self.logger.debug("Subscribe: %s" % self.targetKey)
                 memory = self.session().service('ALMemory')
                 signal = memory.subscriber(self.targetKey).signal
                 self.valueId = signal.connect(self.onValue)
@@ -2602,8 +2602,8 @@ class MyClass(GeneratedClass):
     def onInput_onStart(self):
         with self.lock:
             if not self.valueId:
-                self.logger.debug("Subscribe: %s" % self.targetKey)
                 self.targetKey = self.getParameter('key')
+                self.logger.debug("Subscribe: %s" % self.targetKey)
                 memory = self.session().service('ALMemory')
                 signal = memory.subscriber(self.targetKey).signal
                 self.valueId = signal.connect(self.onValue)
@@ -2737,7 +2737,7 @@ class MyClass(GeneratedClass):
                                                 <Input name="onTest" type="1" type_size="1" nature="1" inner="0" tooltip="Inputに入力があったかをテストします。&#x0A;Inputに入力がなければエラー、入力があればonOutputを出力します。" id="3" />
                                                 <Output name="onOutput" type="1" type_size="1" nature="2" inner="0" tooltip="テスト完了時に出力されます。" id="4" />
                                                 <Output name="onFailure" type="1" type_size="1" nature="2" inner="0" tooltip="失敗時に出力されます。" id="5" />
-                                                <Parameter name="Expected" inherits_from_parent="0" content_type="2" value="1" default_value="0" min="-1e+08" max="1e+08" tooltip="出力されるべき文字列。" id="6" />
+                                                <Parameter name="Expected" inherits_from_parent="0" content_type="2" value="1" default_value="0" min="-1e+08" max="1e+08" tooltip="出力されるべき数値。" id="6" />
                                             </Box>
                                             <Box name="Wait (1)" id="9" localization="8" tooltip="Wait a moment before sending a signal on the output. &#x0A;Can be stopped anytime. &#x0A;Stimulating the input again before output is activated restarts the waiting period.&#x0A;" x="914" y="292">
                                                 <bitmap>media/images/box/wait.png</bitmap>
@@ -2843,8 +2843,8 @@ class MyClass(GeneratedClass):
     def onInput_onStart(self):
         with self.lock:
             if not self.valueId:
-                self.logger.debug("Subscribe: %s" % self.targetKey)
                 self.targetKey = self.getParameter('key')
+                self.logger.debug("Subscribe: %s" % self.targetKey)
                 memory = self.session().service('ALMemory')
                 signal = memory.subscriber(self.targetKey).signal
                 self.valueId = signal.connect(self.onValue)

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<package uuid="test-memory-c64dae" version="0.0.0">
+<package version="0.0.0" uuid="test-memory-c64dae">
  <names>
   <name lang="en_US">test-memory</name>
  </names>
