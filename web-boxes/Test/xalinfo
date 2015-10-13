@@ -8,4 +8,5 @@
     <Node name="Assert Contains" />
     <Node name="Assert Not Contains" />
     <Node name="Assert Not Bang" />
+    <Node name="Assert Number" />
 </Folder>
