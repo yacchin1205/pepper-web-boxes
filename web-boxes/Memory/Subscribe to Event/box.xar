@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <ChoregrapheBox xar_version="3">
-    <Box name="root" id="10" localization="8" tooltip="Subscribes to an event in ALMemory.&#x0A;When an event is raised, the output is fired.&#x0A;&#x0A;The box is implemented using qi Framework.&#x0A;&#x0A;ALMemory中のイベントを監視します。監視対象のイベントが発火すると、onEvent出力が発火します。&#x0A;&#x0A;このボックスはqi Frameworkを利用して実装されています。&#x0A;&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="416" y="276">
+    <Box name="root" id="10" localization="8" tooltip="Subscribes to an event in ALMemory.&#x0A;When an event is raised, the output is fired.&#x0A;&#x0A;The box is implemented using qi Framework.&#x0A;&#x0A;ALMemory中のイベントを監視します。監視対象のイベントが発火すると、onEvent出力が発火します。&#x0A;&#x0A;このボックスはqi Frameworkを利用して実装されています。&#x0A;&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="577" y="348">
         <bitmap>media/images/box/sensors/STM.png</bitmap>
         <script language="4">
             <content>
@@ -28,8 +28,8 @@
     def onInput_onStart(self):
         with self.lock:
             if not self.valueId:
-                self.logger.debug("Subscribe: %s" % self.targetKey)
                 self.targetKey = self.getParameter('key')
+                self.logger.debug("Subscribe: %s" % self.targetKey)
                 memory = self.session().service('ALMemory')
                 signal = memory.subscriber(self.targetKey).signal
                 self.valueId = signal.connect(self.onValue)
