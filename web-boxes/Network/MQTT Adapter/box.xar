@@ -172,10 +172,14 @@
             values = targetDef.split(':')
             if len(values) == 2:
                 self.memoryKey, self.mqttTopic = values
-                self.format = self.Format(None, logger)
+                self.format = self.NoFormat()
             elif len(values) == 3:
                 self.memoryKey, self.mqttTopic, formatName = values
-                self.format = self.Format(formatName, logger)
+                if formatName == 'json':
+                    self.format = self.JsonFormat(logger)
+                else:
+                    self.logger.warn('Unknown format: {0}'.format(formatName))
+                    self.format = self.NoFormat()
             if self.mqttTopic.endswith('/#') or self.memoryKey.endswith('/#'):
                 if not self.mqttTopic.endswith('/#'):
                     raise ValueError('末尾が/#ではありません: {0}'.format(self.mqttTopic))
@@ -246,41 +250,41 @@
             value = self.format.convertMQTTToALMemory(payload)
             memory.raiseEvent(targetKey, value)
 
+        class NoFormat(object):
+            def __init__(self):
+                pass
+
+            def convertMQTTToALMemory(self, payload):
+                return payload
+
+            def convertALMemoryToMQTT(self, value):
+                if isinstance(value, long):
+                    return int(value)
+                else:
+                    return value
 
         # 値の変換処理
-        class Format(object):
-            def __init__(self, name, logger):
-                self.name = name
+        class JsonFormat(object):
+            def __init__(self, logger):
                 self.logger = logger
 
             def convertMQTTToALMemory(self, payload):
                 import json
-                if self.name == 'json':
-                    try:
-
-                        return json.loads(payload)
-                    except:
-                        errormsg = 'Unexpected Error occured: {0} when parsing {1}'.format(str(sys.exc_info()[0]), str(payload))
-                        self.logger.warn(errormsg)
-                        return payload
-                else:
+                try:
+                    return json.loads(payload)
+                except:
+                    errormsg = 'Unexpected Error occured: {0} when parsing {1}'.format(str(sys.exc_info()[0]), str(payload))
+                    self.logger.warn(errormsg)
                     return payload
 
             def convertALMemoryToMQTT(self, value):
                 import json
-                if isinstance(value, long):
-                    value = int(value)
-                if self.name == 'json':
-                    try:
-
-                        return json.dumps(value)
-                    except:
-                        errormsg = 'Unexpected Error occured: {0} when serializing {1}'.format(str(sys.exc_info()[0]), str(value))
-                        self.logger.warn(errormsg)
-                        return value
-                else:
+                try:
+                    return json.dumps(value)
+                except:
+                    errormsg = 'Unexpected Error occured: {0} when serializing {1}'.format(str(sys.exc_info()[0]), str(value))
+                    self.logger.warn(errormsg)
                     return value
-
 
         # 送信履歴の管理
         # 自分自身が送信したイベント・メッセージを、外部からきたメッセージと誤認しループすることを
