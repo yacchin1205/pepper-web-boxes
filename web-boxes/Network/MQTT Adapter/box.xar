@@ -86,8 +86,12 @@
             self.logger.debug('Modules loaded successfully. connecting to the broker...')
 
             # マッピング定義の解析
+            bindings = self.getParameter('Key-Topic Bindings')
+            if not bindings:
+                raise ValueError('No bindings')
+
             self.mappers = map(lambda x: self.MapperDef(self.logger, x),
-                               self.getParameter('Key-Topic Bindings').split(';'))
+                               bindings.split(';'))
             for mapper in self.mappers:
                 mapper.subscribe(self.memory, self.client)
             if not self.keyAddedId:
@@ -182,6 +186,9 @@
                 else:
                     self.logger.warn('Unknown format: {0}'.format(formatName))
                     self.format = self.NoFormat()
+            else:
+                raise ValueError('Invalid binding: {0}'.format(targetDef))
+
             if self.mqttTopic.endswith('/#') or self.memoryKey.endswith('/#'):
                 if not self.mqttTopic.endswith('/#'):
                     raise ValueError('末尾が/#ではありません: {0}'.format(self.mqttTopic))
