@@ -280,7 +280,10 @@
                 return str(payload)
 
             def convertALMemoryToMQTT(self, value):
-                return str(value)
+                if value is not None:
+                    return str(value)
+                else:
+                    return ''
 
         # 値の変換処理
         class JsonFormat(object):
