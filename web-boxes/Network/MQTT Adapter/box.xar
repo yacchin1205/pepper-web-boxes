@@ -293,7 +293,7 @@
             def convertMQTTToALMemory(self, payload):
                 import json
                 try:
-                    return json.loads(payload)
+                    return self._convQiSafe(json.loads(payload))
                 except:
                     errormsg = 'Unexpected Error occured: {0} when parsing {1}'.format(str(sys.exc_info()[0]), str(payload))
                     self.logger.warn(errormsg)
@@ -310,11 +310,23 @@
                     self.logger.warn(errormsg)
                     return value
 
+            def _convQiSafe(self, value):
+                if isinstance(value, list):
+                    return map(lambda x: self._convQiSafe(x), value)
+                elif isinstance(value, dict):
+                    return dict(map(lambda k, v: (self._convQiSafe(k), self._convQiSafe(v)), value.items()))
+                elif isinstance(value, long):
+                    return int(value)
+                elif isinstance(value, unicode):
+                    return value.encode('utf-8')
+                else:
+                    return value
+
             def _convDict(self, value):
                 if isinstance(value, list):
                     elems = filter(lambda x: isinstance(x, list) and len(x) == 2, value)
                     if len(value) == len(elems):
-                        return dict(map(lambda e: (e[0], self._convDict(e[1])), elems))
+                        return dict(map(lambda e: (self._convDict(e[0]), self._convDict(e[1])), elems))
                     else:
                         return map(lambda x: self._convDict(x), value)
                 else:
