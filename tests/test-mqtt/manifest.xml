@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<package version="0.0.0" uuid="test-mqtt-d6fac8">
+<package uuid="test-mqtt-d6fac8" version="0.0.0">
  <names>
   <name lang="en_US">test-mqtt</name>
  </names>

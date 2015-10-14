@@ -1483,12 +1483,12 @@ class MyClass(GeneratedClass):
 		GeneratedClass.__init__(self)
 
 	def onInput_onStart(self):
-		self.onStopped("192.168.1.27")]]>
+		self.onStopped("test.mosquitto.org")]]>
 </content>
                             </script>
                             <pluginContent>
                                 <text>
-                                    <![CDATA[192.168.1.27]]>
+                                    <![CDATA[test.mosquitto.org]]>
 </text>
                             </pluginContent>
                             <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when Diagram is loaded." id="1" />
