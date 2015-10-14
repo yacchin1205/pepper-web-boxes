@@ -10,4 +10,5 @@
     <Node name="Assert Not Bang" />
     <Node name="Assert Number" />
     <Node name="Assert None" />
+    <Node name="Assert JSON" />
 </Folder>
