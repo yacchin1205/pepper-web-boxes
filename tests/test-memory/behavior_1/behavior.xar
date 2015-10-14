@@ -145,8 +145,6 @@
     def _convQiSafe(self, value):
         if isinstance(value, list):
             return map(lambda x: self._convQiSafe(x), value)
-        elif isinstance(value, dict):
-            return dict(map(lambda k, v: (self._convQiSafe(k), self._convQiSafe(v)), value.items()))
         elif isinstance(value, long):
             return int(value)
         else:
@@ -416,8 +414,6 @@ class MyClass(GeneratedClass):
     def _convQiSafe(self, value):
         if isinstance(value, list):
             return map(lambda x: self._convQiSafe(x), value)
-        elif isinstance(value, dict):
-            return dict(map(lambda k, v: (self._convQiSafe(k), self._convQiSafe(v)), value.items()))
         elif isinstance(value, long):
             return int(value)
         else:
@@ -547,8 +543,6 @@ class MyClass(GeneratedClass):
     def _convQiSafe(self, value):
         if isinstance(value, list):
             return map(lambda x: self._convQiSafe(x), value)
-        elif isinstance(value, dict):
-            return dict(map(lambda k, v: (self._convQiSafe(k), self._convQiSafe(v)), value.items()))
         elif isinstance(value, long):
             return int(value)
         else:
@@ -818,8 +812,6 @@ class MyClass(GeneratedClass):
     def _convQiSafe(self, value):
         if isinstance(value, list):
             return map(lambda x: self._convQiSafe(x), value)
-        elif isinstance(value, dict):
-            return dict(map(lambda k, v: (self._convQiSafe(k), self._convQiSafe(v)), value.items()))
         elif isinstance(value, long):
             return int(value)
         else:
@@ -949,8 +941,6 @@ class MyClass(GeneratedClass):
     def _convQiSafe(self, value):
         if isinstance(value, list):
             return map(lambda x: self._convQiSafe(x), value)
-        elif isinstance(value, dict):
-            return dict(map(lambda k, v: (self._convQiSafe(k), self._convQiSafe(v)), value.items()))
         elif isinstance(value, long):
             return int(value)
         else:
@@ -1143,8 +1133,6 @@ class MyClass(GeneratedClass):
     def _convQiSafe(self, value):
         if isinstance(value, list):
             return map(lambda x: self._convQiSafe(x), value)
-        elif isinstance(value, dict):
-            return dict(map(lambda k, v: (self._convQiSafe(k), self._convQiSafe(v)), value.items()))
         elif isinstance(value, long):
             return int(value)
         else:
@@ -1431,8 +1419,6 @@ class MyClass(GeneratedClass):
     def _convQiSafe(self, value):
         if isinstance(value, list):
             return map(lambda x: self._convQiSafe(x), value)
-        elif isinstance(value, dict):
-            return dict(map(lambda k, v: (self._convQiSafe(k), self._convQiSafe(v)), value.items()))
         elif isinstance(value, long):
             return int(value)
         else:
@@ -1661,8 +1647,6 @@ class MyClass(GeneratedClass):
     def _convQiSafe(self, value):
         if isinstance(value, list):
             return map(lambda x: self._convQiSafe(x), value)
-        elif isinstance(value, dict):
-            return dict(map(lambda k, v: (self._convQiSafe(k), self._convQiSafe(v)), value.items()))
         elif isinstance(value, long):
             return int(value)
         else:
@@ -1913,8 +1897,6 @@ class MyClass(GeneratedClass):
     def _convQiSafe(self, value):
         if isinstance(value, list):
             return map(lambda x: self._convQiSafe(x), value)
-        elif isinstance(value, dict):
-            return dict(map(lambda k, v: (self._convQiSafe(k), self._convQiSafe(v)), value.items()))
         elif isinstance(value, long):
             return int(value)
         else:
@@ -2162,8 +2144,6 @@ class MyClass(GeneratedClass):
     def _convQiSafe(self, value):
         if isinstance(value, list):
             return map(lambda x: self._convQiSafe(x), value)
-        elif isinstance(value, dict):
-            return dict(map(lambda k, v: (self._convQiSafe(k), self._convQiSafe(v)), value.items()))
         elif isinstance(value, long):
             return int(value)
         else:
@@ -2313,8 +2293,6 @@ class MyClass(GeneratedClass):
     def _convQiSafe(self, value):
         if isinstance(value, list):
             return map(lambda x: self._convQiSafe(x), value)
-        elif isinstance(value, dict):
-            return dict(map(lambda k, v: (self._convQiSafe(k), self._convQiSafe(v)), value.items()))
         elif isinstance(value, long):
             return int(value)
         else:
@@ -2584,8 +2562,6 @@ class MyClass(GeneratedClass):
     def _convQiSafe(self, value):
         if isinstance(value, list):
             return map(lambda x: self._convQiSafe(x), value)
-        elif isinstance(value, dict):
-            return dict(map(lambda k, v: (self._convQiSafe(k), self._convQiSafe(v)), value.items()))
         elif isinstance(value, long):
             return int(value)
         else:
@@ -2715,8 +2691,6 @@ class MyClass(GeneratedClass):
     def _convQiSafe(self, value):
         if isinstance(value, list):
             return map(lambda x: self._convQiSafe(x), value)
-        elif isinstance(value, dict):
-            return dict(map(lambda k, v: (self._convQiSafe(k), self._convQiSafe(v)), value.items()))
         elif isinstance(value, long):
             return int(value)
         else:
@@ -2964,8 +2938,6 @@ class MyClass(GeneratedClass):
     def _convQiSafe(self, value):
         if isinstance(value, list):
             return map(lambda x: self._convQiSafe(x), value)
-        elif isinstance(value, dict):
-            return dict(map(lambda k, v: (self._convQiSafe(k), self._convQiSafe(v)), value.items()))
         elif isinstance(value, long):
             return int(value)
         else:
@@ -3115,8 +3087,6 @@ class MyClass(GeneratedClass):
     def _convQiSafe(self, value):
         if isinstance(value, list):
             return map(lambda x: self._convQiSafe(x), value)
-        elif isinstance(value, dict):
-            return dict(map(lambda k, v: (self._convQiSafe(k), self._convQiSafe(v)), value.items()))
         elif isinstance(value, long):
             return int(value)
         else:
@@ -3323,8 +3293,6 @@ class MyClass(GeneratedClass):
     def _convQiSafe(self, value):
         if isinstance(value, list):
             return map(lambda x: self._convQiSafe(x), value)
-        elif isinstance(value, dict):
-            return dict(map(lambda k, v: (self._convQiSafe(k), self._convQiSafe(v)), value.items()))
         elif isinstance(value, long):
             return int(value)
         else:

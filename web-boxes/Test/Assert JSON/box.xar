@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <ChoregrapheBox xar_version="3">
-    <Box name="root" id="14" localization="8" tooltip="任意の形式のオブジェクトが出力されることを明言するためのボックスです。&#x0A;onTest入力がおこなわれた際に、onInputに予期した入力がないとエラーとなります。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="473" y="371">
+    <Box name="root" id="17" localization="8" tooltip="任意の形式のオブジェクトが出力されることを明言するためのボックスです。&#x0A;onTest入力がおこなわれた際に、onInputに予期した入力がないとエラーとなります。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="305" y="292">
         <bitmap>media/images/box/movement/stiffness.png</bitmap>
         <script language="4">
             <content>

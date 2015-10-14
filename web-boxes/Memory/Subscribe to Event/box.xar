@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <ChoregrapheBox xar_version="3">
-    <Box name="root" id="10" localization="8" tooltip="Subscribes to an event in ALMemory.&#x0A;When an event is raised, the output is fired.&#x0A;&#x0A;The box is implemented using qi Framework.&#x0A;&#x0A;ALMemory中のイベントを監視します。監視対象のイベントが発火すると、onEvent出力が発火します。&#x0A;&#x0A;このボックスはqi Frameworkを利用して実装されています。&#x0A;&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="652" y="208">
+    <Box name="root" id="11" localization="8" tooltip="Subscribes to an event in ALMemory.&#x0A;When an event is raised, the output is fired.&#x0A;&#x0A;The box is implemented using qi Framework.&#x0A;&#x0A;ALMemory中のイベントを監視します。監視対象のイベントが発火すると、onEvent出力が発火します。&#x0A;&#x0A;このボックスはqi Frameworkを利用して実装されています。&#x0A;&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="220" y="213">
         <bitmap>media/images/box/sensors/STM.png</bitmap>
         <script language="4">
             <content>
@@ -45,8 +45,6 @@
     def _convQiSafe(self, value):
         if isinstance(value, list):
             return map(lambda x: self._convQiSafe(x), value)
-        elif isinstance(value, dict):
-            return dict(map(lambda k, v: (self._convQiSafe(k), self._convQiSafe(v)), value.items()))
         elif isinstance(value, long):
             return int(value)
         else:
