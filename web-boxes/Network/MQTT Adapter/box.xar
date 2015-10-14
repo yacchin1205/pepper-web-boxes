@@ -314,7 +314,7 @@
                 if isinstance(value, list):
                     return map(lambda x: self._convQiSafe(x), value)
                 elif isinstance(value, dict):
-                    return dict(map(lambda k, v: (self._convQiSafe(k), self._convQiSafe(v)), value.items()))
+                    return dict(map(lambda x: (self._convQiSafe(x[0]), self._convQiSafe(x[1])), value.items()))
                 elif isinstance(value, long):
                     return int(value)
                 elif isinstance(value, unicode):
