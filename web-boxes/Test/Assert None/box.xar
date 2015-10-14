@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ChoregrapheBox xar_version="3">
+    <Box name="root" id="9" localization="8" tooltip="Noneが出力されることを明言するためのボックスです。&#x0A;onTest入力がおこなわれた際に、onInputに予期した入力がないとエラーとなります。&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="797" y="180">
+        <bitmap>media/images/box/movement/stiffness.png</bitmap>
+        <script language="4">
+            <content>
+                <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+    def onLoad(self):
+        self.receivedValue = None
+        self.received = False
+
+    def onUnload(self):
+        self.receivedValue = None
+        self.received = False
+
+    def onInput_onInput(self, actual):
+        self.receivedValue = actual
+        self.received = True
+
+    def onInput_onTest(self):
+        keyName = "com_github_yacchin1205_pepper_web_boxes_test/%s" % self.getName()
+        memory = ALProxy("ALMemory")
+        if not self.received:
+            memory.insertData(keyName, "Failure")
+            self.logger.error("Failure: not received")
+            self.onFailure()
+        elif self.receivedValue is not None:
+            memory.insertData(keyName, "Failure")
+            self.logger.error("Failure: expected=None but actual=%s" % (self.receivedValue))
+            self.onFailure()
+        else:
+            memory.insertData(keyName, "Success")
+            self.logger.info("Success")
+            self.onOutput()]]>
+</content>
+        </script>
+        <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+        <Input name="onInput" type="0" type_size="1" nature="1" inner="0" tooltip="入力を受け取ります。" id="2" />
+        <Input name="onTest" type="1" type_size="1" nature="1" inner="0" tooltip="Inputに入力があったかをテストします。&#x0A;Inputに入力がなければエラー、入力があればonOutputを出力します。" id="3" />
+        <Output name="onOutput" type="1" type_size="1" nature="2" inner="0" tooltip="テスト完了時に出力されます。" id="4" />
+        <Output name="onFailure" type="1" type_size="1" nature="2" inner="0" tooltip="失敗時に出力されます。" id="5" />
+    </Box>
+</ChoregrapheBox>

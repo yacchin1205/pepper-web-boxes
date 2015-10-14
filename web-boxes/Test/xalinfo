@@ -9,4 +9,5 @@
     <Node name="Assert Not Contains" />
     <Node name="Assert Not Bang" />
     <Node name="Assert Number" />
+    <Node name="Assert None" />
 </Folder>
