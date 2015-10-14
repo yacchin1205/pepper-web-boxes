@@ -103,13 +103,11 @@
         threading.Thread(target=self.run).start()
 
     def onKeyAdded(self, name):
-        self.logger.debug('KeyAdded: {}'.format(name))
         for mapper in self.mappers:
             if mapper.isKeyMatched(name):
                 mapper.subscribe(self.memory, self.client, name)
 
     def onKeyRemoved(self, name):
-        self.logger.debug('KeyRemoved: {}'.format(name))
         for mapper in self.mappers:
             if mapper.isKeyMatched(name):
                 mapper.unsubscribe(name)
