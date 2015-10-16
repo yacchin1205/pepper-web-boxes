@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ChoregrapheProject xmlns="http://www.aldebaran-robotics.com/schema/choregraphe/project.xsd" xar_version="3">
+    <Box name="root" id="-1" localization="8" tooltip="Root box of Choregraphe&apos;s behavior. Highest level possible." x="0" y="0">
+        <bitmap>media/images/box/root.png</bitmap>
+        <script language="4">
+            <content>
+                <![CDATA[]]>
+</content>
+        </script>
+        <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+        <Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" />
+        <Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" />
+        <Input name="MQTT/Test/Sample1/Message" type="0" type_size="1" nature="4" stm_value_name="MQTT/Test/Sample1/Message" inner="1" tooltip="MQTT/Test/Sample1/Message desc" id="4" />
+        <Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="ボックスBehaviorの終了時に信号を送る。" id="5" />
+        <Timeline enable="0">
+            <BehaviorLayer name="behavior_layer1">
+                <BehaviorKeyframe name="keyframe1" index="1">
+                    <Diagram>
+                        <Box name="MQTT Adapter" id="3" localization="8" tooltip="MQTT Adapter for ALMemory.&#x0A;&#x0A;ALMemory用のMQTTアダプタです。&#x0A;&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="365" y="26">
+                            <bitmap>media/images/box/sensors/STM.png</bitmap>
+                            <script language="4">
+                                <content>
+                                    <![CDATA[]]>
+</content>
+                            </script>
+                            <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+                            <Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="This input has been automatically generated&#x0A;by converting several boxes into a single box." id="2" />
+                            <Input name="onStop" type="1" type_size="1" nature="1" inner="0" tooltip="This input has been automatically generated&#x0A;by converting several boxes into a single box." id="3" />
+                            <Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="This output has been automatically generated&#x0A;by converting several boxes into a single box." id="4" />
+                            <Output name="onConnected" type="1" type_size="1" nature="2" inner="0" tooltip="This output has been automatically generated&#x0A;by converting several boxes into a single box." id="5" />
+                            <Output name="onError" type="3" type_size="1" nature="2" inner="0" tooltip="" id="6" />
+                            <Parameter name="Host" inherits_from_parent="0" content_type="3" value="test.mosquitto.org" default_value="" custom_choice="0" tooltip="MQTTブローカーのホスト名です。" id="7" />
+                            <Parameter name="Port" inherits_from_parent="0" content_type="1" value="1883" default_value="1883" min="0" max="99999" tooltip="MQTTブローカーのポート番号です。" id="8" />
+                            <Parameter name="Username" inherits_from_parent="0" content_type="3" value="" default_value="" custom_choice="0" tooltip="MQTTブローカーに接続する際のユーザー名です。" id="9" />
+                            <Parameter name="Password" inherits_from_parent="0" content_type="3" value="" default_value="" custom_choice="0" password="1" tooltip="MQTTブローカーに接続する際のパスワードです。" id="10" />
+                            <Parameter name="Key-Topic Bindings" inherits_from_parent="0" content_type="3" value="MQTT/Test/Sample1/Message:test-yacchin1205/sample1/Message" default_value="" custom_choice="0" tooltip="ALMemoryのKeyとMQTTのTopicの対応づけを定義します。&#x0A;&#x0A;特定のキーのみを関連づける場合は、&#x0A;ALMemoryのキー:MQTTのトピック&#x0A;&#x0A;特定のキー以下の項目をすべて関連づける場合は、&#x0A;ALMemoryのキー/#:MQTTのトピック/#&#x0A;&#x0A;などと記述します。&#x0A;&#x0A;また、:json, :strなどと付加することで、ALMemoryにマッピングする際の型の変換をおこなうことができます。&#x0A;&#x0A;複数の対応づけを定義する場合はセミコロン(;)で区切ります。" id="11" />
+                            <Timeline enable="0">
+                                <BehaviorLayer name="behavior_layer1">
+                                    <BehaviorKeyframe name="keyframe1" index="1">
+                                        <Diagram>
+                                            <Box name="MQTTAdapterImpl" id="1" localization="8" tooltip="MQTTアダプターの実装コードです。&#x0A;&#x0A;パラメータに添付ファイルが定義されているため、インポート時にこのファイルがビヘイビアにインポートされます。" x="267" y="68">
+                                                <bitmap>media/images/box/box-python-script.png</bitmap>
+                                                <script language="4">
+                                                    <content>
+                                                        <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+        import threading
+        self.lock = threading.RLock()
+
+    def onLoad(self):
+        self.folderName = None
+        self.client = None
+        self.running = False
+        self.mappers = None
+        self.memory = None
+        self.keyAddedId = None
+        self.keyRemovedId = None
+
+    def onUnload(self):
+        with self.lock:
+            if self.keyAddedId:
+                self.memory.subscriber('ALMemory/KeyAdded').signal.disconnect(self.keyAddedId)
+                self.keyAddedId = None
+            if self.keyRemovedId:
+                self.memory.subscriber('ALMemory/KeyRemoved').signal.disconnect(self.keyRemovedId)
+                self.keyRemovedId = None
+
+            for mapper in self.mappers:
+                mapper.unsubscribe()
+            self.mappers = []
+            self.running = False
+            self.client = None
+            import sys
+            if self.folderName and self.folderName in sys.path:
+                sys.path.remove(self.folderName)
+            self.folderName = None
+            self.memory = None
+
+    def onInput_onStart(self):
+        with self.lock:
+            if self.running:
+                return
+            self.running = True
+            self.memory = self.session().service('ALMemory')
+
+            # モジュールの読み込み
+            self.logger.debug('Loading modules...')
+            import os, sys
+            self.folderName = os.path.join(self.behaviorAbsolutePath())
+            if self.folderName not in sys.path:
+                sys.path.append(self.folderName)
+            if 'paho' in sys.modules:
+                self.logger.info("Already Loaded: %s" % (sys.modules['paho'].__file__))
+                reload(sys.modules['paho'])
+
+            # MQTTクライアントの初期化
+            import paho.mqtt.client as mqtt
+            self.client = mqtt.Client()
+            self.client.on_connect = self.onConnect
+            self.client.on_message = self.onMessage
+            self.logger.debug('Modules loaded successfully. connecting to the broker...')
+
+            # マッピング定義の解析
+            bindings = self.getParameter('Key-Topic Bindings')
+            if not bindings:
+                raise ValueError('No bindings')
+
+            self.mappers = map(lambda x: self.MapperDef(self.logger, x),
+                               bindings.split(';'))
+            for mapper in self.mappers:
+                mapper.subscribe(self.memory, self.client)
+            if not self.keyAddedId:
+                self.keyAddedId = self.memory.subscriber('ALMemory/KeyAdded').signal.connect(self.onKeyAdded)
+            if not self.keyRemovedId:
+                self.keyRemovedId = self.memory.subscriber('ALMemory/KeyRemoved').signal.connect(self.onKeyRemoved)
+
+        import threading
+        threading.Thread(target=self.run).start()
+
+    def onKeyAdded(self, name):
+        for mapper in self.mappers:
+            if mapper.isKeyMatched(name):
+                mapper.subscribe(self.memory, self.client, name)
+
+    def onKeyRemoved(self, name):
+        for mapper in self.mappers:
+            if mapper.isKeyMatched(name):
+                mapper.unsubscribe(name)
+
+
+    def onConnect(self, client, userdata, flags, rc):
+        self.logger.info("Connected with result code "+str(rc))
+        for mapper in self.mappers:
+            client.subscribe(mapper.mqttTopic)
+
+    def onMessage(self, client, userdata, msg):
+        self.logger.debug('onMessage({0}): {1}'.format(msg.topic, str(msg.payload)))
+        for mapper in self.mappers:
+            if mapper.isTopicMatched(msg.topic):
+                mapper.onMessage(self.memory, msg.topic, msg.payload)
+
+    def run(self):
+        self.logger.debug('Starting worker...')
+        import qi
+        import sys
+        client = self.client
+        try:
+            username = self.getParameter('Username')
+            if username:
+                client.username_pw_set(username,
+                                            self.getParameter('Password'))
+            client.connect(self.getParameter('Host'),
+                                self.getParameter('Port'))
+            qi.async(self.onConnected)
+            self.logger.info('Connected')
+
+            # MQTTの待機処理を開始する
+            try:
+                while self.running:
+                    client.loop()
+            finally:
+                self.logger.debug('Worker finished')
+        except IOError as (errno, strerror):
+            errormsg = 'IO Error({0}) occured: {1}'.format(errno, strerror)
+            self.logger.warn(errormsg)
+            qi.async(self.onError, errormsg)
+        except:
+            errormsg = 'Unexpected Error occured: {}'.format(str(sys.exc_info()[0]))
+            self.logger.warn(errormsg)
+            qi.async(self.onError, errormsg)
+        finally:
+            client.disconnect()
+            self.logger.info('Disconnected')
+
+    def onInput_onStop(self):
+        self.onUnload() #it is recommended to reuse the clean-up as the box is stopped
+        self.onStopped() #activate the output of the box
+
+    # MQTT・ALMemoryのトピック・キーの対応づけ管理
+    class MapperDef(object):
+
+        subscribers = {}
+
+        def __init__(self, logger, targetDef):
+            self.logger = logger
+            self.fromMemory = self.Histories(logger)
+            self.fromMQTT = self.Histories(logger)
+
+            values = targetDef.split(':')
+            if len(values) == 2:
+                self.memoryKey, self.mqttTopic = values
+                self.format = self.NoFormat()
+            elif len(values) == 3:
+                self.memoryKey, self.mqttTopic, formatName = values
+                if formatName == 'str':
+                    self.format = self.StrFormat()
+                elif formatName == 'json':
+                    self.format = self.JsonFormat(logger)
+                else:
+                    self.logger.warn('Unknown format: {0}'.format(formatName))
+                    self.format = self.NoFormat()
+            else:
+                raise ValueError('Invalid binding: {0}'.format(targetDef))
+
+            if self.mqttTopic.endswith('/#') or self.memoryKey.endswith('/#'):
+                if not self.mqttTopic.endswith('/#'):
+                    raise ValueError('末尾が/#ではありません: {0}'.format(self.mqttTopic))
+                if not self.memoryKey.endswith('/#'):
+                    raise ValueError('末尾が/#ではありません: {0}'.format(self.memoryKey))
+
+        def unsubscribe(self, key=None):
+            if key:
+                if key in self.subscribers:
+                    self.subscribers[key].disconnect()
+                    del self.subscribers[key]
+            else:
+                for subscriber in self.subscribers.values():
+                    subscriber.disconnect()
+                self.subscribers = {}
+
+        def isTopicMatched(self, topic):
+            if self.mqttTopic.endswith('/#'):
+                return topic.startswith(self.mqttTopic[:-2])
+            else:
+                return topic == self.mqttTopic
+
+        def isKeyMatched(self, key):
+            if self.memoryKey.endswith('/#'):
+                return key.startswith(self.memoryKey[:-2])
+            else:
+                return key == self.memoryKey
+
+        def toTopic(self, key):
+            assert(self.isKeyMatched(key))
+            if self.memoryKey.endswith('/#'):
+                return self.mqttTopic[:-1] + key[len(self.memoryKey) - 1:]
+            else:
+                return self.mqttTopic
+
+        def toKey(self, topic):
+            assert(self.isTopicMatched(topic))
+            if self.mqttTopic.endswith('/#'):
+                return self.memoryKey[:-1] + topic[len(self.mqttTopic) - 1:]
+            else:
+                return self.memoryKey
+
+        def subscribe(self, memory, client, addedKey=None):
+            if self.memoryKey.endswith('/#'):
+                if addedKey:
+                    if self.isKeyMatched(addedKey) and addedKey not in self.subscribers:
+                        self.subscribers[addedKey] = self.Subscriber(self.logger, self.fromMemory, self.fromMQTT,              memory, client, addedKey, self.toTopic(addedKey), self.format)
+                else:
+                    for key in memory.getEventList():
+                        if self.isKeyMatched(key) and key not in self.subscribers:
+                            self.subscribers[key] = self.Subscriber(self.logger, self.fromMemory, self.fromMQTT, memory, client, key, self.toTopic(key), self.format)
+            elif self.memoryKey not in self.subscribers:
+                self.subscribers[self.memoryKey] = self.Subscriber(self.logger, self.fromMemory, self.fromMQTT, memory, client, self.memoryKey, self.mqttTopic, self.format)
+
+        def onMessage(self, memory, topic, payload):
+            import qi
+            if not self.fromMemory.contains(topic):
+                # 自分以外からMQTT経由で来たメッセージとみなす
+                self.fromMQTT.put(self.toKey(topic))
+                qi.async(self.raiseEvent, memory, topic, payload)
+            else:
+                # 自身がPublishしたメッセージとみなす
+                self.logger.debug('Ignore Message: {0}'.format(topic))
+
+        def raiseEvent(self, memory, topic, payload):
+            targetKey = self.toKey(topic)
+            self.logger.debug('Raise event: {0}'.format(targetKey))
+            value = self.format.convertMQTTToALMemory(payload)
+            memory.raiseEvent(targetKey, value)
+
+        class NoFormat(object):
+            def __init__(self):
+                pass
+
+            def convertMQTTToALMemory(self, payload):
+                return payload
+
+            def convertALMemoryToMQTT(self, value):
+                if isinstance(value, long):
+                    return int(value)
+                else:
+                    return value
+
+        class StrFormat(object):
+            def __init__(self):
+                pass
+
+            def convertMQTTToALMemory(self, payload):
+                return str(payload)
+
+            def convertALMemoryToMQTT(self, value):
+                if value is not None:
+                    return str(value)
+                else:
+                    return ''
+
+        # 値の変換処理
+        class JsonFormat(object):
+            def __init__(self, logger):
+                self.logger = logger
+
+            def convertMQTTToALMemory(self, payload):
+                import json
+                try:
+                    return self._convQiSafe(json.loads(payload))
+                except:
+                    errormsg = 'Unexpected Error occured: {0} when parsing {1}'.format(str(sys.exc_info()[0]), str(payload))
+                    self.logger.warn(errormsg)
+                    return payload
+
+            def convertALMemoryToMQTT(self, value):
+                import json
+                try:
+                    # ALMemoryはdictを自動的に [[k1, v1], [k2, v2], ...] の形式にしてしまうので
+                    # 可能な範囲でdictに戻す
+                    return json.dumps(self._convDict(value))
+                except:
+                    errormsg = 'Unexpected Error occured: {0} when serializing {1}'.format(str(sys.exc_info()[0]), str(value))
+                    self.logger.warn(errormsg)
+                    return value
+
+            def _convQiSafe(self, value):
+                if isinstance(value, list):
+                    return map(lambda x: self._convQiSafe(x), value)
+                elif isinstance(value, dict):
+                    return dict(map(lambda x: (self._convQiSafe(x[0]), self._convQiSafe(x[1])), value.items()))
+                elif isinstance(value, long):
+                    return int(value)
+                elif isinstance(value, unicode):
+                    return value.encode('utf-8')
+                else:
+                    return value
+
+            def _convDict(self, value):
+                if isinstance(value, list):
+                    elems = filter(lambda x: isinstance(x, list) and len(x) == 2, value)
+                    if len(value) == len(elems):
+                        return dict(map(lambda e: (self._convDict(e[0]), self._convDict(e[1])), elems))
+                    else:
+                        return map(lambda x: self._convDict(x), value)
+                else:
+                    return value
+
+        # 送信履歴の管理
+        # 自分自身が送信したイベント・メッセージを、外部からきたメッセージと誤認しループすることを
+        # 防止します。
+        class Histories(object):
+            def __init__(self, logger):
+                import threading
+                self.counts = {}
+                self.lock = threading.Lock()
+                self.logger = logger
+
+            def put(self, key):
+                with self.lock:
+                    if key not in self.counts:
+                        self.counts[key] = 1
+                    else:
+                        self.counts[key] += 1
+
+            def contains(self, key):
+                with self.lock:
+                    for hkey, count in self.counts.items():
+                        if hkey == key:
+                            if count <= 1:
+                                del self.counts[key]
+                            else:
+                                self.counts[key] = count - 1
+                            return True
+                    return False
+
+
+        # ALMemoryの監視
+        class Subscriber(object):
+            def __init__(self, logger, fromMemory, fromMQTT, memory, client, targetKey, targetTopic, format):
+                self.logger = logger
+                self.fromMemory = fromMemory
+                self.fromMQTT = fromMQTT
+                self.format = format
+                self.memory = memory
+                self.client = client
+                self.targetKey = targetKey
+                self.targetTopic = targetTopic
+                self.logger.debug("Subscribe: {}".format(self.targetKey))
+                self.signal = memory.subscriber(self.targetKey).signal
+                self.valueId = self.signal.connect(self.onValue)
+
+            def onValue(self, value):
+                import qi
+                if not self.fromMQTT.contains(self.targetKey):
+                    # ALMemoryからきたキー・値とみなす
+                    self.fromMemory.put(self.targetTopic)
+                    qi.async(self.publishMessage, value)
+                else:
+                    # MQTTからきたキー・値は無視する
+                    self.logger.debug('Ignore event: {0}'.format(self.targetKey))
+
+            def publishMessage(self, value):
+                payload = self.format.convertALMemoryToMQTT(value)
+                self.logger.debug('Publishing... {0}->{1}'.format(self.targetTopic, payload))
+                self.client.publish(self.targetTopic.encode('utf8'), payload=payload)
+                self.logger.debug('Published: {0}'.format(self.targetTopic))
+
+            def disconnect(self):
+                if self.valueId is not None:
+                    self.logger.debug("Unsubscribe: {}".format(self.targetKey))
+                    self.signal.disconnect(self.valueId)
+                    self.signal = None
+                    self.memory = None
+                    self.logger = None
+                    self.targetKey = None
+                    self.valueId = None]]>
+</content>
+                                                </script>
+                                                <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+                                                <Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" />
+                                                <Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" />
+                                                <Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="ボックスBehaviorの終了時に信号を送る。" id="4" />
+                                                <Output name="onConnected" type="1" type_size="1" nature="2" inner="0" tooltip="" id="5" />
+                                                <Output name="onError" type="3" type_size="1" nature="2" inner="0" tooltip="" id="6" />
+                                                <Parameter name="Host" inherits_from_parent="1" content_type="3" value="" default_value="" custom_choice="0" tooltip="" id="7" />
+                                                <Parameter name="Port" inherits_from_parent="1" content_type="1" value="0" default_value="0" min="0" max="100" tooltip="" id="8" />
+                                                <Parameter name="Username" inherits_from_parent="1" content_type="3" value="" default_value="" custom_choice="0" tooltip="" id="9" />
+                                                <Parameter name="Password" inherits_from_parent="1" content_type="3" value="" default_value="" custom_choice="0" tooltip="" id="10" />
+                                                <Parameter name="LibFile1" inherits_from_parent="0" content_type="4" value="/paho/__init__.py" default_value="" tooltip="" id="11" />
+                                                <Parameter name="LibFile2" inherits_from_parent="0" content_type="4" value="/paho/mqtt/__init__.py" default_value="" tooltip="" id="12" />
+                                                <Parameter name="LibFile3" inherits_from_parent="0" content_type="4" value="/paho/mqtt/client.py" default_value="" tooltip="" id="13" />
+                                                <Parameter name="LibFile4" inherits_from_parent="0" content_type="4" value="/paho/mqtt/publish.py" default_value="" tooltip="" id="14" />
+                                                <Parameter name="Key-Topic Bindings" inherits_from_parent="1" content_type="3" value="" default_value="" custom_choice="0" tooltip="" id="15" />
+                                            </Box>
+                                            <Link inputowner="1" indexofinput="2" outputowner="0" indexofoutput="2" />
+                                            <Link inputowner="0" indexofinput="4" outputowner="1" indexofoutput="4" />
+                                            <Link inputowner="0" indexofinput="5" outputowner="1" indexofoutput="5" />
+                                            <Link inputowner="1" indexofinput="3" outputowner="0" indexofoutput="3" />
+                                            <Link inputowner="0" indexofinput="6" outputowner="1" indexofoutput="6" />
+                                        </Diagram>
+                                    </BehaviorKeyframe>
+                                </BehaviorLayer>
+                            </Timeline>
+                        </Box>
+                        <Box name="Say Text" id="1" localization="8" tooltip="Say the text received on its input." x="368" y="223">
+                            <bitmap>media/images/box/interaction/say.png</bitmap>
+                            <script language="4">
+                                <content>
+                                    <![CDATA[import time
+
+class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self, False)
+        self.tts = ALProxy('ALTextToSpeech')
+        self.ttsStop = ALProxy('ALTextToSpeech', True) #Create another proxy as wait is blocking if audioout is remote
+
+    def onLoad(self):
+        self.bIsRunning = False
+        self.ids = []
+
+    def onUnload(self):
+        for id in self.ids:
+            try:
+                self.ttsStop.stop(id)
+            except:
+                pass
+        while( self.bIsRunning ):
+            time.sleep( 0.2 )
+
+    def onInput_onStart(self, p):
+        self.bIsRunning = True
+        try:
+            sentence = "\RSPD="+ str( self.getParameter("Speed (%)") ) + "\ "
+            sentence += "\VCT="+ str( self.getParameter("Voice shaping (%)") ) + "\ "
+            sentence += str(p)
+            sentence +=  "\RST\ "
+            id = self.tts.post.say(str(sentence))
+            self.ids.append(id)
+            self.tts.wait(id, 0)
+        finally:
+            try:
+                self.ids.remove(id)
+            except:
+                pass
+            if( self.ids == [] ):
+                self.onStopped() # activate output of the box
+                self.bIsRunning = False
+
+    def onInput_onStop(self):
+        self.onUnload()]]>
+</content>
+                            </script>
+                            <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when Diagram is loaded." id="1" />
+                            <Input name="onStart" type="3" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this Input." id="2" />
+                            <Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this Input." id="3" />
+                            <Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when Box behavior is finished." id="4" />
+                            <Parameter name="Voice shaping (%)" inherits_from_parent="1" content_type="1" value="135" default_value="100" min="50" max="150" tooltip='Used to modify at runtime the voice feature (tone, speed). In a slighty&#x0A;different way than pitch and speed, it gives a kind of &quot;gender or age&#x0A;modification&quot; effect.&#x0A;&#x0A;For instance, a quite good male derivation of female voice can be&#x0A;obtained setting this parameter to 78%.&#x0A;&#x0A;Note: For a better effect, you can compensate this parameter with the&#x0A;speed parameter. For example, if you want to decrease by 20% the voice&#x0A;shaping, you will have to increase by 20% the speed to keep a constant&#x0A;average speed.' id="5" />
+                            <Parameter name="Speed (%)" inherits_from_parent="1" content_type="1" value="110" default_value="100" min="50" max="200" tooltip="Changes the speed of the voice.&#x0A;&#x0A;Note: For a better effect, you can compensate this parameter with the voice&#x0A;shaping parameter. For example, if you want to increase by 20% the speed, you&#x0A;will have to decrease by 20% the voice shaping to keep a constant average&#x0A;speed." id="6" />
+                            <Resource name="Speech" type="Lock" timeout="0" />
+                        </Box>
+                        <Link inputowner="3" indexofinput="2" outputowner="0" indexofoutput="2" />
+                        <Link inputowner="1" indexofinput="2" outputowner="0" indexofoutput="4" />
+                    </Diagram>
+                </BehaviorKeyframe>
+            </BehaviorLayer>
+        </Timeline>
+    </Box>
+</ChoregrapheProject>
