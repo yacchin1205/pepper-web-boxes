@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ChoregrapheBox xar_version="3">
+    <Box name="root" id="14" localization="8" tooltip="LABEL_DETECTION of Google Cloud Vision API&#x0A;&#x0A;@source https://github.com/yacchin1205/pepper-web-boxes" x="359" y="784">
+        <bitmap>media/images/box/interaction/vocabulary.png</bitmap>
+        <script language="4">
+            <content>
+                <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+    def onLoad(self):
+        pass
+
+    def onUnload(self):
+        pass
+
+    def onInput_onStart(self, path):
+        import requests
+        import base64
+        import json
+        endpoint = self.getParameter('Endpoint').format(api_key=self.getParameter('API Key'))
+
+        with open(path, 'r') as f:
+            req_image = {'content': base64.b64encode(f.read())}
+
+        req_features = [{'type': 'LABEL_DETECTION',
+                         'maxResults': self.getParameter('Max Results')}]
+        req_body = {'requests': {'image': req_image, 'features': req_features}}
+
+        response = requests.post(endpoint, json=req_body)
+        if response.status_code == requests.codes.ok:
+            resp_body = response.json()['responses']
+            self.logger.debug(json.dumps(resp_body))
+            if 'labelAnnotations' in resp_body[0]:
+                annotations = resp_body[0]['labelAnnotations']
+                output = map(lambda a: [a['score'], a['description'].encode('utf8')], annotations)
+                self.labels(output)
+            else:
+                self.labels([])
+        else:
+            response.raise_for_status()]]>
+</content>
+        </script>
+        <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+        <Input name="onStart" type="3" type_size="1" nature="2" inner="0" tooltip="" id="2" />
+        <Output name="labels" type="0" type_size="1" nature="1" inner="0" tooltip="" id="3" />
+        <Output name="onError" type="3" type_size="1" nature="1" inner="0" tooltip="" id="4" />
+        <Parameter name="Endpoint" inherits_from_parent="0" content_type="3" value="https://vision.googleapis.com/v1/images:annotate?key={api_key}" default_value="" custom_choice="0" tooltip="" id="5" />
+        <Parameter name="API Key" inherits_from_parent="1" content_type="3" value="" default_value="" custom_choice="0" tooltip="" id="6" />
+        <Parameter name="Max Results" inherits_from_parent="1" content_type="1" value="10" default_value="10" min="1" max="100" tooltip="" id="7" />
+    </Box>
+</ChoregrapheBox>
