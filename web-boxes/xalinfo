@@ -7,4 +7,5 @@
     <Node name="System" />
     <Node name="Memory" />
     <Node name="Network" />
+    <Node name="Google" />
 </Folder>
