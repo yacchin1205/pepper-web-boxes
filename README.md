@@ -11,6 +11,7 @@ Pepper用の俺的ボックスライブラリ(主にWeb関係の連携)です。
 * System ... システム情報の取得用ボックス
 * Memory ... メモリの操作用ボックス
 * Network ... ネットワークの連携用ボックス
+* Google ... Google Cloud Platformサービス用ボックス
 * Test ... テストのためのボックス
 
 ##samples
