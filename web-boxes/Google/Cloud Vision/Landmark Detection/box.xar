@@ -27,7 +27,7 @@
                          'maxResults': self.getParameter('Max Results')}]
         req_body = {'requests': {'image': req_image, 'features': req_features}}
 
-        response = requests.post(endpoint, json=req_body)
+        response = requests.post(endpoint, data=json.dumps(req_body))
         if response.status_code == requests.codes.ok:
             resp_body = response.json()['responses']
             self.logger.debug(json.dumps(resp_body))
