@@ -34,8 +34,10 @@
             self.logger.debug(json.dumps(resp_body))
             if 'textAnnotations' in resp_body[0]:
                 annotations = resp_body[0]['textAnnotations']
-                output = map(lambda a: [a['locale'].encode('utf8'), a['description'].encode('utf8')],
-                             annotations)
+                output = map(lambda a: [
+                                 a['locale'].encode('utf8') if 'locale' in a else None,
+                                 a['description'].encode('utf8') if 'description' in a else None
+                             ], annotations)
                 self.texts(output)
             else:
                 self.texts([])
